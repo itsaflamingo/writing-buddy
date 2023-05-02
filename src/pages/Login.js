@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
 import { api_url } from './api/url';
+import { UserContext } from '@/contexts/Contexts';
 
 export default function Login() {
+  const user = useContext(UserContext);
   // These two change at the same time, so they are grouped together
   const [input, setInput] = useState({
     username: null,
@@ -25,6 +27,7 @@ export default function Login() {
     })
       .then((res) => {
         process.env.REACT_APP_TOKEN = res.data.token;
+        user.setUser(res.data.user.username);
       })
       .catch((err) => console.log(err))
   }

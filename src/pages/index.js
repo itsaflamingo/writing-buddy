@@ -1,10 +1,13 @@
 import { useQuery } from 'react-query';
-import React from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import axios from 'axios';
 import { api_url } from './api/url';
 import Header from './Header';
+import { UserContext } from '../contexts/Contexts';
+import UserHub from './UserHub';
 
 export default function Home() {
+  const [user, setUser] = useState(null);
   const result = useQuery(
     'user',
     () => axios.get(`${api_url}/`)
@@ -14,17 +17,17 @@ export default function Home() {
   if (result.isLoading) {
     return (
       <div>
-        <Header />
         loading data...
       </div>
     );
   }
-  const user = result.data;
 
   return (
-    <div>
-      <Header />
-      {user.request.response}
+    <div className="index">
+      <UserContext.Provider value={{ user, setUser }}>
+        <Header />
+        { user && <UserHub /> }
+      </UserContext.Provider>
     </div>
   );
 }
