@@ -11,6 +11,8 @@ export default function Login() {
     password: null,
   })
 
+  const [error, setError] = useState(null);
+
   const onChangeHandler = (e, label) => setInput({ ...input, [label]: e.target.value });
   const onSubmit = (e) => {
     e.preventDefault();
@@ -29,12 +31,13 @@ export default function Login() {
         process.env.REACT_APP_TOKEN = res.data.token;
         user.setUser(res.data.user.username);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => setError(err))
   }
 
   return (
     <div className="login">
       <form>
+        {error && <div>{error.message}</div>}
         <label htmlFor="username">Username</label>
         <input
           id="username"
