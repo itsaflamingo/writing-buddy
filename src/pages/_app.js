@@ -1,5 +1,15 @@
 import '@/styles/globals.css'
+import { QueryClient, QueryClientProvider } from 'react-query';
+import React from 'react';
+import Home from './index';
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+const queryClient = new QueryClient();
+
+export default function App() {
+  console.log('app.js runs');
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Home />
+    </QueryClientProvider>
+  )
 }
