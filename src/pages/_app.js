@@ -6,7 +6,6 @@ import Home from './index';
 const queryClient = new QueryClient();
 
 export default function App() {
-  console.log('app.js runs');
   return (
     <QueryClientProvider client={queryClient}>
       <Home />
