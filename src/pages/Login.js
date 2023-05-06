@@ -29,7 +29,7 @@ export default function Login() {
     })
       .then((res) => {
         process.env.REACT_APP_TOKEN = res.data.token;
-        user.setUser(res.data.user.username);
+        user.setUser(res.data);
       })
       .catch((err) => setError(err))
   }

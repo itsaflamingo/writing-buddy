@@ -1,4 +1,5 @@
-import '@/styles/globals.css'
+import '@/styles/globals.css';
+import '../styles/dropdown.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import React from 'react';
 import Home from './index';
