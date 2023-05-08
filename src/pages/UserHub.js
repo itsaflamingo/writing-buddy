@@ -4,9 +4,8 @@ import { UserContext } from '@/contexts/Contexts';
 import WorkProfile from './WorkProfile';
 import useFetchData from '@/customHooks/useFetchData';
 
-const sendToFetchData = (user, func, data) => {
-  const id = user.user._id;
-  const token = user.token;
+const sendToFetchData = (token, section, data) => {
+  const { id, func } = section;
 
   return { id, token, func, data }
 }
@@ -14,9 +13,12 @@ const sendToFetchData = (user, func, data) => {
 export default function UserHub() {
   // Get UserContext
   const { user } = useContext(UserContext);
+  const id = user.user._id;
+  const { token } = user;
+
   const [data, setData] = useState(null);
-  const [section, setSection] = useState('projects');
-  const params = sendToFetchData(user, section, data);
+  const [section, setSection] = useState({ id, func: 'projects' });
+  const params = sendToFetchData(token, { id: section.id, func: section.func }, data);
   const { requestedData, isLoading, error } = useFetchData(params);
 
   useEffect(() => {
@@ -26,12 +28,12 @@ export default function UserHub() {
 
   return (
     <div className="flex">
-      <Menu />
+      <Menu changeSection={setSection} data={data} />
       {error && <div>{error}</div>}
       <div className="flex flex-col">
-      Projects
-      {data && <WorkProfile data={data} setData={setData} />}
-      {isLoading && <div>Loading...</div>}
+        {section.func.toUpperCase()}
+        {data && <WorkProfile data={data} setData={setData} changeSection={setSection} section={section} />}
+        {isLoading && <div>Loading...</div>}
       </div>
     </div>
   )

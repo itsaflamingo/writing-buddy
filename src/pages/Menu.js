@@ -3,7 +3,6 @@ import { useContext, useState } from 'react';
 import { UserContext } from '@/contexts/Contexts';
 import useFetch from '@/customHooks/useFetch';
 import NewProjectDiv from './NewProjectDiv';
-import WorkProfile from './WorkProfile';
 
 export default function Menu() {
   const fetch = useFetch();

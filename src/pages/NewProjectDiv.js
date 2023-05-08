@@ -4,8 +4,8 @@ import useFetch from '@/customHooks/useFetch';
 import { UserContext } from '@/contexts/Contexts';
 
 export default function NewProjectDiv() {
-  const user = useContext(UserContext);
-  const userId = user.user.user._id;
+  const { user } = useContext(UserContext);
+  const userId = user.user._id;
   const { token } = user.user;
 
   const [options, setOptions] = useState(genreOptions());
@@ -43,37 +43,37 @@ export default function NewProjectDiv() {
           />
         </div>
         <div className="flex-col">
-        <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_genre">Genre</label>
-        <input
-          className="w-full border border-gray-400 p-2 rounded-md"
-          id="new_post_genre"
-          type="text"
-          onChange={(e) => onGenreChange(e)}
-        />
+          <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_genre">Genre</label>
+          <input
+            className="w-full border border-gray-400 p-2 rounded-md"
+            id="new_post_genre"
+            type="text"
+            onChange={(e) => onGenreChange(e)}
+          />
         </div>
         {/* <Dropdown placeHolder="Select genre..." options={options} /> */}
         <div className="flex my-[5px] justify-between px-[20px]">
-        <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_published">Published</label>
-        <input
-          className="border border-gray-400 p-2 rounded-md"
-          type="checkbox"
-          id="new_post_published"
-          onChange={(e) => onPublishedChange(e)}
-        />
+          <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_published">Published</label>
+          <input
+            className="border border-gray-400 p-2 rounded-md"
+            type="checkbox"
+            id="new_post_published"
+            onChange={(e) => onPublishedChange(e)}
+          />
         </div>
         <div className="flex my-[5px] justify-between px-[20px]">
-        <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_completed">Completed</label>
-        <input
-          className="border border-gray-400 p-2 rounded-md"
-          type="checkbox"
-          id="new_post_completed"
-          onChange={(e) => onCompletedChange(e)}
-        />
+          <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_completed">Completed</label>
+          <input
+            className="border border-gray-400 p-2 rounded-md"
+            type="checkbox"
+            id="new_post_completed"
+            onChange={(e) => onCompletedChange(e)}
+          />
         </div>
         <div className="w-full flex justify-center">
-        <button type="submit" className="border border-gray-400 p-2 rounded-md">
-          Submit
-        </button>
+          <button type="submit" className="border border-gray-400 p-2 rounded-md">
+            Submit
+          </button>
         </div>
       </form>
     </div>

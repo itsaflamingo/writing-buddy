@@ -29,7 +29,9 @@
         "semi": "off",
         "react/react-in-jsx-scope": "off",
         "react/jsx-filename-extension": "off",
-        "object-curly-newline": "off"
+        "object-curly-newline": "off",
+        "jsx-a11y/label-has-associated-control": "off",
+        "no-underscore-dangle": "off"
     }
 }
 
