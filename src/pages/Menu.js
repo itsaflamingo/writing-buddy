@@ -35,7 +35,6 @@ export default function Menu() {
         New Project
       </button>
       { showCreateProject && <NewProjectDiv /> }
-      <WorkProfile data={data} />
       { (data && data.length === 0) && <h1>You don&apos;t have any projects</h1> }
     </div>
   )

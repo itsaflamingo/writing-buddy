@@ -2,7 +2,8 @@
 import { useState, useEffect } from 'react';
 import useFetch from './useFetch';
 
-export default function useFetchData(id, token, func) {
+export default function useFetchData({ id, token, func, data }) {
+  console.log(id, token, func, data)
   const fetch = useFetch();
 
   const [requestedData, setRequestedData] = useState(null);
@@ -10,7 +11,7 @@ export default function useFetchData(id, token, func) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (requestedData) return;
+    if (requestedData || data) return;
     setIsLoading(true);
     if (func === 'projects') {
       fetchProjects();
@@ -21,12 +22,13 @@ export default function useFetchData(id, token, func) {
     if (func === 'chapters') {
       fetchChapters();
     }
+
+    return (() => setRequestedData(null))
   }, [requestedData])
 
   const fetchProjects = () => fetch.getData(`/hub/user/${id}/projects`, token)
     .then((res) => {
       setRequestedData(res.data);
-      console.log(res.data);
       setIsLoading(false);
     })
     .catch((err) => setError(err))
