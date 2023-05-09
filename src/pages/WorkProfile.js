@@ -15,6 +15,7 @@ const calcSection = (section) => {
 }
 
 export default function WorkProfile({ data, setData, section, changeSection }) {
+  // Cache previous section.func value to prevent unnecessary re-renders
   const newSection = useMemo(() => calcSection(section.func), [section.func]);
 
   const changeSectionHandler = (doc) => {
@@ -30,6 +31,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
             type="button"
             className="w-auto h-[200px] flex-col border border-gray-300"
             onClick={() => changeSectionHandler(doc)}
+            disabled={section.func === 'chapters'}
           >
             <div className="proj-info">
               <div>{doc.title}</div>

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import Menu from './Menu';
-import { UserContext } from '@/contexts/Contexts';
+import { ActContext, ProjectContext, UserContext } from '@/contexts/Contexts';
 import WorkProfile from './WorkProfile';
 import useFetchData from '@/customHooks/useFetchData';
 
@@ -15,6 +15,12 @@ export default function UserHub() {
   const { user } = useContext(UserContext);
   const id = user.user._id;
   const { token } = user;
+  // Get ProjectContext
+  const { projects, setProjects } = useContext(ProjectContext);
+  const { acts, setActs } = useContext(ActContext);
+
+  console.log(projects);
+  console.log(acts);
 
   // Array of objects returned from the requested data
   const [data, setData] = useState(null);
@@ -28,8 +34,16 @@ export default function UserHub() {
   useEffect(() => {
     // When data is successfully retrieved from backend, add to data state
     if (isLoading === true || data) return;
-    setData(requestedData)
+    setData(requestedData);
   }, [requestedData])
+
+  useEffect(() => {
+    if (section.func === 'projects') {
+      setProjects(requestedData);
+    } else if (section.func === 'acts') {
+      setActs(requestedData);
+    }
+  }, [projects])
 
   useEffect(() => {
     // When section is changed, reset data value to enable retrieval of new data
@@ -38,10 +52,10 @@ export default function UserHub() {
 
   return (
     <div className="flex">
-      <Menu changeSection={setSection} id={id} />
       {error && <div>{error}</div>}
       <div className="flex flex-col">
         {section.func.toUpperCase()}
+        {error}
         {data
           && (
           <WorkProfile
@@ -60,6 +74,7 @@ export default function UserHub() {
         </h1>
         ) }
       </div>
+      <Menu changeSection={setSection} id={id} />
     </div>
   )
 }

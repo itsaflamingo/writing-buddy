@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { api_url } from './api/url';
 import Header from './Header';
-import { UserContext } from '../contexts/Contexts';
+import { ActContext, ProjectContext, UserContext } from '../contexts/Contexts';
 import UserHub from './UserHub';
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [projects, setProjects] = useState(null);
+  const [acts, setActs] = useState(null);
 
   const result = useQuery(
     'user',
@@ -27,8 +29,12 @@ export default function Home() {
   return (
     <div className="index">
       <UserContext.Provider value={{ user, setUser }}>
-        <Header />
-        { user && <UserHub /> }
+        <ProjectContext.Provider value={{ projects, setProjects }}>
+          <ActContext.Provider value={{ acts, setActs }}>
+            <Header />
+            { user && <UserHub /> }
+          </ActContext.Provider>
+        </ProjectContext.Provider>
       </UserContext.Provider>
     </div>
   );
