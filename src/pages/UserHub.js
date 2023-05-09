@@ -26,14 +26,27 @@ export default function UserHub() {
     setData(requestedData)
   }, [requestedData])
 
+  useEffect(() => {
+    setData(null);
+  }, [section])
+
+  console.log(data);
+
   return (
     <div className="flex">
-      <Menu changeSection={setSection} data={data} />
+      <Menu section={section} changeSection={setSection} id={id} />
       {error && <div>{error}</div>}
       <div className="flex flex-col">
         {section.func.toUpperCase()}
         {data && <WorkProfile data={data} setData={setData} changeSection={setSection} section={section} />}
         {isLoading && <div>Loading...</div>}
+        { (data && data.length === 0) && (
+        <h1>
+          You don&apos;t have any
+          {' '}
+          {section.func}
+        </h1>
+        ) }
       </div>
     </div>
   )

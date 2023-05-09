@@ -1,28 +1,22 @@
 /* eslint-disable no-underscore-dangle */
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '@/contexts/Contexts';
 import useFetch from '@/customHooks/useFetch';
 import NewProjectDiv from './NewProjectDiv';
+import WorkProfile from './WorkProfile';
 
-export default function Menu() {
-  const fetch = useFetch();
-  const user = useContext(UserContext);
-
-  const [data, setData] = useState(null);
+export default function Menu({ section, changeSection, id }) {
   const [showCreateProject, setShowCreateProject] = useState(false);
 
-  const fetchData = () => {
-    fetch.getData(`/hub/user/${user.user.user._id}/projects`, user.user.token)
-      .then((res) => setWorks(res.data))
-      .catch((err) => err)
-  }
+  console.log(id);
+  const showNewSection = () => changeSection({ id, func: 'projects' })
 
   return (
     <div className="menu container max-w-[130px] flex flex-col ">
       <button
         type="button"
         className="hover:bg-sky-700 max-w-fit"
-        onClick={() => setData(fetchData())}
+        onClick={() => showNewSection()}
       >
         Projects
       </button>
@@ -34,7 +28,6 @@ export default function Menu() {
         New Project
       </button>
       { showCreateProject && <NewProjectDiv /> }
-      { (data && data.length === 0) && <h1>You don&apos;t have any projects</h1> }
     </div>
   )
 }

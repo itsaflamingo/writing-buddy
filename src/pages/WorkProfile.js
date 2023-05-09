@@ -1,8 +1,13 @@
+import { useMemo } from "react";
+
 const calcSection = (section) => {
   let newSect;
   switch (section) {
     case 'projects':
       newSect = 'acts'
+      break;
+    case 'acts':
+      newSect = 'chapters'
       break;
     default: newSect = section;
   }
@@ -10,9 +15,7 @@ const calcSection = (section) => {
 }
 
 export default function WorkProfile({ data, setData, section, changeSection }) {
-  const newSection = calcSection(section.func);
-
-  console.log(newSection);
+  const newSection = useMemo(() => calcSection(section.func), [section.func]);
 
   const changeSectionHandler = (doc) => {
     setData(null)
@@ -28,8 +31,14 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
             className="w-auto h-[200px] flex-col border border-gray-300"
             onClick={() => changeSectionHandler(doc)}
           >
-            <div>{doc.title}</div>
-            <div>{doc.date_formatted}</div>
+            <div className="proj-info">
+              <div>{doc.title}</div>
+              <div>{doc.date_formatted}</div>
+            </div>
+            <div className="proj-buttons">
+              <button type="button">Edit</button>
+              <button type="button">Delete</button>
+            </div>
           </button>
         ))}
       </div>
