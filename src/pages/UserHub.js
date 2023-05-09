@@ -11,34 +11,46 @@ const sendToFetchData = (token, section, data) => {
 }
 
 export default function UserHub() {
-  // Get UserContext
+  // Get UserContext, extract relevant keys
   const { user } = useContext(UserContext);
   const id = user.user._id;
   const { token } = user;
 
+  // Array of objects returned from the requested data
   const [data, setData] = useState(null);
+  // Which section is the data coming from (projects, acts, chapters)
   const [section, setSection] = useState({ id, func: 'projects' });
+  // Prepares data into object
   const params = sendToFetchData(token, { id: section.id, func: section.func }, data);
+  // Use above information to get data from backend
   const { requestedData, isLoading, error } = useFetchData(params);
 
   useEffect(() => {
+    // When data is successfully retrieved from backend, add to data state
     if (isLoading === true || data) return;
     setData(requestedData)
   }, [requestedData])
 
   useEffect(() => {
+    // When section is changed, reset data value to enable retrieval of new data
     setData(null);
   }, [section])
 
-  console.log(data);
-
   return (
     <div className="flex">
-      <Menu section={section} changeSection={setSection} id={id} />
+      <Menu changeSection={setSection} id={id} />
       {error && <div>{error}</div>}
       <div className="flex flex-col">
         {section.func.toUpperCase()}
-        {data && <WorkProfile data={data} setData={setData} changeSection={setSection} section={section} />}
+        {data
+          && (
+          <WorkProfile
+            data={data}
+            setData={setData}
+            changeSection={setSection}
+            section={section}
+          />
+          )}
         {isLoading && <div>Loading...</div>}
         { (data && data.length === 0) && (
         <h1>

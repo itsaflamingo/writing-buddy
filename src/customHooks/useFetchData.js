@@ -13,33 +13,19 @@ export default function useFetchData({ id, token, func, data }) {
     if (data) return;
     setIsLoading(true);
     if (func === 'projects') {
-      fetchProjects();
+      fetchData('user', 'projects');
     }
     if (func === 'acts') {
-      fetchActs();
+      fetchData('project', 'acts');
     }
     if (func === 'chapters') {
-      fetchChapters();
+      fetchData('act', 'chapters');
     }
 
     return (() => setRequestedData(null))
   }, [requestedData, data])
 
-  const fetchProjects = () => fetch.getData(`/hub/user/${id}/projects`, token)
-    .then((res) => {
-      setRequestedData(res.data);
-      setIsLoading(false);
-    })
-    .catch((err) => setError(err))
-
-  const fetchActs = () => fetch.getData(`/hub/project/${id}/acts`, token)
-    .then((res) => {
-      setRequestedData(res.data);
-      setIsLoading(false);
-    })
-    .catch((err) => setError(err))
-
-  const fetchChapters = () => fetch.getData(`/hub/act/${id}/chapters`, token)
+  const fetchData = (pathOne, pathTwo) => fetch.getData(`/hub/${pathOne}/${id}/${pathTwo}`, token)
     .then((res) => {
       setRequestedData(res.data);
       setIsLoading(false);
