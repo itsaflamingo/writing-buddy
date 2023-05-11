@@ -3,47 +3,24 @@ import Menu from './Menu';
 import { ActContext, ProjectContext, UserContext } from '@/contexts/Contexts';
 import WorkProfile from './WorkProfile';
 import useFetchData from '@/customHooks/useFetchData';
-
-const sendToFetchData = (token, section, data) => {
-  const { id, func } = section;
-
-  return { id, token, func, data }
-}
+import useShouldFetchData from './useShouldFetchData';
 
 export default function UserHub() {
-  // Get UserContext, extract relevant keys
   const { user } = useContext(UserContext);
   const id = user.user._id;
   const { token } = user;
-  // Get ProjectContext
-  const { projects, setProjects } = useContext(ProjectContext);
-  const { acts, setActs } = useContext(ActContext);
-
-  console.log(projects);
-  console.log(acts);
-
   // Array of objects returned from the requested data
   const [data, setData] = useState(null);
-  // Which section is the data coming from (projects, acts, chapters)
-  const [section, setSection] = useState({ id, func: 'projects' });
-  // Prepares data into object
-  const params = sendToFetchData(token, { id: section.id, func: section.func }, data);
   // Use above information to get data from backend
-  const { requestedData, isLoading, error } = useFetchData(params);
+  const [section, setSection] = useState({ id, func: 'projects' });
+
+  const { requestedData, isLoading, error } = useShouldFetchData(section, token, data);
 
   useEffect(() => {
     // When data is successfully retrieved from backend, add to data state
     if (isLoading === true || data) return;
     setData(requestedData);
   }, [requestedData])
-
-  useEffect(() => {
-    if (section.func === 'projects') {
-      setProjects(requestedData);
-    } else if (section.func === 'acts') {
-      setActs(requestedData);
-    }
-  }, [projects])
 
   useEffect(() => {
     // When section is changed, reset data value to enable retrieval of new data

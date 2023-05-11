@@ -1,9 +1,11 @@
 /* eslint-disable arrow-body-style */
 import axios from 'axios';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { api_url } from '@/pages/api/url';
 
 export default function useFetch() {
+  const [error, setError] = useState(null);
+
   const createData = useCallback((route, data, token) => {
     const formData = new URLSearchParams(data).toString();
     const headers = {
@@ -24,5 +26,5 @@ export default function useFetch() {
       .catch((err) => err)
   })
 
-  return { createData, getData }
+  return { createData, getData, error }
 }
