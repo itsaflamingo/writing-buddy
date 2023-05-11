@@ -1,11 +1,12 @@
 /* eslint-disable consistent-return */
 import { useState, useEffect, useContext } from 'react';
 import useFetch from './useFetch';
-import { ProjectContext } from '@/contexts/Contexts';
+import { ActContext, ProjectContext } from '@/contexts/Contexts';
 
 export default function useFetchData({ id, token, func, data }) {
   const fetch = useFetch();
   const { projects } = useContext(ProjectContext);
+  const { acts } = useContext(ActContext);
 
   const [requestedData, setRequestedData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +22,9 @@ export default function useFetchData({ id, token, func, data }) {
       setRequestedData(projects);
     }
     if (func === 'acts') {
-      fetchData('project', 'acts');
+      if (acts === null) {
+        fetchData('project', 'acts');
+      }
     }
     if (func === 'chapters') {
       fetchData('act', 'chapters');
@@ -32,7 +35,6 @@ export default function useFetchData({ id, token, func, data }) {
 
   const fetchData = (pathOne, pathTwo) => fetch.getData(`/hub/${pathOne}/${id}/${pathTwo}`, token)
     .then((res) => {
-      console.log(res);
       setRequestedData(res.data);
       setIsLoading(false);
     })

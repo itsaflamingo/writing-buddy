@@ -6,7 +6,7 @@ export default function Dropdown({ allOptions, selectedOption, setSelectedOption
   }
 
   return (
-    <select id="dropdown" value={selectedOption} onChange={() => handleChange()}>
+    <select id="dropdown" value={selectedOption} onChange={(e) => handleChange(e)}>
       {allOptions.map((option) => (
         <option value={option}>{option}</option>
       ))}

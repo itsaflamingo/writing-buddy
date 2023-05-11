@@ -3,7 +3,11 @@ import Menu from './Menu';
 import { ActContext, ProjectContext, UserContext } from '@/contexts/Contexts';
 import WorkProfile from './WorkProfile';
 import useFetchData from '@/customHooks/useFetchData';
-import useShouldFetchData from './useShouldFetchData';
+
+const sendToFetchData = (token, section, data) => {
+  const { id, func } = section;
+  return { id, token, func, data }
+}
 
 export default function UserHub() {
   const { user } = useContext(UserContext);
@@ -14,7 +18,10 @@ export default function UserHub() {
   // Use above information to get data from backend
   const [section, setSection] = useState({ id, func: 'projects' });
 
-  const { requestedData, isLoading, error } = useShouldFetchData(section, token, data);
+  // Prepares data into object
+  const params = sendToFetchData(token, { id: section.id, func: section.func }, data);
+
+  const { requestedData, isLoading, error } = useFetchData(params);
 
   useEffect(() => {
     // When data is successfully retrieved from backend, add to data state
