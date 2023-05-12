@@ -1,14 +1,25 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
 export default function Dropdown({ allOptions, selectedOption, setSelectedOption }) {
-  console.log(selectedOption)
+  const router = useRouter();
+
   const handleChange = (e) => {
-    const value = e.target.value === 'Select...' ? '' : e.target.value;
-    setSelectedOption(value);
+    const { value } = e.target;
+    if (value === 'Chapter') {
+      router.push('/chapter/create-chapter');
+    } else {
+      // handle other options
+      setSelectedOption(value);
+    }
   }
 
   return (
     <select id="dropdown" value={selectedOption} onChange={(e) => handleChange(e)}>
-      {allOptions.map((option) => (
-        <option value={option}>{option}</option>
+      {allOptions.map((opt) => (
+        <option key={opt} value={opt}>
+          {opt}
+        </option>
       ))}
     </select>
   )

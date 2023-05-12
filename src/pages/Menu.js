@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import NewProjectDiv from './NewProjectDiv';
 import Dropdown from './Dropdown';
+import NewActDiv from './NewActDiv';
 
 export default function Menu({ changeSection, id }) {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -54,6 +55,7 @@ export default function Menu({ changeSection, id }) {
         />
         )}
       { showCreateProject && <NewProjectDiv /> }
+      { showCreateAct && <NewActDiv />}
     </div>
   )
 }

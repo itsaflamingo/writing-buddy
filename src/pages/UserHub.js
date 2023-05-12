@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import Menu from './Menu';
-import { ActContext, ProjectContext, UserContext } from '@/contexts/Contexts';
+import { UserContext } from '@/contexts/Contexts';
 import WorkProfile from './WorkProfile';
 import useFetchData from '@/customHooks/useFetchData';
 
