@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
 /* eslint-disable no-return-assign */
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 
 export default function CreateChapter() {
-    // Creates reference to tinyMCE editor instance
-    const editorRef = useRef(null);
+  // Creates reference to tinyMCE editor instance
+  const editorRef = useRef(null);
 
   const [input, setInput] = useState({
     title: null,
@@ -23,8 +23,8 @@ export default function CreateChapter() {
   }
 
   const textOnChange = (e, value) => setInput({ ...input, [value]: e.target.value });
-
-  const checkboxOnChange = (e, value) => setInput({ ...input, [value]: !input[value] });
+  const bodyOnChange = (content) => setInput({ ...input, body: content });
+  const checkboxOnChange = (value) => setInput({ ...input, [value]: !input[value] });
 
   return (
     <div>
@@ -48,7 +48,7 @@ export default function CreateChapter() {
         // Without this, the program wouldn't be able to access editor content
           onInit={(evt, editor) => editorRef.current = editor}
           className="body"
-          onEditorChange={(e) => textOnChange(e, 'body')}
+          onEditorChange={bodyOnChange}
           init={{
             height: 500,
             menubar: false,
@@ -65,10 +65,10 @@ export default function CreateChapter() {
           }}
         />
         <label htmlFor="isComplete">Is Complete</label>
-        <input type="checkbox" id="isComplete" onChange={(e) => checkboxOnChange(e, 'isComplete')} />
+        <input type="checkbox" id="isComplete" onChange={() => checkboxOnChange('isComplete')} />
 
         <label htmlFor="isPublished">Is Published</label>
-        <input type="checkbox" id="isPublished" onChange={(e) => checkboxOnChange(e, 'isPublished')} />
+        <input type="checkbox" id="isPublished" onChange={() => checkboxOnChange('isPublished')} />
       </form>
     </div>
   )
