@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 export default function CreateChapter() {
   const [input, setInput] = useState({
@@ -18,7 +18,7 @@ export default function CreateChapter() {
 
   const textOnChange = (e, value) => setInput({ ...input, [value]: e.target.value });
 
-  const checkboxOnChange = (e, value) => setInput({ ...input, [value]: !input[value] })
+  const checkboxOnChange = (e, value) => setInput({ ...input, [value]: !input[value] });
 
   return (
     <div>

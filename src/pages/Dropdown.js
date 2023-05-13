@@ -1,26 +1,25 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function Dropdown({ allOptions, selectedOption, setSelectedOption }) {
-  const router = useRouter();
-
-  const handleChange = (e) => {
+  const handleClick = (e) => {
     const { value } = e.target;
-    if (value === 'Chapter') {
-      router.push('/chapter/create-chapter');
-    } else {
-      // handle other options
-      setSelectedOption(value);
-    }
+    setSelectedOption(value)
   }
 
   return (
-    <select id="dropdown" value={selectedOption} onChange={(e) => handleChange(e)}>
+    <div>
       {allOptions.map((opt) => (
-        <option key={opt} value={opt}>
-          {opt}
-        </option>
+        opt === 'Chapter' ? (
+          <Link href="/chapter/create">
+            Chapter
+          </Link>
+        ) : (
+          <button type="button" key={opt} value={opt} onClick={(e) => handleClick(e)}>
+            {opt}
+          </button>
+        )
       ))}
-    </select>
+    </div>
   )
 }

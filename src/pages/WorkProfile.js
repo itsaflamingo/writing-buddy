@@ -23,6 +23,21 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     changeSection({ id: doc.id, func: newSection });
   }
 
+  const viewClickHandler = (e) => {
+    e.stopPropagation();
+    console.log('view');
+  }
+
+  const editClickHandler = (e) => {
+    e.stopPropagation();
+    console.log('edit');
+  }
+
+  const deleteClickHandler = (e) => {
+    e.stopPropagation();
+    console.log('delete');
+  }
+
   return (
     <div className="work-profile">
       <div className="projects max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
@@ -37,9 +52,10 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
               <div>{doc.title}</div>
               <div>{doc.date_formatted}</div>
             </div>
-            <div className="proj-buttons">
-              <button type="button">Edit</button>
-              <button type="button">Delete</button>
+            <div className="proj-buttons flex gap-2">
+              <button type="button" onClick={(e) => viewClickHandler(e)}>View</button>
+              <button type="button" onClick={(e) => editClickHandler(e)}>Edit</button>
+              <button type="button" onClick={(e) => deleteClickHandler(e)}>Delete</button>
             </div>
           </button>
         ))}
