@@ -1,7 +1,7 @@
 /* eslint-disable arrow-body-style */
 import axios from 'axios';
 import { useCallback, useState } from 'react';
-import { api_url } from '@/pages/api/url';
+import { api_url } from '@/api/url';
 
 export default function useFetch() {
   const [error, setError] = useState(null);

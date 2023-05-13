@@ -1,10 +1,10 @@
 import { useQuery } from 'react-query';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { api_url } from './api/url';
-import Header from './Header';
+import { api_url } from '../api/url';
+import Header from '../components/Header';
 import { ActContext, ProjectContext, UserContext } from '../contexts/Contexts';
-import UserHub from './UserHub';
+import UserHub from '../components/UserHub';
 
 export default function Home() {
   const [user, setUser] = useState(null);

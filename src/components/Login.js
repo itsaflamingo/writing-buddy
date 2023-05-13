@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import axios from 'axios';
-import { api_url } from './api/url';
+import { api_url } from '../api/url';
 import { UserContext } from '@/contexts/Contexts';
 
 export default function Login() {
