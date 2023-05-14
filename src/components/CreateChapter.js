@@ -1,11 +1,17 @@
 /* eslint-disable max-len */
 /* eslint-disable no-return-assign */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
+import useFetch from '@/customHooks/useFetch';
+import { UserContext } from '@/contexts/Contexts';
 
 export default function CreateChapter() {
   // Creates reference to tinyMCE editor instance
   const editorRef = useRef(null);
+  const fetch = useFetch();
+
+  const { user } = useContext(UserContext);
+  const { token } = user.user;
 
   const [input, setInput] = useState({
     title: null,
@@ -26,9 +32,14 @@ export default function CreateChapter() {
   const bodyOnChange = (content) => setInput({ ...input, body: content });
   const checkboxOnChange = (value) => setInput({ ...input, [value]: !input[value] });
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    fetch.getData(`/hub/act/${actId}/chapter/create`, input, token)
+  }
   return (
     <div>
-      <form className="flex flex-col">
+      <form className="flex flex-col" onSubmit={(e) => onSubmit(e)}>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" onChange={(e) => textOnChange(e, 'title')} />
 
@@ -69,6 +80,10 @@ export default function CreateChapter() {
 
         <label htmlFor="isPublished">Is Published</label>
         <input type="checkbox" id="isPublished" onChange={() => checkboxOnChange('isPublished')} />
+
+        <button type="submit">
+          Submit
+        </button>
       </form>
     </div>
   )

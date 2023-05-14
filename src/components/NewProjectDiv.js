@@ -31,9 +31,9 @@ export default function NewProjectDiv() {
   }
 
   return (
-    <div className="new-project absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300" onSubmit={(e) => onFormSubmit(e)}>
+    <div className="new-project absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300">
       <div>
-        <form>
+        <form onSubmit={(e) => onFormSubmit(e)}>
           <div className="flex-col">
             <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_title">Title</label>
             <input
