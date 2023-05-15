@@ -1,3 +1,4 @@
+import useFetch from "@/customHooks/useFetch";
 import { useMemo } from "react";
 
 const calcSection = (section) => {
@@ -15,11 +16,13 @@ const calcSection = (section) => {
 }
 
 export default function WorkProfile({ data, setData, section, changeSection }) {
+  const fetch = useFetch();
   // Cache previous section.func value to prevent unnecessary re-renders
   const newSection = useMemo(() => calcSection(section.func), [section.func]);
 
   const changeSectionHandler = (doc) => {
     setData(null)
+    console.log(doc.id);
     changeSection({ id: doc.id, func: newSection });
   }
 
@@ -36,6 +39,13 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const deleteClickHandler = (e) => {
     e.stopPropagation();
     console.log('delete');
+  }
+
+  const routeToFunction = (e) => {
+    e.stopPropagation();
+    // switch(section) {
+    //   case 'projects':
+    // }
   }
 
   return (
@@ -56,6 +66,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
               <button type="button" onClick={(e) => viewClickHandler(e)}>View</button>
               <button type="button" onClick={(e) => editClickHandler(e)}>Edit</button>
               <button type="button" onClick={(e) => deleteClickHandler(e)}>Delete</button>
+              <button type="button" onClick={(e) => routeToFunction(e)}>New {section}</button>
             </div>
           </button>
         ))}

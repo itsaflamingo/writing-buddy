@@ -58,7 +58,7 @@ export default function UserHub() {
         </h1>
         ) }
       </div>
-      <Menu changeSection={setSection} id={id} />
+      <Menu id={id} />
     </div>
   )
 }

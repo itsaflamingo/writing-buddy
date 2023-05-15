@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
 import { api_url } from '../api/url';
 import Header from '../components/Header';
-import { ActContext, ProjectContext, UserContext } from '../contexts/Contexts';
+import { UserContext } from '../contexts/Contexts';
 import UserHub from '../components/UserHub';
 
 export default function Home() {
