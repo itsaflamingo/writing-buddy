@@ -22,9 +22,7 @@ export default function useFetchData({ id, token, collection, data }) {
       setRequestedData(projects);
     }
     if (collection === 'acts') {
-      if (acts === null) {
-        fetchData('project', 'acts');
-      }
+      fetchData('project', 'acts');
     }
     if (collection === 'chapters') {
       fetchData('act', 'chapters');
