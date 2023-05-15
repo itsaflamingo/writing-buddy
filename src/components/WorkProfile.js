@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
+import { useContext, useMemo } from 'react';
 
 const calcSection = (section) => {
   let newSect;
@@ -15,6 +16,9 @@ const calcSection = (section) => {
 }
 
 export default function WorkProfile({ data, setData, section, changeSection }) {
+  const { projects } = useContext(ProjectContext);
+  const { currentProject } = useContext(CurrentProjectContext);
+  const { currentAct } = useContext(CurrentActContext);
   // Cache previous section.func value to prevent unnecessary re-renders
   const newSection = useMemo(() => calcSection(section.collection), [section.collection]);
 
@@ -38,6 +42,17 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     console.log('delete');
   }
 
+  const newDocument = (e) => {
+    e.stopPropagation();
+    const section = e.target.innerHTML;
+    const name = e.target.parentElement.parentElement.childNodes[0].childNodes[0].innerText;
+
+    // switch(section) {
+    //   case 'New acts':
+
+    // }
+  }
+
   return (
     <div className="work-profile">
       <div className="projects max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
@@ -53,10 +68,10 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
               <div>{doc.date_formatted}</div>
             </div>
             <div className="proj-buttons flex gap-2">
-              <button type="button" onClick={(e) => viewClickHandler(e)}>View</button>
-              <button type="button" onClick={(e) => editClickHandler(e)}>Edit</button>
-              <button type="button" onClick={(e) => deleteClickHandler(e)}>Delete</button>
-              <button type="button">
+              <button type="button" className="border border-gray-300" onClick={(e) => viewClickHandler(e)}>View</button>
+              <button type="button" className="border border-gray-300" onClick={(e) => editClickHandler(e)}>Edit</button>
+              <button type="button" className="border border-gray-300" onClick={(e) => deleteClickHandler(e)}>Delete</button>
+              <button type="button" className="border border-gray-300" onClick={(e) => newDocument(e)}>
                 New
                 {' '}
                 {newSection}
