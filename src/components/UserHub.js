@@ -5,8 +5,8 @@ import WorkProfile from './WorkProfile';
 import useFetchData from '@/customHooks/useFetchData';
 
 const sendToFetchData = (token, section, data) => {
-  const { id, func } = section;
-  return { id, token, func, data }
+  const { id, collection } = section;
+  return { id, token, collection, data }
 }
 
 export default function UserHub() {
@@ -16,10 +16,10 @@ export default function UserHub() {
   // Array of objects returned from the requested data
   const [data, setData] = useState(null);
   // Use above information to get data from backend
-  const [section, setSection] = useState({ id, func: 'projects' });
+  const [section, setSection] = useState({ id, collection: 'projects' });
 
   // Prepares data into object
-  const params = sendToFetchData(token, { id: section.id, func: section.func }, data);
+  const params = sendToFetchData(token, { id: section.id, collection: section.collection }, data);
 
   const { requestedData, isLoading, error } = useFetchData(params);
 
@@ -38,7 +38,7 @@ export default function UserHub() {
     <div className="flex">
       {error && <div>{error}</div>}
       <div className="flex flex-col">
-        {section.func.toUpperCase()}
+        {section.collection}
         {error}
         {data
           && (
@@ -54,11 +54,11 @@ export default function UserHub() {
         <h1>
           You don&apos;t have any
           {' '}
-          {section.func}
+          {section.collection}
         </h1>
         ) }
       </div>
-      <Menu id={id} />
+      <Menu changeSection={setSection} id={id} />
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import useFetch from './useFetch';
 import { ActContext, ProjectContext } from '@/contexts/Contexts';
 
-export default function useFetchData({ id, token, func, data }) {
+export default function useFetchData({ id, token, collection, data }) {
   const fetch = useFetch();
   const { projects } = useContext(ProjectContext);
   const { acts } = useContext(ActContext);
@@ -15,18 +15,18 @@ export default function useFetchData({ id, token, func, data }) {
   useEffect(() => {
     if (data) return;
     setIsLoading(true);
-    if (func === 'projects') {
+    if (collection === 'projects') {
       if (projects === null) {
         fetchData('user', 'projects');
       }
       setRequestedData(projects);
     }
-    if (func === 'acts') {
+    if (collection === 'acts') {
       if (acts === null) {
         fetchData('project', 'acts');
       }
     }
-    if (func === 'chapters') {
+    if (collection === 'chapters') {
       fetchData('act', 'chapters');
     }
 
