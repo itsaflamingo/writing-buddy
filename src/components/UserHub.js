@@ -21,15 +21,16 @@ export default function UserHub() {
   // Prepares data into object
   const params = sendToFetchData(token, { id: section.id, collection: section.collection }, data);
 
-  const { requestedData, isLoading, error } = useFetchData(params);
+  const { requestedData, loading, error } = useFetchData(params);
 
   useEffect(() => {
     // When data is successfully retrieved from backend, add to data state
-    if (isLoading === true || data) return;
+    if (loading === true || data) return;
     setData(requestedData);
   }, [requestedData])
 
   useEffect(() => {
+    console.log(section.collection);
     // When section is changed, reset data value to enable retrieval of new data
     setData(null);
   }, [section])
@@ -49,7 +50,7 @@ export default function UserHub() {
             section={section}
           />
           )}
-        {isLoading && <div>Loading...</div>}
+        {loading && <div>Loading...</div>}
         { (data && data.length === 0) && (
         <h1>
           You don&apos;t have any

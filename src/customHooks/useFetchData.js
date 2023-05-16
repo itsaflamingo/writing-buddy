@@ -11,12 +11,12 @@ export default function useFetchData({ id, token, collection, data }) {
   const { setCurrentAct } = useContext(CurrentActContext);
 
   const [requestedData, setRequestedData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (data) return;
-    setIsLoading(true);
+    setLoading(true);
     if (collection === 'projects') {
       // If projects context is empty, get new data, and use it to populate projects
       // If projects context not empty, simply rerturn projects context data
@@ -26,6 +26,7 @@ export default function useFetchData({ id, token, collection, data }) {
         setProjects(requestedData);
       }
       setRequestedData(projects);
+      setLoading(false);
     }
     if (collection === 'acts') {
       // Get data, set state to returned data
@@ -43,18 +44,18 @@ export default function useFetchData({ id, token, collection, data }) {
     }
 
     return (() => setRequestedData(null))
-  }, [requestedData, data])
+  }, [requestedData, data, collection])
 
   const fetchData = (pathOne, pathTwo) => fetch.getData(`/hub/${pathOne}/${id}/${pathTwo}`, token)
     .then((res) => {
       // Set state to returned data
       setRequestedData(res.data);
-      setIsLoading(false);
+      setLoading(false);
     })
     .catch((err) => {
       console.log('error', err)
       setError(err)
     })
 
-  return { requestedData, isLoading, error }
+  return { requestedData, loading, error }
 }
