@@ -30,7 +30,6 @@ export default function UserHub() {
   }, [requestedData])
 
   useEffect(() => {
-    console.log(section.collection);
     // When section is changed, reset data value to enable retrieval of new data
     setData(null);
   }, [section])

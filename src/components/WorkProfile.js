@@ -1,5 +1,6 @@
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
-import { useContext, useMemo } from 'react';
+import NavigationButton from './NavigationButton';
 
 const calcSection = (section) => {
   let newSect;
@@ -21,11 +22,16 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const { currentAct } = useContext(CurrentActContext);
   // Cache previous section.func value to prevent unnecessary re-renders
   const newSection = useMemo(() => calcSection(section.collection), [section.collection]);
+  const [navButtons, setNavButtons] = useState(null);
 
   const changeSectionHandler = (doc) => {
     setData(null)
     changeSection({ id: doc.id, collection: newSection });
   }
+
+  useEffect(() => {
+    setNavButtons()
+  }, [])
 
   const viewClickHandler = (e) => {
     e.stopPropagation();
@@ -47,7 +53,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     const section = e.target.innerHTML;
     const name = e.target.parentElement.parentElement.childNodes[0].childNodes[0].innerText;
 
-    // switch(section) {
+    // switch (section) {
     //   case 'New acts':
 
     // }
@@ -55,6 +61,16 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
   return (
     <div className="work-profile">
+      <div>
+        {(section.collection === 'acts' && currentProject) && <NavigationButton document={currentProject[0]} />}
+        {(section.collection === 'chapters' && currentProject && currentAct)
+        && (
+        <>
+          <NavigationButton document={currentProject[0]} />
+          <NavigationButton document={currentAct[0]} />
+        </>
+        )}
+      </div>
       <div className="projects max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
         {data && data.map((doc) => (
           <button
