@@ -24,9 +24,13 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const newSection = useMemo(() => calcSection(section.collection), [section.collection]);
   const [navButtons, setNavButtons] = useState(null);
 
-  const changeSectionHandler = (doc) => {
+  const changeSectionHandler = (doc, collection) => {
     setData(null)
-    changeSection({ id: doc.id, collection: newSection });
+    if (!collection) {
+      return changeSection({ id: doc.id, collection: newSection });
+    }
+
+    return changeSection({ id: doc.id, collection });
   }
 
   useEffect(() => {
@@ -52,22 +56,17 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     e.stopPropagation();
     const section = e.target.innerHTML;
     const name = e.target.parentElement.parentElement.childNodes[0].childNodes[0].innerText;
-
-    // switch (section) {
-    //   case 'New acts':
-
-    // }
   }
 
   return (
     <div className="work-profile">
       <div>
-        {(section.collection === 'acts' && currentProject) && <NavigationButton document={currentProject[0]} />}
+        {(section.collection === 'acts' && currentProject) && <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />}
         {(section.collection === 'chapters' && currentProject && currentAct)
         && (
         <>
-          <NavigationButton document={currentProject[0]} />
-          <NavigationButton document={currentAct[0]} />
+          <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />
+          <NavigationButton document={currentAct[0]} changeSection={changeSectionHandler} section="chapters" />
         </>
         )}
       </div>
@@ -77,7 +76,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
             type="button"
             className="w-auto h-[200px] flex-col border border-gray-300"
             onClick={() => changeSectionHandler(doc)}
-            disabled={section.func === 'chapters'}
+            disabled={section.collection === 'chapters'}
           >
             <div className="proj-info">
               <div>{doc.title}</div>

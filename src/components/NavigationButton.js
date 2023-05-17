@@ -1,13 +1,9 @@
-import { useContext } from 'react';
-import { CurrentActContext, CurrentProjectContext } from '@/contexts/Contexts';
-
 const switchNavButton = (document) => document.title;
 
-export default function NavigationButton({ document }) {
+export default function NavigationButton({ document, section, changeSection }) {
   return (
     <div>
-      <button type="button">
-        {' '}
+      <button type="button" onClick={() => changeSection(document, section)}>
         {switchNavButton(document)}
       </button>
     </div>
