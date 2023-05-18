@@ -34,11 +34,13 @@ export default function UserHub() {
     setData(null);
   }, [section])
 
+  const formatCollection = (collection) => collection.charAt(0).toUpperCase() + collection.slice(1);
+
   return (
     <div className="flex">
       {error && <div>{error}</div>}
       <div className="flex flex-col">
-        {section.collection}
+        {formatCollection(section.collection)}
         {error}
         {data
           && (

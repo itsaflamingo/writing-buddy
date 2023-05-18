@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
 import NavigationButton from './NavigationButton';
+import returnSingularCollection from '@/functions/returnSingularCollection';
 
 const calcSection = (section) => {
   let newSect;
@@ -69,6 +70,13 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
           <NavigationButton document={currentAct[0]} changeSection={changeSectionHandler} section="chapters" />
         </>
         )}
+        <button
+          type="button"
+        >
+          New
+          {' '}
+          {returnSingularCollection(section.collection)}
+        </button>
       </div>
       <div className="projects max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
         {data && data.map((doc) => (
