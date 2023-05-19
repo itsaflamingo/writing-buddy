@@ -2,6 +2,8 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
 import NavigationButton from './NavigationButton';
 import returnSingularCollection from '@/functions/returnSingularCollection';
+import NewProjectDiv from './NewProjectDiv';
+import NewActDiv from './NewActDiv';
 
 const calcSection = (section) => {
   let newSect;
@@ -21,13 +23,18 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const { projects } = useContext(ProjectContext);
   const { currentProject } = useContext(CurrentProjectContext);
   const { currentAct } = useContext(CurrentActContext);
+  const { collection } = section;
   // Cache previous section.func value to prevent unnecessary re-renders
-  const newSection = useMemo(() => calcSection(section.collection), [section.collection]);
+  const newSection = useMemo(() => calcSection(collection), [collection]);
   const [navButtons, setNavButtons] = useState(null);
 
-  const changeSectionHandler = (doc, collection) => {
+  const [showCreateProject, setShowCreateProject] = useState(false);
+  const [showCreateAct, setShowCreateAct] = useState(false);
+  const [showCreateChapter, setShowCreateChapter] = useState(false);
+
+  const changeSectionHandler = (doc, collect) => {
     setData(null)
-    if (!collection) {
+    if (!collect) {
       return changeSection({ id: doc.id, collection: newSection });
     }
 
@@ -59,11 +66,26 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     const name = e.target.parentElement.parentElement.childNodes[0].childNodes[0].innerText;
   }
 
+  const showNewDocumentDiv = (collect) => {
+    switch (collect) {
+      case 'projects':
+        setShowCreateProject(!showCreateProject)
+        break;
+      case 'acts':
+        setShowCreateAct(!showCreateAct)
+        break;
+      case 'chapters':
+        setShowCreateChapter(!showCreateChapter)
+        break;
+      default: return null
+    }
+  }
+
   return (
     <div className="work-profile">
       <div>
-        {(section.collection === 'acts' && currentProject) && <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />}
-        {(section.collection === 'chapters' && currentProject && currentAct)
+        {(collection === 'acts' && currentProject) && <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />}
+        {(collection === 'chapters' && currentProject && currentAct)
         && (
         <>
           <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />
@@ -72,10 +94,11 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         )}
         <button
           type="button"
+          onClick={() => showNewDocumentDiv(collection)}
         >
           New
           {' '}
-          {returnSingularCollection(section.collection)}
+          {returnSingularCollection(collection)}
         </button>
       </div>
       <div className="projects max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
@@ -84,7 +107,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
             type="button"
             className="w-auto h-[200px] flex-col border border-gray-300"
             onClick={() => changeSectionHandler(doc)}
-            disabled={section.collection === 'chapters'}
+            disabled={collection === 'chapters'}
           >
             <div className="proj-info">
               <div>{doc.title}</div>
@@ -94,15 +117,13 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
               <button type="button" className="border border-gray-300" onClick={(e) => viewClickHandler(e)}>View</button>
               <button type="button" className="border border-gray-300" onClick={(e) => editClickHandler(e)}>Edit</button>
               <button type="button" className="border border-gray-300" onClick={(e) => deleteClickHandler(e)}>Delete</button>
-              <button type="button" className="border border-gray-300" onClick={(e) => newDocument(e)}>
-                New
-                {' '}
-                {newSection}
-              </button>
             </div>
           </button>
         ))}
       </div>
+      {showCreateProject
+      && <NewProjectDiv refreshSection={changeSectionHandler} collection={collection} />}
+      {showCreateAct && <NewActDiv />}
     </div>
   )
 }

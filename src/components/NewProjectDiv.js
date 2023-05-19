@@ -1,14 +1,13 @@
 import { useContext, useState } from 'react';
-import genreOptions from '@/functions/genreOptions';
 import useFetch from '@/customHooks/useFetch';
-import { UserContext } from '@/contexts/Contexts';
+import { ProjectContext, UserContext } from '@/contexts/Contexts';
 
-export default function NewProjectDiv() {
+export default function NewProjectDiv({ refreshSection, collection }) {
   const { user } = useContext(UserContext);
   const userId = user.user._id;
-  const { token } = user.user;
+  const { token } = user;
+  const { projects, setProjects } = useContext(ProjectContext);
 
-  const [options, setOptions] = useState(genreOptions());
   const [input, setInput] = useState({
     title: null,
     genre: null,
@@ -26,12 +25,15 @@ export default function NewProjectDiv() {
     e.preventDefault();
 
     return fetch.createData(`/hub/user/${userId}/project/create`, input, token)
-      .then((res) => res)
+      .then((res) => {
+        setProjects([res.data, ...projects])
+        refreshSection(user.user, collection)
+      })
       .catch((err) => err)
   }
 
   return (
-    <div className="new-project absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300">
+    <div className="new-project absolute opacity-100 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300">
       <div>
         <form onSubmit={(e) => onFormSubmit(e)}>
           <div className="flex-col">
@@ -77,7 +79,7 @@ export default function NewProjectDiv() {
           </div>
         </form>
       </div>
-      <button type="button">X</button>
+      <button className="absolute left-[95%] bottom-[90%]" type="button">X</button>
     </div>
   )
 }
