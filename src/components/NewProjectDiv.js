@@ -48,7 +48,6 @@ export default function NewProjectDiv({ editInput, refreshSection, collection, s
     if (editInput) {
       fetch.updateData(`/hub/project/${editInput.id}/update/`, input, token)
         .then((res) => {
-          console.log(res.data);
           updateSection(res.data, editInput.id, projects);
           refreshSection(user.user, collection);
           setShowCreateProject(false);

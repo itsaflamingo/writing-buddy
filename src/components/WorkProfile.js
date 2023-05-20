@@ -68,6 +68,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         break;
       case 'acts':
         chosenDoc = filterDocuments(acts, titleText);
+        setShowCreateAct(true);
         break;
       default: chosenDoc = null;
     }
@@ -159,9 +160,10 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       )}
       {showCreateAct && (
       <NewActDiv
+        editInput={editInput}
         refreshSection={changeSectionHandler}
         collection={collection}
-        setShowCreateProject={setShowCreateAct}
+        setShowCreateAct={setShowCreateAct}
       />
       )}
     </div>

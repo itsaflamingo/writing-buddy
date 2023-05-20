@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ActContext, CurrentProjectContext, UserContext } from '@/contexts/Contexts';
 import useFetch from '@/customHooks/useFetch';
 
-export default function NewActDiv({ refreshSection, collection, setShowCreateAct }) {
+export default function NewActDiv({ editInput, refreshSection, collection, setShowCreateAct }) {
   const fetch = useFetch();
   const { acts, setActs } = useContext(ActContext);
   const { currentProject } = useContext(CurrentProjectContext);
@@ -29,20 +29,45 @@ export default function NewActDiv({ refreshSection, collection, setShowCreateAct
     return true;
   }
 
+  const updateSection = (doc, id, documents) => {
+    const hasId = (value) => value._id === id;
+    const index = documents.findIndex(hasId);
+
+    const updatedDocuments = [...acts];
+    updatedDocuments[index] = doc;
+
+    setActs(updatedDocuments)
+  }
+
   const onFormSubmit = (e) => {
     e.preventDefault();
 
     if (isFormValid() === false) return;
 
+    if (editInput) {
+      fetch.updateData(`/hub/act/${editInput.id}/update/`, input, token)
+        .then((res) => {
+          updateSection(res.data, editInput.id, acts);
+          refreshSection(currentProject[0], collection);
+          setShowCreateAct(false);
+        })
+        .catch((err) => setError(err))
+      return;
+    }
+
     fetch.createData(`/hub/project/${projectId}/act/create`, input, token)
       .then((res) => {
-        console.log(res.data);
         setActs([res.data, ...acts])
         refreshSection(currentProject[0], collection)
         setShowCreateAct(false)
       })
       .catch((err) => setError(err))
   }
+
+  useEffect(() => {
+    if (!editInput) return;
+    setInput(editInput)
+  }, [])
 
   return (
     <div className="new-project absolute opacity-100 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300">
@@ -57,6 +82,7 @@ export default function NewActDiv({ refreshSection, collection, setShowCreateAct
           <input
             type="text"
             id="new-act-title"
+            value={input.title}
             onChange={(e) => titleOnChange(e)}
           />
 
