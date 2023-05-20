@@ -3,15 +3,17 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import useFetch from '@/customHooks/useFetch';
-import { UserContext } from '@/contexts/Contexts';
+import { CurrentActContext, UserContext } from '@/contexts/Contexts';
 
 export default function CreateChapter() {
+  const { user } = useContext(UserContext);
+  const { token } = user;
+  const { currentAct } = useContext(CurrentActContext);
+  const actId = currentAct[0]._id;
+
   // Creates reference to tinyMCE editor instance
   const editorRef = useRef(null);
   const fetch = useFetch();
-
-  const { user } = useContext(UserContext);
-  const { token } = user.user;
 
   const [input, setInput] = useState({
     title: null,
@@ -20,6 +22,8 @@ export default function CreateChapter() {
     isPublished: false,
     isComplete: false,
   })
+
+  const [error, setError] = useState(null);
 
   const numberOnChange = (e) => {
     setInput((v) => (
@@ -32,13 +36,33 @@ export default function CreateChapter() {
   const bodyOnChange = (content) => setInput({ ...input, body: content });
   const checkboxOnChange = (value) => setInput({ ...input, [value]: !input[value] });
 
+  const isFormValid = () => {
+    if (input.title === null) {
+      setError('Title field must be filled');
+      return false
+    }
+    if (input.number === null) {
+      setError('Number field must be filled');
+      return false;
+    }
+    if (input.body === null) {
+      setError('Body field must have some content');
+      return false;
+    }
+    return true;
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
 
+    if (isFormValid() === false) return;
+
     fetch.getData(`/hub/act/${actId}/chapter/create`, input, token)
+      .catch((err) => setError(err));
   }
   return (
     <div>
+      {error && <div>{error}</div>}
       <form className="flex flex-col" onSubmit={(e) => onSubmit(e)}>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" onChange={(e) => textOnChange(e, 'title')} />

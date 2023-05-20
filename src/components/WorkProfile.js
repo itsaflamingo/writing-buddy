@@ -24,6 +24,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const { currentProject } = useContext(CurrentProjectContext);
   const { currentAct } = useContext(CurrentActContext);
   const { collection } = section;
+
   // Cache previous section.func value to prevent unnecessary re-renders
   const newSection = useMemo(() => calcSection(collection), [collection]);
   const [navButtons, setNavButtons] = useState(null);
@@ -38,7 +39,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       return changeSection({ id: doc.id, collection: newSection });
     }
 
-    return changeSection({ id: doc.id, collection });
+    return changeSection({ id: doc.id, collection: collect });
   }
 
   useEffect(() => {
@@ -60,12 +61,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     console.log('delete');
   }
 
-  const newDocument = (e) => {
-    e.stopPropagation();
-    const section = e.target.innerHTML;
-    const name = e.target.parentElement.parentElement.childNodes[0].childNodes[0].innerText;
-  }
-
   const showNewDocumentDiv = (collect) => {
     switch (collect) {
       case 'projects':
@@ -84,7 +79,9 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   return (
     <div className="work-profile">
       <div>
-        {(collection === 'acts' && currentProject) && <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />}
+        {(collection === 'acts' && currentProject)
+        && <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />}
+
         {(collection === 'chapters' && currentProject && currentAct)
         && (
         <>
@@ -122,8 +119,20 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         ))}
       </div>
       {showCreateProject
-      && <NewProjectDiv refreshSection={changeSectionHandler} collection={collection} />}
-      {showCreateAct && <NewActDiv />}
+      && (
+      <NewProjectDiv
+        refreshSection={changeSectionHandler}
+        collection={collection}
+        setShowCreateProject={setShowCreateProject}
+      />
+      )}
+      {showCreateAct && (
+      <NewActDiv
+        refreshSection={changeSectionHandler}
+        collection={collection}
+        setShowCreateProject={setShowCreateAct}
+      />
+      )}
     </div>
   )
 }

@@ -1,16 +1,18 @@
 import { useContext, useState } from 'react';
 import useFetch from '@/customHooks/useFetch';
-import { ProjectContext, UserContext } from '@/contexts/Contexts';
+import { ActContext, CurrentActContext, UserContext } from '@/contexts/Contexts';
 
-export default function NewProjectDiv({ refreshSection, collection, setShowCreateProject }) {
+export default function NewProjectDiv({ refreshSection, collection, setShowCreateChapter }) {
   const { user } = useContext(UserContext);
-  const userId = user.user._id;
   const { token } = user;
-  const { projects, setProjects } = useContext(ProjectContext);
+  const { acts, setActs } = useContext(ActContext);
+  const { currentAct } = useContext(CurrentActContext);
+  const actId = currentAct[0]._id;
 
   const [input, setInput] = useState({
     title: null,
-    genre: null,
+    number: null,
+    body: null,
     isPublished: false,
     isComplete: false,
   })
@@ -18,14 +20,23 @@ export default function NewProjectDiv({ refreshSection, collection, setShowCreat
   const fetch = useFetch();
 
   const onTitleChange = (e) => setInput({ ...input, title: e.target.value });
-  const onGenreChange = (e) => setInput({ ...input, genre: e.target.value });
+  const onNumberChange = (e) => setInput({ ...input, number: e.target.value });
+  const onBodyChange = (e) => setInput({ ...input, body: e.target.value });
   const onPublishedChange = () => setInput({ ...input, isPublished: !input.isPublished });
   const onCompletedChange = () => setInput({ ...input, isCompleted: !input.isPublished });
 
   const isFormValid = () => {
-    if ((input.title || input.genre) === null) {
-      setError('Title and genre fields must be filled');
+    if (input.title === null) {
+      setError('Title field must be filled');
       return false
+    }
+    if (input.number === null) {
+      setError('Number field must be filled');
+      return false;
+    }
+    if (input.body === null) {
+      setError('Body field must have some content');
+      return false;
     }
     return true;
   }
@@ -35,11 +46,11 @@ export default function NewProjectDiv({ refreshSection, collection, setShowCreat
 
     if (isFormValid() === false) return;
 
-    fetch.createData(`/hub/user/${userId}/project/create`, input, token)
+    fetch.createData(`/hub/act/${actId}/chapter/create`, input, token)
       .then((res) => {
-        setProjects([res.data, ...projects])
-        refreshSection(user.user, collection)
-        setShowCreateProject(false)
+        setActs([res.data, ...acts])
+        refreshSection(currentAct[0], collection)
+        setShowCreateChapter(false)
       })
       .catch((err) => setError(err))
   }
@@ -50,7 +61,7 @@ export default function NewProjectDiv({ refreshSection, collection, setShowCreat
         {error && <div>{error}</div>}
         <form onSubmit={(e) => onFormSubmit(e)}>
           <div className="flex-col">
-            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_title" >Title</label>
+            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_title">Title</label>
             <input
               className="w-full border border-gray-400 p-2 rounded-md"
               type="text"
@@ -59,12 +70,21 @@ export default function NewProjectDiv({ refreshSection, collection, setShowCreat
             />
           </div>
           <div className="flex-col">
-            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_genre">Genre</label>
+            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_number">Number</label>
             <input
               className="w-full border border-gray-400 p-2 rounded-md"
-              id="new_post_genre"
+              id="new_post_number"
+              type="number"
+              onChange={(e) => onNumberChange(e)}
+            />
+          </div>
+          <div className="flex-col">
+            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_body">Body</label>
+            <input
+              className="w-full border border-gray-400 p-2 rounded-md"
               type="text"
-              onChange={(e) => onGenreChange(e)}
+              onChange={(e) => onBodyChange(e)}
+              id="new_post_body"
             />
           </div>
           <div className="flex my-[5px] justify-between px-[20px]">
@@ -92,7 +112,7 @@ export default function NewProjectDiv({ refreshSection, collection, setShowCreat
           </div>
         </form>
       </div>
-      <button className="absolute left-[95%] bottom-[90%]" type="button" onClick={() => setShowCreateProject(false)}>X</button>
+      <button className="absolute left-[95%] bottom-[90%]" type="button" onClick={() => setShowCreateChapter(false)}>X</button>
     </div>
   )
 }
