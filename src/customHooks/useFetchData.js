@@ -1,12 +1,14 @@
 /* eslint-disable consistent-return */
 import { useState, useEffect, useContext } from 'react';
 import useFetch from './useFetch';
-import { ActContext, CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
+import { ActContext, ChapterContext, CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
 
 export default function useFetchData({ id, token, collection, data }) {
   const fetch = useFetch();
   const { projects, setProjects } = useContext(ProjectContext);
   const { acts, setActs } = useContext(ActContext);
+  const { chapters, setChapters } = useContext(ChapterContext);
+
   const { setCurrentProject } = useContext(CurrentProjectContext);
   const { setCurrentAct } = useContext(CurrentActContext);
 
@@ -39,6 +41,8 @@ export default function useFetchData({ id, token, collection, data }) {
     if (collection === 'chapters') {
       // Get data, set state to returned data
       fetchData('act', 'chapters');
+      // Set chapters context to returned data
+      setChapters(requestedData);
       // Set current act context to act connected to chapters
       setCurrentAct(() => acts.filter((act) => act._id === id));
     }

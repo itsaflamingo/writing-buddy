@@ -1,10 +1,11 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ActContext, CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
+import { ActContext, ChapterContext, CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
 import NavigationButton from './NavigationButton';
 import returnSingularCollection from '@/functions/returnSingularCollection';
 import NewProjectDiv from './NewProjectDiv';
 import NewActDiv from './NewActDiv';
+import { useRouter } from 'next/router';
 
 const calcSection = (section) => {
   let newSect;
@@ -23,11 +24,14 @@ const calcSection = (section) => {
 const filterDocuments = (collection, title) => collection.filter((doc) => doc.title === title)
 
 export default function WorkProfile({ data, setData, section, changeSection }) {
-  const { projects } = useContext(ProjectContext);
-  const { currentProject } = useContext(CurrentProjectContext);
+  const router = useRouter();
 
+  const { projects } = useContext(ProjectContext);
   const { acts } = useContext(ActContext);
+  const { chapters } = useContext(ChapterContext);
+
   const { currentAct } = useContext(CurrentActContext);
+  const { currentProject } = useContext(CurrentProjectContext);
 
   const { collection } = section;
 
@@ -36,7 +40,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
   const [showCreateProject, setShowCreateProject] = useState(false);
   const [showCreateAct, setShowCreateAct] = useState(false);
-  const [showCreateChapter, setShowCreateChapter] = useState(false);
   const [editInput, setEditInput] = useState(null);
 
   const changeSectionHandler = (doc, collect) => {
@@ -46,6 +49,13 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     }
 
     return changeSection({ id: doc.id, collection: collect });
+  }
+
+  const navigateToChapter = (doc) => {
+    router.push({
+      pathname: '/chapter/create',
+      query: { data: JSON.stringify(doc) },
+    });
   }
 
   const viewClickHandler = (e) => {
@@ -70,9 +80,17 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         chosenDoc = filterDocuments(acts, titleText);
         setShowCreateAct(true);
         break;
+      case 'chapters':
+        chosenDoc = filterDocuments(chapters, titleText);
+        break;
       default: chosenDoc = null;
     }
     setEditInput(chosenDoc[0]);
+
+    if (collection === 'chapters') {
+      return navigateToChapter(chosenDoc[0]);
+    }
+
     return chosenDoc;
   }
 
@@ -88,9 +106,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         break;
       case 'acts':
         setShowCreateAct(!showCreateAct)
-        break;
-      case 'chapters':
-        setShowCreateChapter(!showCreateChapter)
         break;
       default: return null
     }
@@ -121,7 +136,12 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         )}
         {collection === 'chapters' && (
         <h2>
-          <Link href="/chapter/create">
+          <Link
+            href={{
+              pathname: '/chapter/create',
+              query: { editInput },
+            }}
+          >
             New
             {' '}
             {returnSingularCollection(collection)}
