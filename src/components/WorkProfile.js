@@ -1,5 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
+import Link from 'next/link';
+import { ActContext, CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
 import NavigationButton from './NavigationButton';
 import returnSingularCollection from '@/functions/returnSingularCollection';
 import NewProjectDiv from './NewProjectDiv';
@@ -19,19 +20,24 @@ const calcSection = (section) => {
   return newSect;
 }
 
+const filterDocuments = (collection, title) => collection.filter((doc) => doc.title === title)
+
 export default function WorkProfile({ data, setData, section, changeSection }) {
   const { projects } = useContext(ProjectContext);
   const { currentProject } = useContext(CurrentProjectContext);
+
+  const { acts } = useContext(ActContext);
   const { currentAct } = useContext(CurrentActContext);
+
   const { collection } = section;
 
   // Cache previous section.func value to prevent unnecessary re-renders
   const newSection = useMemo(() => calcSection(collection), [collection]);
-  const [navButtons, setNavButtons] = useState(null);
 
   const [showCreateProject, setShowCreateProject] = useState(false);
   const [showCreateAct, setShowCreateAct] = useState(false);
   const [showCreateChapter, setShowCreateChapter] = useState(false);
+  const [editInput, setEditInput] = useState(null);
 
   const changeSectionHandler = (doc, collect) => {
     setData(null)
@@ -42,10 +48,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     return changeSection({ id: doc.id, collection: collect });
   }
 
-  useEffect(() => {
-    setNavButtons()
-  }, [])
-
   const viewClickHandler = (e) => {
     e.stopPropagation();
     console.log('view');
@@ -53,7 +55,24 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
   const editClickHandler = (e) => {
     e.stopPropagation();
-    console.log('edit');
+    const grandparentDiv = e.target.parentElement.parentElement;
+    const title = grandparentDiv.querySelector('.doc-title');
+    const titleText = title.innerText;
+
+    let chosenDoc;
+
+    switch (collection) {
+      case 'projects':
+        chosenDoc = filterDocuments(projects, titleText);
+        setShowCreateProject(true);
+        break;
+      case 'acts':
+        chosenDoc = filterDocuments(acts, titleText);
+        break;
+      default: chosenDoc = null;
+    }
+    setEditInput(chosenDoc[0]);
+    return chosenDoc;
   }
 
   const deleteClickHandler = (e) => {
@@ -89,6 +108,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
           <NavigationButton document={currentAct[0]} changeSection={changeSectionHandler} section="chapters" />
         </>
         )}
+        {(collection === 'projects' || collection === 'acts') && (
         <button
           type="button"
           onClick={() => showNewDocumentDiv(collection)}
@@ -97,6 +117,16 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
           {' '}
           {returnSingularCollection(collection)}
         </button>
+        )}
+        {collection === 'chapters' && (
+        <h2>
+          <Link href="/chapter/create">
+            New
+            {' '}
+            {returnSingularCollection(collection)}
+          </Link>
+        </h2>
+        )}
       </div>
       <div className="projects max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
         {data && data.map((doc) => (
@@ -107,7 +137,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
             disabled={collection === 'chapters'}
           >
             <div className="proj-info">
-              <div>{doc.title}</div>
+              <div className="doc-title">{doc.title}</div>
               <div>{doc.date_formatted}</div>
             </div>
             <div className="proj-buttons flex gap-2">
@@ -121,6 +151,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       {showCreateProject
       && (
       <NewProjectDiv
+        editInput={editInput}
         refreshSection={changeSectionHandler}
         collection={collection}
         setShowCreateProject={setShowCreateProject}

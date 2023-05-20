@@ -15,7 +15,7 @@ export default function useFetch() {
 
     return axios.post(`${api_url}${route}`, formData, { headers })
       .then((res) => res)
-      .catch((err) => err)
+      .catch((err) => setError(err))
   })
 
   const getData = useCallback((route, token) => {
@@ -23,8 +23,20 @@ export default function useFetch() {
 
     return axios.get(`${api_url}${route}`, { headers })
       .then((res) => res)
-      .catch((err) => err)
+      .catch((err) => setError(err))
   })
 
-  return { createData, getData, error }
+  const updateData = useCallback((route, data, token) => {
+    const formData = new URLSearchParams(data).toString();
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Bearer ${token}`,
+    }
+
+    return axios.patch(`${api_url}${route}`, formData, { headers })
+      .then((res) => res)
+      .catch((err) => setError(err))
+  })
+
+  return { createData, getData, updateData, error }
 }

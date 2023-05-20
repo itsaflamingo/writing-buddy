@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable no-return-assign */
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import useFetch from '@/customHooks/useFetch';
 import { CurrentActContext, UserContext } from '@/contexts/Contexts';
@@ -17,7 +17,7 @@ export default function CreateChapter() {
 
   const [input, setInput] = useState({
     title: null,
-    number: null,
+    number: '',
     body: null,
     isPublished: false,
     isComplete: false,
@@ -41,7 +41,7 @@ export default function CreateChapter() {
       setError('Title field must be filled');
       return false
     }
-    if (input.number === null) {
+    if (input.number.length === 0) {
       setError('Number field must be filled');
       return false;
     }
@@ -57,7 +57,8 @@ export default function CreateChapter() {
 
     if (isFormValid() === false) return;
 
-    fetch.getData(`/hub/act/${actId}/chapter/create`, input, token)
+    fetch.createData(`/hub/act/${actId}/chapter/create`, input, token)
+      .then(res => console.log(res))
       .catch((err) => setError(err));
   }
   return (

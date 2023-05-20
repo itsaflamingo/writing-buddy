@@ -1,8 +1,8 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import useFetch from '@/customHooks/useFetch';
 import { ProjectContext, UserContext } from '@/contexts/Contexts';
 
-export default function NewProjectDiv({ refreshSection, collection, setShowCreateProject }) {
+export default function NewProjectDiv({ editInput, refreshSection, collection, setShowCreateProject }) {
   const { user } = useContext(UserContext);
   const userId = user.user._id;
   const { token } = user;
@@ -16,6 +16,16 @@ export default function NewProjectDiv({ refreshSection, collection, setShowCreat
   })
   const [error, setError] = useState(null);
   const fetch = useFetch();
+
+  const updateSection = (doc, id, documents) => {
+    const hasId = (value) => value._id === id;
+    const index = documents.findIndex(hasId);
+
+    const updatedProjects = [...projects];
+    updatedProjects[index] = doc;
+
+    setProjects(updatedProjects)
+  }
 
   const onTitleChange = (e) => setInput({ ...input, title: e.target.value });
   const onGenreChange = (e) => setInput({ ...input, genre: e.target.value });
@@ -35,6 +45,18 @@ export default function NewProjectDiv({ refreshSection, collection, setShowCreat
 
     if (isFormValid() === false) return;
 
+    if (editInput) {
+      fetch.updateData(`/hub/project/${editInput.id}/update/`, input, token)
+        .then((res) => {
+          console.log(res.data);
+          updateSection(res.data, editInput.id, projects);
+          refreshSection(user.user, collection);
+          setShowCreateProject(false);
+        })
+        .catch((err) => setError(err))
+      return;
+    }
+
     fetch.createData(`/hub/user/${userId}/project/create`, input, token)
       .then((res) => {
         setProjects([res.data, ...projects])
@@ -44,18 +66,24 @@ export default function NewProjectDiv({ refreshSection, collection, setShowCreat
       .catch((err) => setError(err))
   }
 
+  useEffect(() => {
+    if (!editInput) return;
+    setInput(editInput)
+  }, [])
+
   return (
     <div className="new-project absolute opacity-100 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300">
       <div>
         {error && <div>{error}</div>}
         <form onSubmit={(e) => onFormSubmit(e)}>
           <div className="flex-col">
-            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_title" >Title</label>
+            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_title">Title</label>
             <input
               className="w-full border border-gray-400 p-2 rounded-md"
               type="text"
               onChange={(e) => onTitleChange(e)}
               id="new_post_title"
+              value={input.title}
             />
           </div>
           <div className="flex-col">
@@ -65,6 +93,7 @@ export default function NewProjectDiv({ refreshSection, collection, setShowCreat
               id="new_post_genre"
               type="text"
               onChange={(e) => onGenreChange(e)}
+              value={input.genre}
             />
           </div>
           <div className="flex my-[5px] justify-between px-[20px]">
