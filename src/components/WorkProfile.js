@@ -92,10 +92,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
     setEditInput(chosenDoc[0]);
 
-    if (collection === 'chapters') {
-      return navigateToChapter(chosenDoc[0]);
-    }
-
     return chosenDoc[0];
   }
 
@@ -112,6 +108,9 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         break;
       case 'acts':
         setShowCreateAct(true);
+        break;
+      case 'chapters':
+        navigateToChapter(document);
         break;
       default: return document;
     }
