@@ -38,5 +38,16 @@ export default function useFetch() {
       .catch((err) => setError(err))
   })
 
-  return { createData, getData, updateData, error }
+  const deleteData = useCallback((route, token) => {
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Bearer ${token}`,
+    }
+
+    return axios.delete(`${api_url}${route}`, { headers })
+      .then((res) => console.log(res))
+      .catch((err) => setError(err))
+  })
+
+  return { createData, getData, updateData, deleteData, error }
 }

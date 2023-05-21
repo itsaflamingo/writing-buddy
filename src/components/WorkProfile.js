@@ -1,11 +1,12 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ActContext, ChapterContext, CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
+import { ActContext, ChapterContext, CurrentActContext, CurrentProjectContext, ProjectContext, UserContext } from '@/contexts/Contexts';
 import NavigationButton from './NavigationButton';
 import returnSingularCollection from '@/functions/returnSingularCollection';
 import NewProjectDiv from './NewProjectDiv';
 import NewActDiv from './NewActDiv';
 import { useRouter } from 'next/router';
+import useFetch from '@/customHooks/useFetch';
 
 const calcSection = (section) => {
   let newSect;
@@ -25,6 +26,10 @@ const filterDocuments = (collection, title) => collection.filter((doc) => doc.ti
 
 export default function WorkProfile({ data, setData, section, changeSection }) {
   const router = useRouter();
+  const fetch = useFetch();
+
+  const { user } = useContext(UserContext);
+  const { token } = user;
 
   const { projects } = useContext(ProjectContext);
   const { acts } = useContext(ActContext);
@@ -63,40 +68,64 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     console.log('view');
   }
 
-  const editClickHandler = (e) => {
-    e.stopPropagation();
+  const getSelectedDivTitle = (e) => {
     const grandparentDiv = e.target.parentElement.parentElement;
     const title = grandparentDiv.querySelector('.doc-title');
-    const titleText = title.innerText;
+    return title.innerText;
+  }
 
+  const getSelectedDoc = (title) => {
     let chosenDoc;
 
     switch (collection) {
       case 'projects':
-        chosenDoc = filterDocuments(projects, titleText);
-        setShowCreateProject(true);
+        chosenDoc = filterDocuments(projects, title);
         break;
       case 'acts':
-        chosenDoc = filterDocuments(acts, titleText);
-        setShowCreateAct(true);
+        chosenDoc = filterDocuments(acts, title);
         break;
       case 'chapters':
-        chosenDoc = filterDocuments(chapters, titleText);
+        chosenDoc = filterDocuments(chapters, title);
         break;
       default: chosenDoc = null;
     }
+
     setEditInput(chosenDoc[0]);
 
     if (collection === 'chapters') {
       return navigateToChapter(chosenDoc[0]);
     }
 
-    return chosenDoc;
+    return chosenDoc[0];
+  }
+
+  const editClickHandler = (e) => {
+    e.stopPropagation();
+
+    const title = getSelectedDivTitle(e);
+
+    const document = getSelectedDoc(title);
+
+    switch (collection) {
+      case 'projects':
+        setShowCreateProject(true);
+        break;
+      case 'acts':
+        setShowCreateAct(true);
+        break;
+      default: return document;
+    }
+
+    return document;
   }
 
   const deleteClickHandler = (e) => {
     e.stopPropagation();
-    console.log('delete');
+    const title = getSelectedDivTitle(e);
+    const document = getSelectedDoc(title);
+    const abbreviatedCollection = collection.slice(0, collection.length - 1);
+
+    fetch.deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
   }
 
   const showNewDocumentDiv = (collect) => {
