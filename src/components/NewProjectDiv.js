@@ -2,7 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import useFetch from '@/customHooks/useFetch';
 import { ProjectContext, UserContext } from '@/contexts/Contexts';
 
-export default function NewProjectDiv({ editInput, refreshSection, collection, setShowCreateProject }) {
+export default function NewProjectDiv(props) {
+  const { editInput, refreshSection, collection, setShowCreateProject } = props;
   const { user } = useContext(UserContext);
   const userId = user.user._id;
   const { token } = user;
@@ -21,10 +22,10 @@ export default function NewProjectDiv({ editInput, refreshSection, collection, s
     const hasId = (value) => value._id === id;
     const index = documents.findIndex(hasId);
 
-    const updatedProjects = [...projects];
-    updatedProjects[index] = doc;
+    const updatedDocuments = [...projects];
+    updatedDocuments[index] = doc;
 
-    setProjects(updatedProjects)
+    setProjects(updatedDocuments)
   }
 
   const onTitleChange = (e) => setInput({ ...input, title: e.target.value });

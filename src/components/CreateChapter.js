@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import useFetch from '@/customHooks/useFetch';
-import { CurrentActContext, UserContext } from '@/contexts/Contexts';
+import { CurrentActContext, CurrentChapterContext, UserContext } from '@/contexts/Contexts';
 import { useRouter } from 'next/router';
 
 export default function CreateChapter() {
@@ -15,6 +15,7 @@ export default function CreateChapter() {
   const { token } = user;
   const { currentAct } = useContext(CurrentActContext);
   const actId = currentAct[0]._id;
+  const { currentChapter, setCurrentChapter } = useContext(CurrentChapterContext);
 
   // Creates reference to tinyMCE editor instance
   const editorRef = useRef(null);
@@ -71,14 +72,18 @@ export default function CreateChapter() {
     if (parsedData) {
       fetch.updateData(`/hub/chapter/${parsedData.id}/update/`, input, token)
         .then((res) => {
-          console.log(res)
+          setCurrentChapter(res.data);
+          router.push('/');
         })
         .catch((err) => setError(err))
       return;
     }
 
     fetch.createData(`/hub/act/${actId}/chapter/create`, input, token)
-      .then((res) => console.log(res))
+      .then((res) => {
+        setCurrentChapter(res.data)
+        router.push('/');
+      })
       .catch((err) => setError(err));
   }
 

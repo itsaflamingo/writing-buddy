@@ -1,12 +1,13 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ActContext, ChapterContext, CurrentActContext, CurrentProjectContext, ProjectContext, UserContext } from '@/contexts/Contexts';
 import NavigationButton from './NavigationButton';
 import returnSingularCollection from '@/functions/returnSingularCollection';
 import NewProjectDiv from './NewProjectDiv';
 import NewActDiv from './NewActDiv';
-import { useRouter } from 'next/router';
 import useFetch from '@/customHooks/useFetch';
+import uniqid from 'uniqid';
 
 const calcSection = (section) => {
   let newSect;
@@ -118,13 +119,35 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     return document;
   }
 
+  const getParentDocument = (collection) => {
+    let parentCollection = null;
+    let parentDocument = null;
+
+    switch (collection) {
+      case 'acts':
+        parentCollection = 'projects'
+        parentDocument = currentProject[0];
+        break;
+      case 'chapters':
+        parentCollection = 'acts';
+        parentDocument = currentAct[0];
+        break;
+      default: parentCollection = null;
+    }
+    return { parentCollection, parentDocument };
+  }
+
   const deleteClickHandler = (e) => {
     e.stopPropagation();
     const title = getSelectedDivTitle(e);
     const document = getSelectedDoc(title);
+    const { parentCollection, parentDocument } = getParentDocument(collection);
     const abbreviatedCollection = collection.slice(0, collection.length - 1);
-
-    fetch.deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
+    console.log(parentDocument, parentCollection)
+    changeSectionHandler(parentDocument, parentCollection);
+    // fetch.deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
+    //   .then(() => changeSectionHandler(user.user._id, 'projects'))
+    //   .catch((err) => console.log(err))
   }
 
   const showNewDocumentDiv = (collect) => {
@@ -180,6 +203,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       <div className="projects max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
         {data && data.map((doc) => (
           <button
+            key={uniqid()}
             type="button"
             className="w-auto h-[200px] flex-col border border-gray-300"
             onClick={() => changeSectionHandler(doc)}
