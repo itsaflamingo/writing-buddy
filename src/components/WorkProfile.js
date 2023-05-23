@@ -125,12 +125,13 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
     switch (collection) {
       case 'acts':
-        parentCollection = 'projects'
+        parentCollection = 'projects';
         parentDocument = currentProject[0];
         break;
       case 'chapters':
         parentCollection = 'acts';
-        parentDocument = currentAct[0];
+        // Also currentProject because page wants id of project related to act
+        parentDocument = currentProject[0];
         break;
       default: parentCollection = null;
     }
