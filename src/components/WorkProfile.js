@@ -1,13 +1,13 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import uniqid from 'uniqid';
 import { ActContext, ChapterContext, CurrentActContext, CurrentProjectContext, ProjectContext, UserContext } from '@/contexts/Contexts';
 import NavigationButton from './NavigationButton';
 import returnSingularCollection from '@/functions/returnSingularCollection';
 import NewProjectDiv from './NewProjectDiv';
 import NewActDiv from './NewActDiv';
 import useFetch from '@/customHooks/useFetch';
-import uniqid from 'uniqid';
 
 const calcSection = (section) => {
   let newSect;
@@ -119,7 +119,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     return document;
   }
 
-  const getParentDocument = (collection) => {
+  const getParentDocumentAndCollection = (collection) => {
     let parentCollection = null;
     let parentDocument = null;
 
@@ -129,9 +129,14 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         parentDocument = currentProject[0];
         break;
       case 'chapters':
-        parentCollection = 'acts';
-        // Also currentProject because page wants id of project related to act
-        parentDocument = currentProject[0];
+        if (chapters.length === 1) {
+          parentCollection = 'acts';
+          // Also currentProject because page wants id of project with act children
+          parentDocument = currentProject[0];
+        } else {
+          parentCollection = 'chapters';
+          parentDocument = currentAct[0]
+        }
         break;
       default: parentCollection = null;
     }
@@ -142,13 +147,13 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     e.stopPropagation();
     const title = getSelectedDivTitle(e);
     const document = getSelectedDoc(title);
-    const { parentCollection, parentDocument } = getParentDocument(collection);
+    const { parentCollection, parentDocument } = getParentDocumentAndCollection(collection);
     const abbreviatedCollection = collection.slice(0, collection.length - 1);
-    console.log(parentDocument, parentCollection)
+
     changeSectionHandler(parentDocument, parentCollection);
-    // fetch.deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
-    //   .then(() => changeSectionHandler(user.user._id, 'projects'))
-    //   .catch((err) => console.log(err))
+    fetch.deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
+      .then(() => changeSectionHandler(user.user._id, 'projects'))
+      .catch((err) => console.log(err))
   }
 
   const showNewDocumentDiv = (collect) => {
