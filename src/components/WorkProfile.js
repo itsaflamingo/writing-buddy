@@ -8,6 +8,7 @@ import returnSingularCollection from '@/functions/returnSingularCollection';
 import NewProjectDiv from './NewProjectDiv';
 import NewActDiv from './NewActDiv';
 import useFetch from '@/customHooks/useFetch';
+import ConfirmDelete from './ConfirmDelete';
 
 const calcSection = (section) => {
   let newSect;
@@ -47,6 +48,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const [showCreateProject, setShowCreateProject] = useState(false);
   const [showCreateAct, setShowCreateAct] = useState(false);
   const [editInput, setEditInput] = useState(null);
+  const [docToDeleteTitle, setDocToDeleteTitle] = useState(null);
 
   const changeSectionHandler = (doc, collect) => {
     setData(null)
@@ -145,7 +147,10 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
   const deleteClickHandler = (e) => {
     e.stopPropagation();
-    const title = getSelectedDivTitle(e);
+    setDocToDeleteTitle(getSelectedDivTitle(e));
+  }
+
+  const deleteDocument = (title) => {
     const document = getSelectedDoc(title);
     const { parentCollection, parentDocument } = getParentDocumentAndCollection(collection);
     const abbreviatedCollection = collection.slice(0, collection.length - 1);
@@ -227,6 +232,14 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
           </button>
         ))}
       </div>
+      {docToDeleteTitle
+      && (
+      <ConfirmDelete
+        title={docToDeleteTitle}
+        deleteDocument={deleteDocument}
+        setDocToDeleteTitle={setDocToDeleteTitle}
+      />
+      )}
       {showCreateProject
       && (
       <NewProjectDiv
