@@ -69,20 +69,21 @@ export default function CreateChapter() {
 
     if (isFormValid() === false) return;
 
+    // If data was passed from router.query, data is to be updated
     if (parsedData) {
       fetch.updateData(`/hub/chapter/${parsedData.id}/update/`, input, token)
         .then((res) => {
           setCurrentChapter(res.data);
-          router.push('/');
+          router.push('/chapter/view');
         })
         .catch((err) => setError(err))
       return;
     }
-
+    // Else, data is to be created
     fetch.createData(`/hub/act/${actId}/chapter/create`, input, token)
       .then((res) => {
         setCurrentChapter(res.data)
-        router.push('/');
+        router.push('/chapter/view');
       })
       .catch((err) => setError(err));
   }

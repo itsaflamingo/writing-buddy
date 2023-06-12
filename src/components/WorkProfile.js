@@ -2,13 +2,14 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import uniqid from 'uniqid';
-import { ActContext, ChapterContext, CurrentActContext, CurrentProjectContext, ProjectContext, UserContext } from '@/contexts/Contexts';
+import { ActContext, ChapterContext, CurrentActContext, CurrentChapterContext, CurrentProjectContext, ProjectContext, UserContext } from '@/contexts/Contexts';
 import NavigationButton from './NavigationButton';
 import returnSingularCollection from '@/functions/returnSingularCollection';
 import NewProjectDiv from './NewProjectDiv';
 import NewActDiv from './NewActDiv';
 import useFetch from '@/customHooks/useFetch';
 import ConfirmDelete from './ConfirmDelete';
+import { getSelectedDivTitle, getSelectedDoc } from '@/functions/getSelectedDocument';
 
 const calcSection = (section) => {
   let newSect;
@@ -24,8 +25,6 @@ const calcSection = (section) => {
   return newSect;
 }
 
-const filterDocuments = (collection, title) => collection.filter((doc) => doc.title === title)
-
 export default function WorkProfile({ data, setData, section, changeSection }) {
   const router = useRouter();
   const fetch = useFetch();
@@ -39,6 +38,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
   const { currentAct } = useContext(CurrentActContext);
   const { currentProject } = useContext(CurrentProjectContext);
+  const { setCurrentChapter } = useContext(CurrentChapterContext);
 
   const { collection } = section;
 
@@ -49,6 +49,22 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const [showCreateAct, setShowCreateAct] = useState(false);
   const [editInput, setEditInput] = useState(null);
   const [docToDeleteTitle, setDocToDeleteTitle] = useState(null);
+  const [sectionData, setSectionData] = useState(null);
+
+  useEffect(() => {
+    switch (collection) {
+      case 'projects':
+        setSectionData(projects);
+        break;
+      case 'acts':
+        setSectionData(acts);
+        break;
+      case 'chapters':
+        setSectionData(chapters);
+        break;
+      default: return null;
+    }
+  }, []);
 
   const changeSectionHandler = (doc, collect) => {
     setData(null)
@@ -59,51 +75,29 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     return changeSection({ id: doc.id, collection: collect });
   }
 
-  const navigateToChapter = (doc) => {
+  const navigateToChapterRoute = (doc, endpoint) => {
     router.push({
-      pathname: '/chapter/create',
+      pathname: `/chapter/${endpoint}`,
       query: { data: JSON.stringify(doc) },
     });
   }
 
   const viewClickHandler = (e) => {
     e.stopPropagation();
-    console.log('view');
-  }
+    const title = getSelectedDivTitle(e);
+    const doc = getSelectedDoc(title, sectionData);
+    setCurrentChapter(doc);
 
-  const getSelectedDivTitle = (e) => {
-    const grandparentDiv = e.target.parentElement.parentElement;
-    const title = grandparentDiv.querySelector('.doc-title');
-    return title.innerText;
-  }
-
-  const getSelectedDoc = (title) => {
-    let chosenDoc;
-
-    switch (collection) {
-      case 'projects':
-        chosenDoc = filterDocuments(projects, title);
-        break;
-      case 'acts':
-        chosenDoc = filterDocuments(acts, title);
-        break;
-      case 'chapters':
-        chosenDoc = filterDocuments(chapters, title);
-        break;
-      default: chosenDoc = null;
-    }
-
-    setEditInput(chosenDoc[0]);
-
-    return chosenDoc[0];
+    router.push({
+      pathname: '/chapter/view',
+    });
   }
 
   const editClickHandler = (e) => {
     e.stopPropagation();
 
     const title = getSelectedDivTitle(e);
-
-    const document = getSelectedDoc(title);
+    const document = getSelectedDoc(title, sectionData);
 
     switch (collection) {
       case 'projects':
@@ -113,7 +107,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         setShowCreateAct(true);
         break;
       case 'chapters':
-        navigateToChapter(document);
+        navigateToChapterRoute(document, 'create');
         break;
       default: return document;
     }
@@ -151,7 +145,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   }
 
   const deleteDocument = (title) => {
-    const document = getSelectedDoc(title);
+    const document = getSelectedDoc(title, sectionData);
     const { parentCollection, parentDocument } = getParentDocumentAndCollection(collection);
     const abbreviatedCollection = collection.slice(0, collection.length - 1);
 
@@ -211,7 +205,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         </h2>
         )}
       </div>
-      <div className="projects max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
+      <div className="max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
         {data && data.map((doc) => (
           <button
             key={uniqid()}
