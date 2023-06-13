@@ -10,6 +10,9 @@ import NewActDiv from './NewActDiv';
 import useFetch from '@/customHooks/useFetch';
 import ConfirmDelete from './ConfirmDelete';
 import { getSelectedDivTitle, getSelectedDoc } from '@/functions/getSelectedDocument';
+import view from '../images/view-black.png';
+import edit from '../images/edit-black.png';
+import del from '../images/delete-black.png';
 
 const calcSection = (section) => {
   let newSect;
@@ -168,7 +171,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   }
 
   return (
-    <div className="work-profile">
+    <div className="work-profile ">
       <div>
         {(collection === 'acts' && currentProject)
         && <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />}
@@ -184,6 +187,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         <button
           type="button"
           onClick={() => showNewDocumentDiv(collection)}
+          className="flex justify-center items-center border border-solid w-40 font-medium m-[10px]"
         >
           New
           {' '}
@@ -214,14 +218,20 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
             onClick={() => changeSectionHandler(doc)}
             disabled={collection === 'chapters'}
           >
-            <div className="proj-info">
+            <div className="proj-info flex flex-col gap-28">
               <div className="doc-title">{doc.title}</div>
-              <div>{doc.date_formatted}</div>
+              <div className="flex">{doc.date_formatted}</div>
             </div>
             <div className="proj-buttons flex gap-2">
-              <button type="button" className="border border-gray-300" onClick={(e) => viewClickHandler(e)}>View</button>
-              <button type="button" className="border border-gray-300" onClick={(e) => editClickHandler(e)}>Edit</button>
-              <button type="button" className="border border-gray-300" onClick={(e) => deleteClickHandler(e)}>Delete</button>
+              <button type="button" className="border border-gray-300" onClick={(e) => viewClickHandler(e)}>
+                <img src={view.src} alt="view" className="max-h-[30px]" />
+              </button>
+              <button type="button" className="border border-gray-300" onClick={(e) => editClickHandler(e)}>
+              <img src={edit.src} alt="edit" className="max-h-[30px]" />
+              </button>
+              <button type="button" className="border border-gray-300" onClick={(e) => deleteClickHandler(e)}>
+                <img src={del.src} alt="delete" className="max-h-[30px]" />
+              </button>
             </div>
           </button>
         ))}

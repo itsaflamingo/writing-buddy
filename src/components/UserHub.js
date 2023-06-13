@@ -37,10 +37,10 @@ export default function UserHub() {
   const formatCollection = (collection) => collection.charAt(0).toUpperCase() + collection.slice(1);
 
   return (
-    <div className="flex">
+    <div className="flex justify-center m-[20px]">
       {error && <div>{error}</div>}
       <div className="flex flex-col">
-        {formatCollection(section.collection)}
+        <div className="flex justify-center font-medium">{formatCollection(section.collection)}</div>
         {error}
         {data
           && (

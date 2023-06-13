@@ -38,6 +38,10 @@ export default function ViewChapter() {
             {' '}
             {currentChapter.date_formatted}
           </div>
+          <div>
+            <button type="button">Edit</button>
+            <button type="button">Delete</button>
+          </div>
         </div>
         <NavMenu context={chapters} showMenuItem={showMenuItem} />
       </div>

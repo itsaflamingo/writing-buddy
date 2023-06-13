@@ -1,5 +1,11 @@
+import Header from '@/components/Header';
 import UserHub from '@/components/UserHub';
 
 export default function RenderDashboard() {
-  return <UserHub />
+  return (
+    <div>
+      <Header />
+      <UserHub />
+    </div>
+  )
 }
