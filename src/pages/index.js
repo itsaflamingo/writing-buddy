@@ -27,7 +27,6 @@ export default function Home() {
   return (
     <div className="index">
       <Header />
-      { user && <UserHub /> }
     </div>
   );
 }

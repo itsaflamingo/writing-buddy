@@ -2,9 +2,11 @@ import { useState, useContext } from 'react';
 import axios from 'axios';
 import { api_url } from '../api/url';
 import { UserContext } from '@/contexts/Contexts';
+import { useRouter } from 'next/router';
 
 export default function Login() {
-  const user = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
+  const router = useRouter();
   // These two change at the same time, so they are grouped together
   const [input, setInput] = useState({
     username: null,
@@ -12,6 +14,12 @@ export default function Login() {
   })
 
   const [error, setError] = useState(null);
+
+  const goToDashboard = () => {
+    router.push({
+      pathname: '/dashboard/',
+    });
+  }
 
   const onChangeHandler = (e, label) => setInput({ ...input, [label]: e.target.value });
   const onSubmit = (e) => {
@@ -29,7 +37,8 @@ export default function Login() {
     })
       .then((res) => {
         process.env.REACT_APP_TOKEN = res.data.token;
-        user.setUser(res.data);
+        setUser(res.data);
+        goToDashboard();
       })
       .catch((err) => setError(err))
   }

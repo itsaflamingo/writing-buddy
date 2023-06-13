@@ -10,6 +10,7 @@ export default function Header() {
     <header className="flex justify-between h-[50px] border border-b-grey-300">
       {!user && <Login />}
       {user && <Logout />}
+      <button>Home</button>
     </header>
   )
 }
