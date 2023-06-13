@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import { ChapterContext, CurrentActContext, CurrentChapterContext, CurrentProjectContext } from '@/contexts/Contexts'
 import NavMenu from '@/components/NavMenu';
 import { getSelectedDivTitle, getSelectedDoc } from '@/functions/getSelectedDocument';
+import Header from '@/components/Header';
 
 export default function ViewChapter() {
   const { currentChapter, setCurrentChapter } = useContext(CurrentChapterContext);
@@ -18,25 +19,28 @@ export default function ViewChapter() {
   }
 
   return (
-    <div className="flex justify-center gap-20">
-      <div>
+    <div className="flex flex-col">
+      <Header />
+      <div className="flex justify-center gap-20">
         <div>
-          <h1>{currentProject.title}</h1>
-          <p>{currentChapter.title}</p>
-          <p>
-            #
+          <div>
+            <h1>{currentProject.title}</h1>
+            <p>{currentChapter.title}</p>
+            <p>
+              #
+              {' '}
+              {currentChapter.number}
+            </p>
+          </div>
+          {currentChapter.body}
+          <div>
+            Last edit on
             {' '}
-            {currentChapter.number}
-          </p>
+            {currentChapter.date_formatted}
+          </div>
         </div>
-        {currentChapter.body}
-        <div>
-          Last edit on
-          {' '}
-          {currentChapter.date_formatted}
-        </div>
+        <NavMenu context={chapters} showMenuItem={showMenuItem} />
       </div>
-      <NavMenu context={chapters} showMenuItem={showMenuItem} />
     </div>
   )
 }
