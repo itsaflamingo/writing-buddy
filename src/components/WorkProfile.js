@@ -218,19 +218,19 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
             onClick={() => changeSectionHandler(doc)}
             disabled={collection === 'chapters'}
           >
-            <div className="proj-info flex flex-col gap-28">
+            <div className="proj-info flex flex-col items-center w-full">
               <div className="doc-title">{doc.title}</div>
-              <div className="flex">{doc.date_formatted}</div>
+              <div className="flex text-xs">{doc.date_formatted}</div>
             </div>
-            <div className="proj-buttons flex gap-2">
+            <div className="proj-buttons flex justify-center w-full gap-2 mt-24">
               <button type="button" className="border border-gray-300" onClick={(e) => viewClickHandler(e)}>
-                <img src={view.src} alt="view" className="max-h-[30px]" />
+                <img src={view.src} alt="view" className="max-h-[25px]" />
               </button>
               <button type="button" className="border border-gray-300" onClick={(e) => editClickHandler(e)}>
-              <img src={edit.src} alt="edit" className="max-h-[30px]" />
+              <img src={edit.src} alt="edit" className="max-h-[25px]" />
               </button>
               <button type="button" className="border border-gray-300" onClick={(e) => deleteClickHandler(e)}>
-                <img src={del.src} alt="delete" className="max-h-[30px]" />
+                <img src={del.src} alt="delete" className="max-h-[25px]" />
               </button>
             </div>
           </button>
