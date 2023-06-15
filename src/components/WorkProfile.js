@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import uniqid from 'uniqid';
@@ -171,18 +171,24 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   }
 
   return (
-    <div className="work-profile ">
-      <div>
+    <div className="work-profile">
+      <div className="flex mt-[10px]">
+
         {(collection === 'acts' && currentProject)
-        && <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />}
+        && (
+          <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />
+        )}
 
         {(collection === 'chapters' && currentProject && currentAct)
         && (
         <>
           <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />
+          <div className="flex items-center h-[17.6px] mx-[10px]">&gt;</div>
           <NavigationButton document={currentAct[0]} changeSection={changeSectionHandler} section="chapters" />
+          <div className="flex items-center h-[17.6px] mx-[10px]">&gt;</div>
         </>
         )}
+
         {(collection === 'projects' || collection === 'acts') && (
         <button
           type="button"
@@ -195,7 +201,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         </button>
         )}
         {collection === 'chapters' && (
-        <h2>
+        <h2 className="border border-solid w-40 flex justify-center text-xs">
           <Link
             href={{
               pathname: '/chapter/create',
@@ -227,7 +233,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
                 <img src={view.src} alt="view" className="max-h-[25px]" />
               </button>
               <button type="button" className="border border-gray-300" onClick={(e) => editClickHandler(e)}>
-              <img src={edit.src} alt="edit" className="max-h-[25px]" />
+                <img src={edit.src} alt="edit" className="max-h-[25px]" />
               </button>
               <button type="button" className="border border-gray-300" onClick={(e) => deleteClickHandler(e)}>
                 <img src={del.src} alt="delete" className="max-h-[25px]" />
