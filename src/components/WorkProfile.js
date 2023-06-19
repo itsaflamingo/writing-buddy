@@ -185,11 +185,10 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
           <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />
           <div className="flex items-center h-[17.6px] mx-[10px]">&gt;</div>
           <NavigationButton document={currentAct[0]} changeSection={changeSectionHandler} section="chapters" />
-          <div className="flex items-center h-[17.6px] mx-[10px]">&gt;</div>
         </>
         )}
-
-        {(collection === 'projects' || collection === 'acts') && (
+      </div>
+      {(collection === 'projects' || collection === 'acts') && (
         <button
           type="button"
           onClick={() => showNewDocumentDiv(collection)}
@@ -199,20 +198,21 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
           {' '}
           {returnSingularCollection(collection)}
         </button>
-        )}
+      )}
+      <div>
         {collection === 'chapters' && (
-        <h2 className="border border-solid w-40 flex justify-center text-xs">
-          <Link
-            href={{
-              pathname: '/chapter/create',
-              query: { editInput },
-            }}
-          >
-            New
-            {' '}
-            {returnSingularCollection(collection)}
-          </Link>
-        </h2>
+          <h2 className="border border-solid w-40 flex justify-center text-xs ml-[10px]">
+            <Link
+              href={{
+                pathname: '/chapter/create',
+                query: { editInput },
+              }}
+            >
+              New
+              {' '}
+              {returnSingularCollection(collection)}
+            </Link>
+          </h2>
         )}
       </div>
       <div className="max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">

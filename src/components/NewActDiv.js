@@ -70,42 +70,47 @@ export default function NewActDiv({ editInput, refreshSection, collection, setSh
   }, [])
 
   return (
-    <div className="new-project absolute opacity-100 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300">
+    <div className="bg-white absolute opacity-100 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300">
       <div>
         {error && <div>{error}</div>}
-        <form onSubmit={(e) => onFormSubmit(e)}>
-          <label
+        <form onSubmit={(e) => onFormSubmit(e)} className="flex flex-col gap-4">
+          <label className="font-bold text-gray-700 mb-2 after:content-['*'] after:ml-0.5 after:text-red-500"
             htmlFor="new-act-title"
           >
             Title
           </label>
-          <input
+          <input className="w-full border border-gray-400 p-2 rounded-md"
             type="text"
             id="new-act-title"
             value={input.title}
             onChange={(e) => titleOnChange(e)}
           />
-
-          <label
-            htmlFor="new-act-completed"
-            onChange={() => toggleIsCompleted()}
-          >
-            Completed
-          </label>
-          <input type="checkbox" id="new-act-completed" />
-
-          <label
-            htmlFor="new-act-published"
-            onChange={() => toggleIsPublished()}
-          >
-            Published
-          </label>
-          <input type="checkbox" id="new-act-published" />
-
-          <button type="submit">Submit</button>
+          <div className="flex items-center justify-center gap-9">
+            <label className="font-bold text-gray-700 mb-2"
+              htmlFor="new-act-completed"
+              onChange={() => toggleIsCompleted()}
+            >
+              Completed
+            </label>
+            <input type="checkbox" id="new-act-completed" />
+          </div>
+          <div className="flex items-center justify-center gap-9">
+            <label className="font-bold text-gray-700 mb-2"
+              htmlFor="new-act-published"
+              onChange={() => toggleIsPublished()}
+            >
+              Published
+            </label>
+            <input type="checkbox" id="new-act-published" />
+          </div>
+          <div className="flex justify-center">
+            <button type="submit" className="border border-gray-400 p-2 rounded-md w-fit">Submit</button>
+          </div>
         </form>
       </div>
-      <button type="button" onClick={() => setShowCreateAct(false)}>X</button>
+      <div className="absolute w-[27px] h-[27px] right-6 top-0 border rounded-full flex justify-center items-center cursor-pointer hover:bg-gray-300 hover:text-white transition duration-300">
+        <button type="button" className="text-gray-500 font-bold" onClick={() => setShowCreateAct(false)}>x</button>
+      </div>
     </div>
   )
 }

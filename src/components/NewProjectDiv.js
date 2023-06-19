@@ -121,7 +121,9 @@ export default function NewProjectDiv(props) {
           </div>
         </form>
       </div>
-      <button className="absolute left-[95%] bottom-[90%]" type="button" onClick={() => setShowCreateProject(false)}>X</button>
+      <div className="absolute w-[27px] h-[27px] right-6 top-0 border rounded-full flex justify-center items-center cursor-pointer after:ml-0.5 after:text-red-500">
+        <button type="button" className="text-gray-500 font-bold" onClick={() => setShowCreateProject(false)}>x</button>
+      </div>
     </div>
   )
 }
