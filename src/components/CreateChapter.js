@@ -2,9 +2,9 @@
 /* eslint-disable no-return-assign */
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
+import { useRouter } from 'next/router';
 import useFetch from '@/customHooks/useFetch';
 import { CurrentActContext, CurrentChapterContext, UserContext } from '@/contexts/Contexts';
-import { useRouter } from 'next/router';
 
 export default function CreateChapter() {
   const router = useRouter();
@@ -89,22 +89,27 @@ export default function CreateChapter() {
   }
 
   return (
-    <div>
+    <div className="flex justify-center w-100 p-4">
       {error && <div>{error}</div>}
-      <form className="flex flex-col" onSubmit={(e) => onSubmit(e)}>
-        <label htmlFor="title">Title</label>
-        <input type="text" id="title" value={input.title} onChange={(e) => textOnChange(e, 'title')} />
+      <form className="flex flex-col w-8/12 items-center" onSubmit={(e) => onSubmit(e)}>
+        <div className="w-full">
+          <label htmlFor="title" className="font-bold text-gray-700 mb-2">Title</label>
+          <input type="text" id="title" value={input.title} onChange={(e) => textOnChange(e, 'title')} className="w-full border border-gray-400 p-2 rounded-md" />
+        </div>
 
-        <label htmlFor="number">Number</label>
-        <input
-          type="number"
-          id="number"
-          pattern="[0-9]*"
-          value={input.number}
-          onChange={(e) => numberOnChange(e)}
-        />
+        <div className="w-full">
+          <label htmlFor="number" className="font-bold text-gray-700 mb-2">Number</label>
+          <input
+            type="number"
+            id="number"
+            pattern="[0-9]*"
+            value={input.number}
+            onChange={(e) => numberOnChange(e)}
+            className="w-full border border-gray-400 p-2 rounded-md"
+          />
+        </div>
 
-        <label htmlFor="body">Body</label>
+        <label htmlFor="body" className="w-full font-bold text-gray-700 mb-2">Body</label>
         <Editor
           apiKey={process.env.REACT_APP_TINYMCE_KEY}
         // Assigns current editor instance to editorRef so contents can be accessed and manipulated programmatically
@@ -128,13 +133,16 @@ export default function CreateChapter() {
             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
           }}
         />
-        <label htmlFor="isComplete">Is Complete</label>
-        <input type="checkbox" id="isComplete" value={input.isComplete} onChange={() => checkboxOnChange('isComplete')} />
+        <div className="flex items-center justify-around w-full">
+          <label htmlFor="isComplete" className="font-bold text-gray-700 mb-2">Completed</label>
+          <input type="checkbox" id="isComplete" value={input.isComplete} onChange={() => checkboxOnChange('isComplete')} className="border border-gray-400 p-2 rounded-md" />
+        </div>
+        <div className="flex items-center justify-around w-full">
+          <label htmlFor="isPublished" className="font-bold text-gray-700 mb-2">Publish</label>
+          <input type="checkbox" id="isPublished" value={input.isPublished} onChange={() => checkboxOnChange('isPublished')} className="border border-gray-400 p-2 rounded-md" />
+        </div>
 
-        <label htmlFor="isPublished">Is Published</label>
-        <input type="checkbox" id="isPublished" value={input.isPublished} onChange={() => checkboxOnChange('isPublished')} />
-
-        <button type="submit">
+        <button type="submit" className="border border-gray-400 p-2 rounded-md">
           Submit
         </button>
       </form>

@@ -173,7 +173,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   return (
     <div className="work-profile">
       <div className="flex mt-[10px]">
-
         {(collection === 'acts' && currentProject)
         && (
           <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />
@@ -201,7 +200,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       )}
       <div>
         {collection === 'chapters' && (
-          <h2 className="border border-solid w-40 flex justify-center text-xs ml-[10px]">
+          <h2 className="flex justify-center items-center border border-solid w-40 font-medium m-[10px]">
             <Link
               href={{
                 pathname: '/chapter/create',

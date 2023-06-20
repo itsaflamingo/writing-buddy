@@ -1,8 +1,4 @@
-import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import Login from './Login';
-import { UserContext } from '@/contexts/Contexts';
-import Logout from './LogOut';
 import owl from '../images/owl-white.png'
 import AuthButtons from './AuthButtons';
 import home from '../images/home-dark/icons8-home-96.png'
