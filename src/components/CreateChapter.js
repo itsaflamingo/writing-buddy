@@ -93,12 +93,12 @@ export default function CreateChapter() {
       {error && <div>{error}</div>}
       <form className="flex flex-col w-8/12 items-center" onSubmit={(e) => onSubmit(e)}>
         <div className="w-full">
-          <label htmlFor="title" className="font-bold text-gray-700 mb-2">Title</label>
+          <label htmlFor="title" className="font-bold text-gray-700 mb-2 after:content-['*'] after:ml-0.5 after:text-red-500">Title</label>
           <input type="text" id="title" value={input.title} onChange={(e) => textOnChange(e, 'title')} className="w-full border border-gray-400 p-2 rounded-md" />
         </div>
 
         <div className="w-full">
-          <label htmlFor="number" className="font-bold text-gray-700 mb-2">Number</label>
+          <label htmlFor="number" className="font-bold text-gray-700 mb-2 after:content-['*'] after:ml-0.5 after:text-red-500">Number</label>
           <input
             type="number"
             id="number"
@@ -109,7 +109,7 @@ export default function CreateChapter() {
           />
         </div>
 
-        <label htmlFor="body" className="w-full font-bold text-gray-700 mb-2">Body</label>
+        <label htmlFor="body" className="w-full font-bold text-gray-700 mb-2 after:content-['*'] after:ml-0.5 after:text-red-500">Body</label>
         <Editor
           apiKey={process.env.REACT_APP_TINYMCE_KEY}
         // Assigns current editor instance to editorRef so contents can be accessed and manipulated programmatically
@@ -142,7 +142,7 @@ export default function CreateChapter() {
           <input type="checkbox" id="isPublished" value={input.isPublished} onChange={() => checkboxOnChange('isPublished')} className="border border-gray-400 p-2 rounded-md" />
         </div>
 
-        <button type="submit" className="border border-gray-400 p-2 rounded-md">
+        <button type="submit" className="border border-gray-400 p-2 rounded-md hover:bg-gray-500 hover:text-white transition duration-300">
           Submit
         </button>
       </form>
