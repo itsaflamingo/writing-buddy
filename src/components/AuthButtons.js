@@ -12,10 +12,21 @@ export default function AuthButtons() {
     })
   }
 
+  const visitSignUp = () => {
+    router.push({
+      pathname: '/sign-up',
+    })
+  }
+
   return (
-    <div className="flex justify-center items-center border border-solid w-20 font-medium">
-      {!user && <button type="button" onClick={() => visitLogin()}>Sign In</button>}
-      {user && <button type="button">Sign Out</button>}
+    <div className="flex gap-5">
+      <div className="flex justify-center items-center border border-solid w-20 font-medium">
+        {!user && <button type="button" onClick={() => visitLogin()}>Sign In</button>}
+        {user && <button type="button">Sign Out</button>}
+      </div>
+      <div className="flex justify-center items-center border border-solid w-20 font-medium">
+        {!user && <button type="button" onClick={() => visitSignUp()}>Sign Up</button>}
+      </div>
     </div>
   )
 }
