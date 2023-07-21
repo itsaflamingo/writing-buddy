@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { UserContext } from '@/contexts/Contexts';
 import { api_url } from '@/api/url';
-import { useRouter } from 'next/router';
 
 export default function SignUp() {
   const router = useRouter();

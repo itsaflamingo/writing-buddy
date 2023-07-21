@@ -24,9 +24,11 @@ export default function AuthButtons() {
         {!user && <button type="button" onClick={() => visitLogin()}>Sign In</button>}
         {user && <button type="button">Sign Out</button>}
       </div>
+      {!user && (
       <div className="flex justify-center items-center border border-solid w-20 font-medium">
-        {!user && <button type="button" onClick={() => visitSignUp()}>Sign Up</button>}
+        <button type="button" onClick={() => visitSignUp()}>Sign Up</button>
       </div>
+      )}
     </div>
   )
 }

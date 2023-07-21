@@ -74,19 +74,22 @@ export default function NewActDiv({ editInput, refreshSection, collection, setSh
       <div>
         {error && <div>{error}</div>}
         <form onSubmit={(e) => onFormSubmit(e)} className="flex flex-col gap-4">
-          <label className="font-bold text-gray-700 mb-2 after:content-['*'] after:ml-0.5 after:text-red-500"
+          <label
+            className="font-bold text-gray-700 mb-2 after:content-['*'] after:ml-0.5 after:text-red-500"
             htmlFor="new-act-title"
           >
             Title
           </label>
-          <input className="w-full border border-gray-400 p-2 rounded-md"
+          <input
+            className="w-full border border-gray-400 p-2 rounded-md"
             type="text"
             id="new-act-title"
             value={input.title}
             onChange={(e) => titleOnChange(e)}
           />
           <div className="flex items-center justify-center gap-9">
-            <label className="font-bold text-gray-700 mb-2"
+            <label
+              className="font-bold text-gray-700 mb-2"
               htmlFor="new-act-completed"
               onChange={() => toggleIsCompleted()}
             >
@@ -95,7 +98,8 @@ export default function NewActDiv({ editInput, refreshSection, collection, setSh
             <input type="checkbox" id="new-act-completed" />
           </div>
           <div className="flex items-center justify-center gap-9">
-            <label className="font-bold text-gray-700 mb-2"
+            <label
+              className="font-bold text-gray-700 mb-2"
               htmlFor="new-act-published"
               onChange={() => toggleIsPublished()}
             >
