@@ -1,8 +1,13 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import axios from 'axios';
 import { UserContext } from '@/contexts/Contexts';
+import { api_url } from '@/api/url';
+import { useRouter } from 'next/router';
 
 export default function SignUp() {
-  const user = useContext(UserContext);
+  const router = useRouter();
+
+  const { user, setUser } = useContext(UserContext);
   // These two change at the same time, so they are grouped together
   const [input, setInput] = useState({
     username: null,
@@ -12,6 +17,13 @@ export default function SignUp() {
   const [error, setError] = useState(null);
 
   const onChangeHandler = (e, label) => setInput({ ...input, [label]: e.target.value });
+
+  useEffect(() => {
+    if (!user) return;
+
+    router.push('/login');
+  }, [user])
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -28,7 +40,7 @@ export default function SignUp() {
     })
       .then((res) => {
         process.env.REACT_APP_TOKEN = res.data.token;
-        user.setUser(res.data);
+        setUser(res.data);
       })
       .catch((err) => setError(err))
   }
