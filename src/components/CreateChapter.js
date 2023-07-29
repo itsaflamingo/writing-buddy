@@ -11,8 +11,10 @@ export default function CreateChapter() {
   const { data } = router.query;
   let parsedData = null;
 
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
+  const { user } = userData;
   const { token } = user;
+
   const { currentAct } = useContext(CurrentActContext);
   const actId = currentAct[0]._id;
   const { currentChapter, setCurrentChapter } = useContext(CurrentChapterContext);

@@ -32,7 +32,8 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const router = useRouter();
   const fetch = useFetch();
 
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
+  const { user } = userData;
   const { token } = user;
 
   const { projects } = useContext(ProjectContext);

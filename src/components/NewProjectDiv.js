@@ -4,7 +4,8 @@ import { ProjectContext, UserContext } from '@/contexts/Contexts';
 
 export default function NewProjectDiv(props) {
   const { editInput, refreshSection, collection, setShowCreateProject } = props;
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
+  const { user } = userData;
   const userId = user.user._id;
   const { token } = user;
   const { projects, setProjects } = useContext(ProjectContext);

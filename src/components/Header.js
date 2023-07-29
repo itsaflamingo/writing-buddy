@@ -6,6 +6,8 @@ import home from '../images/home-dark/icons8-home-96.png'
 export default function Header() {
   const router = useRouter();
 
+  console.log('re-rendered');
+
   const goHome = () => {
     router.push({
       pathname: '/dashboard',

@@ -7,7 +7,8 @@ export default function NewActDiv({ editInput, refreshSection, collection, setSh
   const { acts, setActs } = useContext(ActContext);
   const { currentProject } = useContext(CurrentProjectContext);
   const projectId = currentProject[0]._id;
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
+  const { user } = userData;
   const { token } = user;
 
   const [input, setInput] = useState({

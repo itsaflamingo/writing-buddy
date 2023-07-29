@@ -6,7 +6,7 @@ import { ActContext, ChapterContext, CurrentActContext, CurrentChapterContext, C
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
-  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [projects, setProjects] = useState(null);
   const [acts, setActs] = useState(null);
   const [chapters, setChapters] = useState(null);
@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <UserContext.Provider value={{ user, setUser }}>
+      <UserContext.Provider value={{ userData, setUserData }}>
         <ProjectContext.Provider value={{ projects, setProjects }}>
           <ActContext.Provider value={{ acts, setActs }}>
             <ChapterContext.Provider value={{ chapters, setChapters }}>

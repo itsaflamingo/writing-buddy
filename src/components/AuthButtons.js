@@ -1,9 +1,12 @@
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { UserContext } from '@/contexts/Contexts';
+import Logout from './Logout';
 
 export default function AuthButtons() {
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
+  const { user } = userData;
+
   const router = useRouter();
 
   const visitLogin = () => {
@@ -21,10 +24,10 @@ export default function AuthButtons() {
   return (
     <div className="flex gap-5">
       <div className="flex justify-center items-center border border-solid w-20 font-medium">
-        {!user && <button type="button" onClick={() => visitLogin()}>Sign In</button>}
-        {user && <button type="button">Sign Out</button>}
+        {(!userData || ('user' in userData && !user.user)) && <button type="button" onClick={() => visitLogin()}>Log In</button>}
+        {user.user && <Logout />}
       </div>
-      {!user && (
+      {!userData && (
       <div className="flex justify-center items-center border border-solid w-20 font-medium">
         <button type="button" onClick={() => visitSignUp()}>Sign Up</button>
       </div>

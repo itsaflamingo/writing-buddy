@@ -5,7 +5,7 @@ import { UserContext } from '@/contexts/Contexts';
 import { useRouter } from 'next/router';
 
 export default function Login() {
-  const { setUser } = useContext(UserContext);
+  const { setUserData } = useContext(UserContext);
   const router = useRouter();
   // These two change at the same time, so they are grouped together
   const [input, setInput] = useState({
@@ -22,6 +22,7 @@ export default function Login() {
   }
 
   const onChangeHandler = (e, label) => setInput({ ...input, [label]: e.target.value });
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -37,7 +38,7 @@ export default function Login() {
     })
       .then((res) => {
         process.env.REACT_APP_TOKEN = res.data.token;
-        setUser(res.data);
+        setUserData({ user: res.data, setUserData });
         goToDashboard();
       })
       .catch((err) => setError(err))

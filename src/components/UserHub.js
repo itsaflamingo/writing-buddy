@@ -10,9 +10,15 @@ const sendToFetchData = (token, section, data) => {
 }
 
 export default function UserHub() {
-  const { user } = useContext(UserContext);
-  const id = user.user._id;
+  const { userData } = useContext(UserContext);
+  const { user } = userData;
+  let id;
+
+  if (user.user) {
+    id = user.user._id;
+  }
   const { token } = user;
+
   // Array of objects returned from the requested data
   const [data, setData] = useState(null);
   // Use above information to get data from backend

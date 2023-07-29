@@ -3,7 +3,9 @@ import useFetch from '@/customHooks/useFetch';
 import { ActContext, CurrentActContext, UserContext } from '@/contexts/Contexts';
 
 export default function NewProjectDiv({ refreshSection, collection, setShowCreateChapter }) {
-  const { user } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
+  const { user } = userData;
+  
   const { token } = user;
   const { acts, setActs } = useContext(ActContext);
   const { currentAct } = useContext(CurrentActContext);

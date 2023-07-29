@@ -7,7 +7,8 @@ import { api_url } from '@/api/url';
 export default function SignUp() {
   const router = useRouter();
 
-  const { user, setUser } = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
+  const { user } = userData;
   // These two change at the same time, so they are grouped together
   const [input, setInput] = useState({
     username: null,
@@ -40,7 +41,7 @@ export default function SignUp() {
     })
       .then((res) => {
         process.env.REACT_APP_TOKEN = res.data.token;
-        setUser(res.data);
+        setUserData(res.data);
       })
       .catch((err) => setError(err))
   }
