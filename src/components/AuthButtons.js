@@ -5,7 +5,12 @@ import Logout from './Logout';
 
 export default function AuthButtons() {
   const { userData } = useContext(UserContext);
-  const { user } = userData;
+
+  let user;
+
+  if (userData) {
+    user = userData.user;
+  }
 
   const router = useRouter();
 
@@ -25,7 +30,7 @@ export default function AuthButtons() {
     <div className="flex gap-5">
       <div className="flex justify-center items-center border border-solid w-20 font-medium">
         {(!userData || ('user' in userData && !user.user)) && <button type="button" onClick={() => visitLogin()}>Log In</button>}
-        {user.user && <Logout />}
+        {userData && <Logout />}
       </div>
       {!userData && (
       <div className="flex justify-center items-center border border-solid w-20 font-medium">

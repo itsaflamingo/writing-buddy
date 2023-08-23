@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
-import { ChapterContext, CurrentActContext, CurrentChapterContext, CurrentProjectContext } from '@/contexts/Contexts'
+import { ChapterContext, CurrentChapterContext, CurrentProjectContext } from '@/contexts/Contexts'
 import NavMenu from '@/components/NavMenu';
-import { getSelectedDivTitle, getSelectedDoc } from '@/functions/getSelectedDocument';
+import { getSelectedDoc } from '@/functions/getSelectedDocument';
 import Header from '@/components/Header';
 
 export default function ViewChapter() {
@@ -21,26 +21,22 @@ export default function ViewChapter() {
   return (
     <div className="flex flex-col">
       <Header />
-      <div className="flex justify-center gap-20">
-        <div>
+      <div className="flex justify-center gap-20 m-5">
+        <div className="flex flex-col w-10/12 items-center">
           <div>
-            <h1>{currentProject.title}</h1>
-            <p>{currentChapter.title}</p>
-            <p>
+            <h1 className="text-xl">{currentProject.title}</h1>
+            <p className="text-5xl font-bold">{currentChapter.title}</p>
+            <p className="text-2xl flex justify-center">
               #
               {' '}
               {currentChapter.number}
             </p>
           </div>
-          {currentChapter.body}
-          <div>
+          <div className="border-2 min-w-full p-5 m-5" dangerouslySetInnerHTML={{ __html: `<p>${currentChapter.body}</p>` }} />
+          <div className="text-sm">
             Last edit on
             {' '}
             {currentChapter.date_formatted}
-          </div>
-          <div>
-            <button type="button">Edit</button>
-            <button type="button">Delete</button>
           </div>
         </div>
         <NavMenu context={chapters} showMenuItem={showMenuItem} />
