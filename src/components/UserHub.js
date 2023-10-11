@@ -3,6 +3,7 @@ import Menu from './Menu';
 import { UserContext } from '@/contexts/Contexts';
 import WorkProfile from './WorkProfile';
 import useFetchData from '@/customHooks/useFetchData';
+import UserInfo from './UserInfo';
 
 const sendToFetchData = (token, section, data) => {
   const { id, collection } = section;
@@ -45,26 +46,29 @@ export default function UserHub() {
   return (
     <div className="flex justify-center m-[20px]">
       {error && <div>{error}</div>}
-      <div className="flex flex-col">
-        <div className="flex justify-center font-medium">{formatCollection(section.collection)}</div>
-        {error}
-        {data
-          && (
-          <WorkProfile
-            data={data}
-            setData={setData}
-            changeSection={setSection}
-            section={section}
-          />
-          )}
-        {loading && <div>Loading...</div>}
-        { (data && data.length === 0) && (
-        <h1>
-          You don&apos;t have any
-          {' '}
-          {section.collection}
-        </h1>
-        ) }
+      <div className='flex flex-row'>
+        <UserInfo />
+        <div className="flex flex-col">
+          <div className="flex justify-center font-medium">{formatCollection(section.collection)}</div>
+          {error}
+          {data
+            && (
+            <WorkProfile
+              data={data}
+              setData={setData}
+              changeSection={setSection}
+              section={section}
+            />
+            )}
+          {loading && <div>Loading...</div>}
+          { (data && data.length === 0) && (
+          <h1>
+            You don&apos;t have any
+            {' '}
+            {section.collection}
+          </h1>
+          ) }
+        </div>
       </div>
       <Menu changeSection={setSection} id={id} />
     </div>

@@ -8,7 +8,7 @@ export default function SignUp() {
   const router = useRouter();
 
   const { userData, setUserData } = useContext(UserContext);
-  const { user } = userData;
+
   // These two change at the same time, so they are grouped together
   const [input, setInput] = useState({
     username: null,
@@ -20,10 +20,10 @@ export default function SignUp() {
   const onChangeHandler = (e, label) => setInput({ ...input, [label]: e.target.value });
 
   useEffect(() => {
-    if (!user) return;
+    if (!userData) return;
 
     router.push('/login');
-  }, [user])
+  }, [userData])
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -48,15 +48,16 @@ export default function SignUp() {
 
   return (
     <div>
+      <div>New User</div>
       <form>
         {error && <div>{error.message}</div>}
-        <label htmlFor="username">Username</label>
+        <label htmlFor="username">Create Username</label>
         <input
           id="username"
           type="text"
           onChange={(e) => onChangeHandler(e, 'username')}
         />
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">Create Password</label>
         <input
           id="password"
           type="password"
