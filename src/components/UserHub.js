@@ -12,6 +12,9 @@ const sendToFetchData = (token, section, data) => {
 
 export default function UserHub() {
   const { userData } = useContext(UserContext);
+
+  if (!userData) return;
+
   const { user } = userData;
   let id;
 

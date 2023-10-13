@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { UserContext } from '@/contexts/Contexts';
 import { api_url } from '@/api/url';
-import bgImg from '../images/sign-up-im.jpg'
+import bgImg from '../images/sign-up-im.jpg';
 
 export default function SignUp() {
   const router = useRouter();
@@ -48,7 +48,6 @@ export default function SignUp() {
   }
 
   const divStyle = {
-    color: 'blue',
     backgroundImage: `url(${bgImg})`,
   };
 

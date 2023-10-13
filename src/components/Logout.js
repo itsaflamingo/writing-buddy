@@ -17,8 +17,7 @@ export default function Logout() {
     router.push({
       pathname: '/',
     })
-    setUserData({ user: { user: null, token: null }, setUserData });
-    console.log(user);
+    setUserData(null);
   }
 
   return (
