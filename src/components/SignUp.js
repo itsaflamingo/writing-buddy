@@ -52,11 +52,11 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex">
-      <div className="flex flex-col justify-center border max-w-sm h-screen">
-        <div className="flex justify-center">SIGN UP</div>
+    <div className="relative flex w-screen h-screen bg-no-repeat bg-cover" style={divStyle}>
+      <div className="flex flex-col justify-center max-w-sm h-screen text-white" style={{ zIndex: 1 }}>
+        <div className="flex justify-center text-xl font-bold">SIGN UP</div>
         <div>
-          <form className="flex flex-col m-3">
+          <form className="flex flex-col m-3 items-center">
             {error && <div>{error.message}</div>}
             <div className="flex gap-3 m-3 p-3">
               <label htmlFor="username">Create Username</label>
@@ -79,13 +79,14 @@ export default function SignUp() {
             <button
               type="submit"
               onClick={(e) => onSubmit(e)}
+              className='border min-w-[150px] min-h-[40px] font-bold'
             >
               Submit
             </button>
           </form>
         </div>
       </div>
-      <div style={divStyle} className="w-full bg-no-repeat bg-cover" />
+      <div className="absolute top-0 left-0 h-screen w-[384px] opacity-20 bg-black" />
     </div>
   )
 }
