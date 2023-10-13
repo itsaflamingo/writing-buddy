@@ -79,7 +79,7 @@ export default function SignUp() {
             <button
               type="submit"
               onClick={(e) => onSubmit(e)}
-              className='border min-w-[150px] min-h-[40px] font-bold'
+              className="border min-w-[150px] min-h-[40px] font-bold"
             >
               Submit
             </button>

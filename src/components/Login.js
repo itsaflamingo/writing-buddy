@@ -1,8 +1,9 @@
 import { useState, useContext } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { api_url } from '../api/url';
 import { UserContext } from '@/contexts/Contexts';
-import { useRouter } from 'next/router';
+import backgImg from '../images/log-in-background.png';
 
 export default function Login() {
   const { setUserData } = useContext(UserContext);
@@ -44,29 +45,44 @@ export default function Login() {
       .catch((err) => setError(err))
   }
 
+  const divStyle = {
+    backgroundImage: `url(${backgImg.src})`,
+  }
+
   return (
-    <div className="login">
-      <form>
-        {error && <div>{error.message}</div>}
-        <label htmlFor="username">Username</label>
-        <input
-          id="username"
-          type="text"
-          onChange={(e) => onChangeHandler(e, 'username')}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          onChange={(e) => onChangeHandler(e, 'password')}
-        />
-        <button
-          type="submit"
-          onClick={(e) => onSubmit(e)}
-        >
-          Submit
-        </button>
-      </form>
+    <div className="relative flex w-screen h-screen bg-no-repeat bg-cover" style={divStyle}>
+      <div className="flex flex-col justify-center max-w-sm h-screen text-white" style={{ zIndex: 1 }}>
+        <div className="flex justify-center text-xl font-bold">LOG IN</div>
+        <form className="flex flex-col m-3 items-center">
+          {error && <div>{error.message}</div>}
+          <div className="flex gap-3 m-3 p-3">
+            <label htmlFor="username">Username</label>
+            <input
+              className="border"
+              id="username"
+              type="text"
+              onChange={(e) => onChangeHandler(e, 'username')}
+            />
+          </div>
+          <div className="flex gap-3 m-3 p-3">
+            <label htmlFor="password">Password</label>
+            <input
+              className="border"
+              id="password"
+              type="password"
+              onChange={(e) => onChangeHandler(e, 'password')}
+            />
+          </div>
+          <button
+            className="border min-w-[150px] min-h-[40px] font-bold"
+            type="submit"
+            onClick={(e) => onSubmit(e)}
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+      <div className="absolute top-0 left-0 h-screen w-[384px] opacity-20 bg-black" />
     </div>
   )
 }
