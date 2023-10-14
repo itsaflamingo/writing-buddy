@@ -61,7 +61,7 @@ export default function SignUp() {
             <div className="flex gap-3 m-3 p-3">
               <label htmlFor="username">Create Username</label>
               <input
-                className="border"
+                className="border text-black"
                 id="username"
                 type="text"
                 onChange={(e) => onChangeHandler(e, 'username')}
@@ -70,7 +70,7 @@ export default function SignUp() {
             <div className="flex gap-3 m-3 p-3">
               <label htmlFor="password">Create Password</label>
               <input
-                className="border"
+                className="border text-black"
                 id="password"
                 type="password"
                 onChange={(e) => onChangeHandler(e, 'password')}

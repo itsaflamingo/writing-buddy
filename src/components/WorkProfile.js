@@ -71,7 +71,12 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   }, []);
 
   const changeSectionHandler = (doc, collect) => {
+    console.log('newSection', newSection);
     setData(null)
+
+    if (newSection === 'projects') {
+      return changeSection({ id: doc.id, collection: 'projects' })
+    }
     if (!collect) {
       return changeSection({ id: doc.id, collection: newSection });
     }
@@ -90,6 +95,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     e.stopPropagation();
     const title = getSelectedDivTitle(e);
     const doc = getSelectedDoc(title, sectionData);
+    console.log('doc', doc);
     setCurrentChapter(doc);
 
     router.push({
@@ -119,11 +125,11 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     return document;
   }
 
-  const getParentDocumentAndCollection = (collection) => {
+  const getParentDocumentAndCollection = (collect) => {
     let parentCollection = null;
     let parentDocument = null;
 
-    switch (collection) {
+    switch (collect) {
       case 'acts':
         parentCollection = 'projects';
         parentDocument = currentProject[0];
@@ -140,17 +146,27 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         break;
       default: parentCollection = null;
     }
+
     return { parentCollection, parentDocument };
   }
 
+  // changes docToDeleteTitle state to title of selected div
   const deleteClickHandler = (e) => {
     e.stopPropagation();
     setDocToDeleteTitle(getSelectedDivTitle(e));
   }
 
+  // Called when delete is confirmed from ConfirmDelete component
   const deleteDocument = (title) => {
     const document = getSelectedDoc(title, sectionData);
-    const { parentCollection, parentDocument } = getParentDocumentAndCollection(collection);
+
+    let { parentCollection, parentDocument } = getParentDocumentAndCollection(collection);
+
+    if (!parentCollection && !parentDocument) {
+      parentCollection = 'projects';
+      parentDocument = document;
+    }
+
     const abbreviatedCollection = collection.slice(0, collection.length - 1);
 
     changeSectionHandler(parentDocument, parentCollection);
@@ -174,9 +190,10 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   return (
     <div className="work-profile">
       <div className="flex mt-[10px]">
+        <NavigationButton document={user.user} changeSection={changeSectionHandler} section="projects" />
         {(collection === 'acts' && currentProject)
         && (
-          <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />
+        <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="projects" />
         )}
 
         {(collection === 'chapters' && currentProject && currentAct)
@@ -225,7 +242,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
             disabled={collection === 'chapters'}
           >
             <div className="proj-info flex flex-col items-center w-full">
-              <div className="text-lg">{doc.title}</div>
+              <div className="text-lg doc-title">{doc.title}</div>
               <div className="flex text-xs">
                 on
                 {' '}

@@ -1,4 +1,4 @@
-const switchNavButton = (document) => document ? document.title : undefined;
+const switchNavButton = (document) => (document.title ? document.title : 'Projects');
 
 export default function NavigationButton({ document, section, changeSection }) {
   return (
