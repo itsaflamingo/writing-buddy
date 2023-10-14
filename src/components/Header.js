@@ -6,8 +6,6 @@ import home from '../images/home-dark/icons8-home-96.png'
 export default function Header() {
   const router = useRouter();
 
-  console.log('re-rendered');
-
   const goHome = () => {
     router.push({
       pathname: '/dashboard',
@@ -15,11 +13,11 @@ export default function Header() {
   }
 
   return (
-    <header className="flex justify-between items-center h-[70px] border border-b-grey-300 px-[50px] py-[10px] shadow-sm">
+    <header className="flex justify-between items-center h-[70px] px-[50px] py-[10px] shadow-sm">
       <div className="bg-cyan-700 rounded-full h-12 w-12 flex justify-center items-center">
         <img src={owl.src} alt="owl icon" className="h-[70%]" />
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-4" style={{ zIndex: 1 }}>
         <button type="button" onClick={() => goHome()}>
           <img src={home.src} alt="home button" className="max-h-8" />
         </button>
