@@ -29,12 +29,12 @@ export default function AuthButtons() {
   return (
     <div className="flex gap-5">
       <div className="flex justify-center items-center border border-solid w-20 font-medium">
-        {(!userData || ('user' in userData && !user.user)) && <button type="button" onClick={() => visitLogin()}>Log In</button>}
+        {(!userData || ('user' in userData && !user.user)) && <button type="button" onClick={() => visitLogin()} className="text-white min-h-[40px]">LOG IN</button>}
         {userData && <Logout />}
       </div>
       {!userData && (
       <div className="flex justify-center items-center border border-solid w-20 font-medium">
-        <button type="button" onClick={() => visitSignUp()}>Sign Up</button>
+        <button type="button" onClick={() => visitSignUp()} className="text-white min-h-[40px]">SIGN UP</button>
       </div>
       )}
     </div>
