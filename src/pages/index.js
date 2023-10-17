@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <div className="index h-full bg-no-repeat bg-cover" style={divStyle}>
-      <Header />
+      <Header isHome />
       <div className="absolute top-0 left-0 h-[70px] w-screen opacity-20 bg-black" />
     </div>
   );
