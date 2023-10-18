@@ -71,7 +71,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   }, []);
 
   const changeSectionHandler = (doc, collect) => {
-    console.log('newSection', newSection);
     setData(null)
 
     if (newSection === 'projects') {
@@ -95,7 +94,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     e.stopPropagation();
     const title = getSelectedDivTitle(e);
     const doc = getSelectedDoc(title, sectionData);
-    console.log('doc', doc);
     setCurrentChapter(doc);
 
     router.push({
@@ -160,6 +158,8 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const deleteDocument = (title) => {
     const document = getSelectedDoc(title, sectionData);
 
+    console.log(document);
+
     let { parentCollection, parentDocument } = getParentDocumentAndCollection(collection);
 
     if (!parentCollection && !parentDocument) {
@@ -168,6 +168,9 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     }
 
     const abbreviatedCollection = collection.slice(0, collection.length - 1);
+
+    console.log(document);
+    console.log(`/hub/${abbreviatedCollection}/${document.id}/delete`)
 
     changeSectionHandler(parentDocument, parentCollection);
     fetch.deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
@@ -234,13 +237,15 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       </div>
       <div className="max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
         {data && data.map((doc) => (
-          <button
-            key={uniqid()}
-            type="button"
-            className="flex flex-col justify-center w-auto h-[200px] border border-gray-300"
-            onClick={() => changeSectionHandler(doc)}
-            disabled={collection === 'chapters'}
-          >
+          <div className="relative flex flex-col justify-center w-auto h-[200px]">
+            <button
+              key={uniqid()}
+              type="button"
+              className="absolute flex flex-col justify-center w-full h-[200px] border border-gray-300"
+              style={{ zIndex: 1 }}
+              onClick={() => changeSectionHandler(doc)}
+              disabled={collection === 'chapters'}
+            />
             <div className="proj-info flex flex-col items-center w-full">
               <div className="text-lg doc-title">{doc.title}</div>
               <div className="flex text-xs">
@@ -250,18 +255,19 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
               </div>
             </div>
             <div className="proj-buttons flex justify-center w-full gap-2 mt-24">
-              <button type="button" onClick={(e) => viewClickHandler(e)}>
+              <button type="button" onClick={(e) => viewClickHandler(e)} style={{ zIndex: 2 }}>
                 <img src={view.src} alt="view" className="max-h-[25px]" />
               </button>
-              <button type="button" onClick={(e) => editClickHandler(e)}>
+              <button type="button" onClick={(e) => editClickHandler(e)} style={{ zIndex: 2 }}>
                 <img src={edit.src} alt="edit" className="max-h-[25px]" />
               </button>
-              <button type="button" onClick={(e) => deleteClickHandler(e)}>
+              <button type="button" onClick={(e) => deleteClickHandler(e)} style={{ zIndex: 2 }}>
                 <img src={del.src} alt="delete" className="max-h-[25px]" />
               </button>
             </div>
-          </button>
+          </div>
         ))}
+
       </div>
       {docToDeleteTitle
       && (
