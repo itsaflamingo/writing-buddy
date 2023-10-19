@@ -158,8 +158,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const deleteDocument = (title) => {
     const document = getSelectedDoc(title, sectionData);
 
-    console.log(document);
-
     let { parentCollection, parentDocument } = getParentDocumentAndCollection(collection);
 
     if (!parentCollection && !parentDocument) {

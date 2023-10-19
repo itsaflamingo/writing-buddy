@@ -73,7 +73,7 @@ export default function NewProjectDiv(props) {
   }, [])
 
   return (
-    <div className="new-project absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300 bg-white">
+    <div className="new-project absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300 bg-white" style={{ zIndex: 2 }}>
       <div>
         {error && <div>{error}</div>}
         <form onSubmit={(e) => onFormSubmit(e)}>
