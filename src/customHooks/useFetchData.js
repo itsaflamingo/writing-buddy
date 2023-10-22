@@ -4,6 +4,7 @@ import useFetch from './useFetch';
 import { ActContext, ChapterContext, CurrentActContext, CurrentProjectContext, ProjectContext } from '@/contexts/Contexts';
 
 export default function useFetchData({ id, token, collection, data }) {
+  // console.log('id', id, 'token', token, 'collection', collection, data);
   const fetch = useFetch();
   const { projects, setProjects } = useContext(ProjectContext);
   const { acts, setActs } = useContext(ActContext);

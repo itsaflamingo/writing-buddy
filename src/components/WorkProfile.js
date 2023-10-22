@@ -167,9 +167,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
     const abbreviatedCollection = collection.slice(0, collection.length - 1);
 
-    console.log(document);
-    console.log(`/hub/${abbreviatedCollection}/${document.id}/delete`)
-
     changeSectionHandler(parentDocument, parentCollection);
     fetch.deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
       .then(() => changeSectionHandler(user.user._id, 'projects'))
@@ -191,7 +188,8 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   return (
     <div className="work-profile">
       <div className="flex mt-[10px]">
-        <NavigationButton document={user.user} changeSection={changeSectionHandler} section="projects" />
+        {('user' in user)
+          && <NavigationButton document={user.user} changeSection={changeSectionHandler} section="projects" />}
         {(collection === 'acts' && currentProject)
         && (
         <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="projects" />
