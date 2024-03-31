@@ -124,16 +124,13 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     return document;
   }
 
-  function deleteFromCollection(collection, document) {
+  function deleteProject(collect, document) {
     let index;
-    switch(collection) {
-      case 'projects':
-        index = projects.findIndex(act => act.title === document.title)
-        projects.splice(index, 1)
-      break;
-    }
 
-    console.log(projects)
+    if (collect === 'projects') {
+      index = projects.findIndex((act) => act.title === document.title)
+      projects.splice(index, 1)
+    }
   }
 
   // changes docToDeleteTitle state to title of selected div
@@ -155,14 +152,14 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       parentDocument = document;
     }
 
-    //Remove 's' from collection, 'projects' becomes 'project'
+    // Remove 's' from collection, 'projects' becomes 'project'
     const abbreviatedCollection = collection.slice(0, collection.length - 1);
 
     changeSectionHandler(parentDocument, parentCollection);
 
     fetch.deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
       .then(() => {
-        deleteFromCollection(collection, document)
+        deleteProject(collection, document)
         changeSectionHandler(user.user._id, 'projects')
       })
       .catch((err) => console.log(err))

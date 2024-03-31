@@ -3,6 +3,7 @@ import { UserContext } from '@/contexts/Contexts';
 import WorkProfile from './WorkProfile';
 import useFetchData from '@/customHooks/useFetchData';
 import UserInfo from './UserInfo';
+import { useRouter } from 'next/router';
 
 const sendToFetchData = (token, section, data) => {
   const { id, collection } = section;
@@ -11,6 +12,7 @@ const sendToFetchData = (token, section, data) => {
 
 export default function UserHub() {
   const { userData } = useContext(UserContext);
+  const router = useRouter();
 
   if (!userData) return;
 
@@ -48,11 +50,17 @@ export default function UserHub() {
 
   const formatCollection = (collection) => collection.charAt(0).toUpperCase() + collection.slice(1);
 
+  const visitAccountPage = () => {
+    router.push({
+      pathname: '/account/',
+    });
+  }
+
   return (
     <div className="flex justify-center m-[20px]">
       {error && <div>{error}</div>}
       <div className='flex flex-row'>
-        <UserInfo />
+        <UserInfo visitAccountPage={visitAccountPage}/>
         <div className="flex flex-col">
           <div className="flex justify-center font-medium">{formatCollection(section.collection)}</div>
           {error}
