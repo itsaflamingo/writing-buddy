@@ -13,6 +13,7 @@ import { getSelectedDivTitle, getSelectedDoc } from '@/functions/getSelectedDocu
 import view from '../images/view-black.png';
 import edit from '../images/edit-black.png';
 import del from '../images/delete-black.png';
+import getParentDocumentAndCollection from '@/functions/getParentDocumentAndCollection';
 
 const calcSection = (section) => {
   let newSect;
@@ -123,29 +124,16 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     return document;
   }
 
-  const getParentDocumentAndCollection = (collect) => {
-    let parentCollection = null;
-    let parentDocument = null;
-
-    switch (collect) {
-      case 'acts':
-        parentCollection = 'projects';
-        parentDocument = currentProject[0];
-        break;
-      case 'chapters':
-        if (chapters.length === 1) {
-          parentCollection = 'acts';
-          // Also currentProject because page wants id of project with act children
-          parentDocument = currentProject[0];
-        } else {
-          parentCollection = 'chapters';
-          parentDocument = currentAct[0]
-        }
-        break;
-      default: parentCollection = null;
+  function deleteFromCollection(collection, document) {
+    let index;
+    switch(collection) {
+      case 'projects':
+        index = projects.findIndex(act => act.title === document.title)
+        projects.splice(index, 1)
+      break;
     }
 
-    return { parentCollection, parentDocument };
+    console.log(projects)
   }
 
   // changes docToDeleteTitle state to title of selected div
@@ -156,20 +144,27 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
   // Called when delete is confirmed from ConfirmDelete component
   const deleteDocument = (title) => {
+    // Select document to be deleted
     const document = getSelectedDoc(title, sectionData);
 
-    let { parentCollection, parentDocument } = getParentDocumentAndCollection(collection);
+    // Select collection that document belongs in
+    let { parentCollection, parentDocument } = getParentDocumentAndCollection(collection, currentProject, currentAct);
 
     if (!parentCollection && !parentDocument) {
       parentCollection = 'projects';
       parentDocument = document;
     }
 
+    //Remove 's' from collection, 'projects' becomes 'project'
     const abbreviatedCollection = collection.slice(0, collection.length - 1);
 
     changeSectionHandler(parentDocument, parentCollection);
+
     fetch.deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
-      .then(() => changeSectionHandler(user.user._id, 'projects'))
+      .then(() => {
+        deleteFromCollection(collection, document)
+        changeSectionHandler(user.user._id, 'projects')
+      })
       .catch((err) => console.log(err))
   }
 

@@ -43,6 +43,9 @@ export default function UserHub() {
     setData(null);
   }, [section])
 
+  useEffect(() => {
+  }, [data])
+
   const formatCollection = (collection) => collection.charAt(0).toUpperCase() + collection.slice(1);
 
   return (
