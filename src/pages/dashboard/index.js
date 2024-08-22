@@ -1,5 +1,5 @@
-import Header from '@/components/Header';
-import UserHub from '@/components/UserHub';
+import Header from "@/components/Header";
+import UserHub from "@/components/UserHub";
 
 export default function RenderDashboard() {
   return (
@@ -7,5 +7,5 @@ export default function RenderDashboard() {
       <Header />
       <UserHub />
     </div>
-  )
+  );
 }

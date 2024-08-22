@@ -63,7 +63,7 @@ export default function UserHub() {
       {error && <div>Error</div>}
       <div className="flex flex-row w-full h-full justify-center">
         <UserInfo visitAccountPage={visitAccountPage} user={user.user} />
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-center">
           <div className="flex justify-center text-3xl">
             {capitalizeStr(section.collection)}
           </div>
