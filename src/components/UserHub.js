@@ -4,6 +4,7 @@ import WorkProfile from "./WorkProfile";
 import useFetchData from "@/customHooks/useFetchData";
 import UserInfo from "./UserInfo";
 import { useRouter } from "next/router";
+import capitalizeStr from "@/functions/capitalizeStr";
 
 const sendToFetchData = (token, section, data) => {
   const { id, collection } = section;
@@ -51,9 +52,6 @@ export default function UserHub() {
 
   useEffect(() => {}, [data]);
 
-  const formatCollection = (collection) =>
-    collection.charAt(0).toUpperCase() + collection.slice(1);
-
   const visitAccountPage = () => {
     router.push({
       pathname: "/account/",
@@ -61,13 +59,13 @@ export default function UserHub() {
   };
 
   return (
-    <div className="flex justify-center m-[20px] bg-[#FFFDFD]">
+    <div className="font-comfort flex w-full h-full justify-center bg-[#FFFDFD] text-gray-800">
       {error && <div>Error</div>}
-      <div className="flex flex-row">
+      <div className="flex flex-row w-full h-full justify-center">
         <UserInfo visitAccountPage={visitAccountPage} user={user.user} />
         <div className="flex flex-col">
-          <div className="flex justify-center font-medium">
-            {formatCollection(section.collection)}
+          <div className="flex justify-center text-3xl">
+            {capitalizeStr(section.collection)}
           </div>
           {error}
           {data && (

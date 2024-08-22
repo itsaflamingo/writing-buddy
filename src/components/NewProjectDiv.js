@@ -62,7 +62,7 @@ export default function NewProjectDiv(props) {
     }
 
     fetch
-      .createData(`/user/${userId}/project/create`, input, token)
+      .createData(`/hub/user/${userId}/project/create`, input, token)
       .then((res) => {
         setProjects([res.data, ...projects]);
         refreshSection(user.user, collection);

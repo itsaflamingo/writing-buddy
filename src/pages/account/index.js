@@ -11,7 +11,6 @@ export default function Account() {
   const { user } = userData;
 
   const [switchPage, setSwitchPage] = useState(true);
-  console.log("INDEX USER", user);
 
   return (
     <div>

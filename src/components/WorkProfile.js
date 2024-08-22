@@ -25,6 +25,7 @@ import view from "../images/view-black.png";
 import edit from "../images/edit-black.png";
 import del from "../images/delete-black.png";
 import getParentDocumentAndCollection from "@/functions/getParentDocumentAndCollection";
+import capitalizeStr from "@/functions/capitalizeStr";
 
 const calcSection = (section) => {
   let newSect;
@@ -267,7 +268,9 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
                 disabled={collection === "chapters"}
               />
               <div className="proj-info flex flex-col items-center w-full">
-                <div className="text-lg doc-title">{doc.title}</div>
+                <div className="text-lg doc-title">
+                  {capitalizeStr(doc.title)}
+                </div>
                 <div className="flex text-xs">on {doc.date_formatted}</div>
               </div>
               <div className="proj-buttons flex justify-center w-full gap-2 mt-24">
