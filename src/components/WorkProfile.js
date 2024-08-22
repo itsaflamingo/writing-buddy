@@ -1,33 +1,45 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import uniqid from 'uniqid';
-import { ActContext, ChapterContext, CurrentActContext, CurrentChapterContext, CurrentProjectContext, ProjectContext, UserContext } from '@/contexts/Contexts';
-import NavigationButton from './NavigationButton';
-import returnSingularCollection from '@/functions/returnSingularCollection';
-import NewProjectDiv from './NewProjectDiv';
-import NewActDiv from './NewActDiv';
-import useFetch from '@/customHooks/useFetch';
-import ConfirmDelete from './ConfirmDelete';
-import { getSelectedDivTitle, getSelectedDoc } from '@/functions/getSelectedDocument';
-import view from '../images/view-black.png';
-import edit from '../images/edit-black.png';
-import del from '../images/delete-black.png';
-import getParentDocumentAndCollection from '@/functions/getParentDocumentAndCollection';
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import uniqid from "uniqid";
+import {
+  ActContext,
+  ChapterContext,
+  CurrentActContext,
+  CurrentChapterContext,
+  CurrentProjectContext,
+  ProjectContext,
+  UserContext,
+} from "@/contexts/Contexts";
+import NavigationButton from "./NavigationButton";
+import returnSingularCollection from "@/functions/returnSingularCollection";
+import NewProjectDiv from "./NewProjectDiv";
+import NewActDiv from "./NewActDiv";
+import useFetch from "@/customHooks/useFetch";
+import ConfirmDelete from "./ConfirmDelete";
+import {
+  getSelectedDivTitle,
+  getSelectedDoc,
+} from "@/functions/getSelectedDocument";
+import view from "../images/view-black.png";
+import edit from "../images/edit-black.png";
+import del from "../images/delete-black.png";
+import getParentDocumentAndCollection from "@/functions/getParentDocumentAndCollection";
 
 const calcSection = (section) => {
   let newSect;
   switch (section) {
-    case 'projects':
-      newSect = 'acts'
+    case "projects":
+      newSect = "acts";
       break;
-    case 'acts':
-      newSect = 'chapters'
+    case "acts":
+      newSect = "chapters";
       break;
-    default: newSect = section;
+    default:
+      newSect = section;
   }
   return newSect;
-}
+};
 
 export default function WorkProfile({ data, setData, section, changeSection }) {
   const router = useRouter();
@@ -58,38 +70,39 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
   useEffect(() => {
     switch (collection) {
-      case 'projects':
+      case "projects":
         setSectionData(projects);
         break;
-      case 'acts':
+      case "acts":
         setSectionData(acts);
         break;
-      case 'chapters':
+      case "chapters":
         setSectionData(chapters);
         break;
-      default: return null;
+      default:
+        return null;
     }
   }, []);
 
   const changeSectionHandler = (doc, collect) => {
-    setData(null)
+    setData(null);
 
-    if (newSection === 'projects') {
-      return changeSection({ id: doc.id, collection: 'projects' })
+    if (newSection === "projects") {
+      return changeSection({ id: doc.id, collection: "projects" });
     }
     if (!collect) {
       return changeSection({ id: doc.id, collection: newSection });
     }
 
     return changeSection({ id: doc.id, collection: collect });
-  }
+  };
 
   const navigateToChapterRoute = (doc, endpoint) => {
     router.push({
       pathname: `/chapter/${endpoint}`,
       query: { data: JSON.stringify(doc) },
     });
-  }
+  };
 
   const viewClickHandler = (e) => {
     e.stopPropagation();
@@ -98,9 +111,9 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     setCurrentChapter(doc);
 
     router.push({
-      pathname: '/chapter/view',
+      pathname: "/chapter/view",
     });
-  }
+  };
 
   const editClickHandler = (e) => {
     e.stopPropagation();
@@ -109,27 +122,28 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     const document = getSelectedDoc(title, sectionData);
 
     switch (collection) {
-      case 'projects':
+      case "projects":
         setShowCreateProject(true);
         break;
-      case 'acts':
+      case "acts":
         setShowCreateAct(true);
         break;
-      case 'chapters':
-        navigateToChapterRoute(document, 'create');
+      case "chapters":
+        navigateToChapterRoute(document, "create");
         break;
-      default: return document;
+      default:
+        return document;
     }
 
     return document;
-  }
+  };
 
   function deleteProject(collect, document) {
     let index;
 
-    if (collect === 'projects') {
-      index = projects.findIndex((act) => act.title === document.title)
-      projects.splice(index, 1)
+    if (collect === "projects") {
+      index = projects.findIndex((act) => act.title === document.title);
+      projects.splice(index, 1);
     }
   }
 
@@ -137,7 +151,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const deleteClickHandler = (e) => {
     e.stopPropagation();
     setDocToDeleteTitle(getSelectedDivTitle(e));
-  }
+  };
 
   // Called when delete is confirmed from ConfirmDelete component
   const deleteDocument = (title) => {
@@ -145,10 +159,14 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     const document = getSelectedDoc(title, sectionData);
 
     // Select collection that document belongs in
-    let { parentCollection, parentDocument } = getParentDocumentAndCollection(collection, currentProject, currentAct);
+    let { parentCollection, parentDocument } = getParentDocumentAndCollection(
+      collection,
+      currentProject,
+      currentAct
+    );
 
     if (!parentCollection && !parentDocument) {
-      parentCollection = 'projects';
+      parentCollection = "projects";
       parentDocument = document;
     }
 
@@ -157,131 +175,150 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
     changeSectionHandler(parentDocument, parentCollection);
 
-    fetch.deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
+    fetch
+      .deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
       .then(() => {
-        deleteProject(collection, document)
-        changeSectionHandler(user.user._id, 'projects')
+        deleteProject(collection, document);
+        changeSectionHandler(user.user._id, "projects");
       })
-      .catch((err) => console.log(err))
-  }
+      .catch((err) => console.log(err));
+  };
 
   const showNewDocumentDiv = (collect) => {
     switch (collect) {
-      case 'projects':
-        setShowCreateProject(!showCreateProject)
+      case "projects":
+        setShowCreateProject(!showCreateProject);
         break;
-      case 'acts':
-        setShowCreateAct(!showCreateAct)
+      case "acts":
+        setShowCreateAct(!showCreateAct);
         break;
-      default: return null
+      default:
+        return null;
     }
-  }
+  };
 
   return (
     <div className="work-profile">
       <div className="flex mt-[10px]">
-        {('user' in user)
-          && <NavigationButton document={user.user} changeSection={changeSectionHandler} section="projects" />}
-        {(collection === 'acts' && currentProject)
-        && (
-        <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="projects" />
+        {"user" in user && (
+          <NavigationButton
+            document={user.user}
+            changeSection={changeSectionHandler}
+            section="projects"
+          />
+        )}
+        {collection === "acts" && currentProject && (
+          <NavigationButton
+            document={currentProject[0]}
+            changeSection={changeSectionHandler}
+            section="projects"
+          />
         )}
 
-        {(collection === 'chapters' && currentProject && currentAct)
-        && (
-        <>
-          <NavigationButton document={currentProject[0]} changeSection={changeSectionHandler} section="acts" />
-          <div className="flex items-center h-[17.6px] mx-[10px]">&gt;</div>
-          <NavigationButton document={currentAct[0]} changeSection={changeSectionHandler} section="chapters" />
-        </>
+        {collection === "chapters" && currentProject && currentAct && (
+          <>
+            <NavigationButton
+              document={currentProject[0]}
+              changeSection={changeSectionHandler}
+              section="acts"
+            />
+            <div className="flex items-center h-[17.6px] mx-[10px]">&gt;</div>
+            <NavigationButton
+              document={currentAct[0]}
+              changeSection={changeSectionHandler}
+              section="chapters"
+            />
+          </>
         )}
       </div>
-      {(collection === 'projects' || collection === 'acts') && (
+      {(collection === "projects" || collection === "acts") && (
         <button
           type="button"
           onClick={() => showNewDocumentDiv(collection)}
           className="flex justify-center items-center border border-solid w-40 font-medium m-[10px]"
         >
-          New
-          {' '}
-          {returnSingularCollection(collection)}
+          New {returnSingularCollection(collection)}
         </button>
       )}
       <div>
-        {collection === 'chapters' && (
+        {collection === "chapters" && (
           <h2 className="flex justify-center items-center border border-solid w-40 font-medium m-[10px]">
             <Link
               href={{
-                pathname: '/chapter/create',
+                pathname: "/chapter/create",
                 query: { editInput },
               }}
             >
-              New
-              {' '}
-              {returnSingularCollection(collection)}
+              New {returnSingularCollection(collection)}
             </Link>
           </h2>
         )}
       </div>
       <div className="max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
-        {data && data.map((doc) => (
-          <div className="relative flex flex-col justify-center w-auto h-[200px]">
-            <button
-              key={uniqid()}
-              type="button"
-              className="absolute flex flex-col justify-center w-full h-[200px] border border-gray-300"
-              style={{ zIndex: 1 }}
-              onClick={() => changeSectionHandler(doc)}
-              disabled={collection === 'chapters'}
-            />
-            <div className="proj-info flex flex-col items-center w-full">
-              <div className="text-lg doc-title">{doc.title}</div>
-              <div className="flex text-xs">
-                on
-                {' '}
-                {doc.date_formatted}
+        {data &&
+          data.map((doc) => (
+            <div className="relative flex flex-col justify-center w-auto h-[200px]">
+              <button
+                key={uniqid()}
+                type="button"
+                className="absolute flex flex-col justify-center w-full h-[200px] border border-gray-300"
+                style={{ zIndex: 1 }}
+                onClick={() => changeSectionHandler(doc)}
+                disabled={collection === "chapters"}
+              />
+              <div className="proj-info flex flex-col items-center w-full">
+                <div className="text-lg doc-title">{doc.title}</div>
+                <div className="flex text-xs">on {doc.date_formatted}</div>
+              </div>
+              <div className="proj-buttons flex justify-center w-full gap-2 mt-24">
+                <button
+                  type="button"
+                  onClick={(e) => viewClickHandler(e)}
+                  style={{ zIndex: 2 }}
+                >
+                  <img src={view.src} alt="view" className="max-h-[25px]" />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => editClickHandler(e)}
+                  style={{ zIndex: 2 }}
+                >
+                  <img src={edit.src} alt="edit" className="max-h-[25px]" />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => deleteClickHandler(e)}
+                  style={{ zIndex: 2 }}
+                >
+                  <img src={del.src} alt="delete" className="max-h-[25px]" />
+                </button>
               </div>
             </div>
-            <div className="proj-buttons flex justify-center w-full gap-2 mt-24">
-              <button type="button" onClick={(e) => viewClickHandler(e)} style={{ zIndex: 2 }}>
-                <img src={view.src} alt="view" className="max-h-[25px]" />
-              </button>
-              <button type="button" onClick={(e) => editClickHandler(e)} style={{ zIndex: 2 }}>
-                <img src={edit.src} alt="edit" className="max-h-[25px]" />
-              </button>
-              <button type="button" onClick={(e) => deleteClickHandler(e)} style={{ zIndex: 2 }}>
-                <img src={del.src} alt="delete" className="max-h-[25px]" />
-              </button>
-            </div>
-          </div>
-        ))}
-
+          ))}
       </div>
-      {docToDeleteTitle
-      && (
-      <ConfirmDelete
-        title={docToDeleteTitle}
-        deleteDocument={deleteDocument}
-        setDocToDeleteTitle={setDocToDeleteTitle}
-      />
+      {docToDeleteTitle && (
+        <ConfirmDelete
+          title={docToDeleteTitle}
+          deleteDocument={deleteDocument}
+          setDocToDeleteTitle={setDocToDeleteTitle}
+        />
       )}
-      {showCreateProject
-      && (
-      <NewProjectDiv
-        editInput={editInput}
-        refreshSection={changeSectionHandler}
-        collection={collection}
-        setShowCreateProject={setShowCreateProject}
-      />
+      {showCreateProject && (
+        <NewProjectDiv
+          editInput={editInput}
+          refreshSection={changeSectionHandler}
+          collection={collection}
+          setShowCreateProject={setShowCreateProject}
+        />
       )}
       {showCreateAct && (
-      <NewActDiv
-        editInput={editInput}
-        refreshSection={changeSectionHandler}
-        collection={collection}
-        setShowCreateAct={setShowCreateAct}
-      />
+        <NewActDiv
+          editInput={editInput}
+          refreshSection={changeSectionHandler}
+          collection={collection}
+          setShowCreateAct={setShowCreateAct}
+        />
       )}
     </div>
-  )
+  );
 }

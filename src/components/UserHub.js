@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '@/contexts/Contexts';
-import WorkProfile from './WorkProfile';
-import useFetchData from '@/customHooks/useFetchData';
-import UserInfo from './UserInfo';
-import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "@/contexts/Contexts";
+import WorkProfile from "./WorkProfile";
+import useFetchData from "@/customHooks/useFetchData";
+import UserInfo from "./UserInfo";
+import { useRouter } from "next/router";
 
 const sendToFetchData = (token, section, data) => {
   const { id, collection } = section;
-  return { id, token, collection, data }
-}
+  return { id, token, collection, data };
+};
 
 export default function UserHub() {
   const { userData } = useContext(UserContext);
@@ -27,10 +27,14 @@ export default function UserHub() {
   // Array of objects returned from the requested data
   const [data, setData] = useState(null);
   // Use above information to get data from backend
-  const [section, setSection] = useState({ id, collection: 'projects' });
+  const [section, setSection] = useState({ id, collection: "projects" });
 
   // Prepares data into object
-  const params = sendToFetchData(token, { id: section.id, collection: section.collection }, data);
+  const params = sendToFetchData(
+    token,
+    { id: section.id, collection: section.collection },
+    data
+  );
 
   const { requestedData, loading, error } = useFetchData(params);
 
@@ -38,52 +42,49 @@ export default function UserHub() {
     // When data is successfully retrieved from backend, add to data state
     if (loading === true || data) return;
     setData(requestedData);
-  }, [requestedData])
+  }, [requestedData]);
 
   useEffect(() => {
     // When section is changed, reset data value to enable retrieval of new data
     setData(null);
-  }, [section])
+  }, [section]);
 
-  useEffect(() => {
-  }, [data])
+  useEffect(() => {}, [data]);
 
-  const formatCollection = (collection) => collection.charAt(0).toUpperCase() + collection.slice(1);
+  const formatCollection = (collection) =>
+    collection.charAt(0).toUpperCase() + collection.slice(1);
 
   const visitAccountPage = () => {
     router.push({
-      pathname: '/account/',
+      pathname: "/account/",
     });
-  }
+  };
 
   return (
-    <div className="flex justify-center m-[20px]">
-      {error && <div>{error}</div>}
-      <div className='flex flex-row'>
-        <UserInfo visitAccountPage={visitAccountPage}/>
+    <div className="flex justify-center m-[20px] bg-[#FFFDFD]">
+      {error && <div>Error</div>}
+      <div className="flex flex-row">
+        <UserInfo visitAccountPage={visitAccountPage} user={user.user} />
         <div className="flex flex-col">
-          <div className="flex justify-center font-medium">{formatCollection(section.collection)}</div>
+          <div className="flex justify-center font-medium">
+            {formatCollection(section.collection)}
+          </div>
           {error}
-          {data
-            && (
+          {data && (
             <WorkProfile
               data={data}
               setData={setData}
               changeSection={setSection}
               section={section}
             />
-            )}
+          )}
           {loading && <div>Loading...</div>}
-          { (data && data.length === 0) && (
-          <h1>
-            You don&apos;t have any
-            {' '}
-            {section.collection}
-          </h1>
-          ) }
+          {data && data.length === 0 && (
+            <h1>You don&apos;t have any {section.collection}</h1>
+          )}
         </div>
       </div>
       {/* <Menu changeSection={setSection} id={id} /> */}
     </div>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
-import useFetch from '@/customHooks/useFetch';
-import { ProjectContext, UserContext } from '@/contexts/Contexts';
+import { useContext, useEffect, useState } from "react";
+import useFetch from "@/customHooks/useFetch";
+import { ProjectContext, UserContext } from "@/contexts/Contexts";
 
 export default function NewProjectDiv(props) {
   const { editInput, refreshSection, collection, setShowCreateProject } = props;
@@ -15,7 +15,7 @@ export default function NewProjectDiv(props) {
     genre: null,
     isPublished: false,
     isComplete: false,
-  })
+  });
   const [error, setError] = useState(null);
   const fetch = useFetch();
 
@@ -26,21 +26,23 @@ export default function NewProjectDiv(props) {
     const updatedDocuments = [...projects];
     updatedDocuments[index] = doc;
 
-    setProjects(updatedDocuments)
-  }
+    setProjects(updatedDocuments);
+  };
 
   const onTitleChange = (e) => setInput({ ...input, title: e.target.value });
   const onGenreChange = (e) => setInput({ ...input, genre: e.target.value });
-  const onPublishedChange = () => setInput({ ...input, isPublished: !input.isPublished });
-  const onCompletedChange = () => setInput({ ...input, isCompleted: !input.isPublished });
+  const onPublishedChange = () =>
+    setInput({ ...input, isPublished: !input.isPublished });
+  const onCompletedChange = () =>
+    setInput({ ...input, isCompleted: !input.isPublished });
 
   const isFormValid = () => {
     if ((input.title || input.genre) === null) {
-      setError('Title and genre fields must be filled');
-      return false
+      setError("Title and genre fields must be filled");
+      return false;
     }
     return true;
-  }
+  };
 
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -48,37 +50,47 @@ export default function NewProjectDiv(props) {
     if (isFormValid() === false) return;
 
     if (editInput) {
-      fetch.updateData(`/hub/project/${editInput.id}/update/`, input, token)
+      fetch
+        .updateData(`/project/${editInput.id}/update/`, input, token)
         .then((res) => {
           updateSection(res.data, editInput.id, projects);
           refreshSection(user.user, collection);
           setShowCreateProject(false);
         })
-        .catch((err) => setError(err))
+        .catch((err) => setError(err));
       return;
     }
 
-    fetch.createData(`/hub/user/${userId}/project/create`, input, token)
+    fetch
+      .createData(`/user/${userId}/project/create`, input, token)
       .then((res) => {
-        setProjects([res.data, ...projects])
-        refreshSection(user.user, collection)
-        setShowCreateProject(false)
+        setProjects([res.data, ...projects]);
+        refreshSection(user.user, collection);
+        setShowCreateProject(false);
       })
-      .catch((err) => setError(err))
-  }
+      .catch((err) => setError(err));
+  };
 
   useEffect(() => {
     if (!editInput) return;
-    setInput(editInput)
-  }, [])
+    setInput(editInput);
+  }, []);
 
   return (
-    <div className="new-project absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300 bg-white" style={{ zIndex: 2 }}>
+    <div
+      className="new-project absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300 bg-white"
+      style={{ zIndex: 2 }}
+    >
       <div>
         {error && <div>{error}</div>}
         <form onSubmit={(e) => onFormSubmit(e)}>
           <div className="flex-col">
-            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_title">Title</label>
+            <label
+              className="font-bold text-gray-700 mb-2"
+              htmlFor="new_post_title"
+            >
+              Title
+            </label>
             <input
               className="w-full border border-gray-400 p-2 rounded-md"
               type="text"
@@ -88,7 +100,12 @@ export default function NewProjectDiv(props) {
             />
           </div>
           <div className="flex-col">
-            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_genre">Genre</label>
+            <label
+              className="font-bold text-gray-700 mb-2"
+              htmlFor="new_post_genre"
+            >
+              Genre
+            </label>
             <input
               className="w-full border border-gray-400 p-2 rounded-md"
               id="new_post_genre"
@@ -98,7 +115,12 @@ export default function NewProjectDiv(props) {
             />
           </div>
           <div className="flex my-[5px] justify-between px-[20px]">
-            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_published">Published</label>
+            <label
+              className="font-bold text-gray-700 mb-2"
+              htmlFor="new_post_published"
+            >
+              Published
+            </label>
             <input
               className="border border-gray-400 p-2 rounded-md"
               type="checkbox"
@@ -107,7 +129,12 @@ export default function NewProjectDiv(props) {
             />
           </div>
           <div className="flex my-[5px] justify-between px-[20px]">
-            <label className="font-bold text-gray-700 mb-2" htmlFor="new_post_completed">Completed</label>
+            <label
+              className="font-bold text-gray-700 mb-2"
+              htmlFor="new_post_completed"
+            >
+              Completed
+            </label>
             <input
               className="border border-gray-400 p-2 rounded-md"
               type="checkbox"
@@ -116,15 +143,24 @@ export default function NewProjectDiv(props) {
             />
           </div>
           <div className="w-full flex justify-center">
-            <button type="submit" className="border border-gray-400 p-2 rounded-md">
+            <button
+              type="submit"
+              className="border border-gray-400 p-2 rounded-md"
+            >
               Submit
             </button>
           </div>
         </form>
       </div>
       <div className="absolute w-[27px] h-[27px] right-2 top-0 border rounded-full flex justify-center items-center cursor-pointer after:ml-0.5 after:text-red-500">
-        <button type="button" className="text-gray-500 font-bold" onClick={() => setShowCreateProject(false)}>x</button>
+        <button
+          type="button"
+          className="text-gray-500 font-bold"
+          onClick={() => setShowCreateProject(false)}
+        >
+          x
+        </button>
       </div>
     </div>
-  )
+  );
 }
