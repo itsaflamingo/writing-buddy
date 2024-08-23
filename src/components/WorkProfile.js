@@ -177,7 +177,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     changeSectionHandler(parentDocument, parentCollection);
 
     fetch
-      .deleteData(`/hub/${abbreviatedCollection}/${document.id}/delete`, token)
+      .deleteData(`/${abbreviatedCollection}/${document.id}/delete`, token)
       .then(() => {
         deleteProject(collection, document);
         changeSectionHandler(user.user._id, "projects");

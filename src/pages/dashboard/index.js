@@ -4,7 +4,7 @@ import UserHub from "@/components/UserHub";
 export default function RenderDashboard() {
   return (
     <div>
-      <Header />
+      <Header isHome={false} />
       <UserHub />
     </div>
   );

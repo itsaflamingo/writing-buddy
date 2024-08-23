@@ -19,6 +19,8 @@ export default function NewProjectDiv(props) {
   const [error, setError] = useState(null);
   const fetch = useFetch();
 
+  console.log(error);
+
   const updateSection = (doc, id, documents) => {
     const hasId = (value) => value._id === id;
     const index = documents.findIndex(hasId);
@@ -53,22 +55,23 @@ export default function NewProjectDiv(props) {
       fetch
         .updateData(`/project/${editInput.id}/update/`, input, token)
         .then((res) => {
+          console.log(res);
           updateSection(res.data, editInput.id, projects);
           refreshSection(user.user, collection);
           setShowCreateProject(false);
         })
-        .catch((err) => setError(err));
+        .catch((err) => setError(err.message));
       return;
     }
 
     fetch
-      .createData(`/hub/user/${userId}/project/create`, input, token)
+      .createData(`/user/${userId}/project/create`, input, token)
       .then((res) => {
         setProjects([res.data, ...projects]);
         refreshSection(user.user, collection);
         setShowCreateProject(false);
       })
-      .catch((err) => setError(err));
+      .catch((err) => setError("Something is broken"));
   };
 
   useEffect(() => {

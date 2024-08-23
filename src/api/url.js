@@ -1,1 +1,1 @@
-export const api_url = 'https://writing-buddy.fly.dev';
+export const api_url = "https://writing-buddy.fly.dev";

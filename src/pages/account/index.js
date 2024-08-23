@@ -14,7 +14,7 @@ export default function Account() {
 
   return (
     <div>
-      <Header />
+      <Header isHome={false} />
       <div className="border-2 border-black flex flex-col h-screen">
         <div className="flex justify-center">
           <h1>Account</h1>
