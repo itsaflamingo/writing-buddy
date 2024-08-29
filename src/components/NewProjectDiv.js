@@ -19,8 +19,6 @@ export default function NewProjectDiv(props) {
   const [error, setError] = useState(null);
   const fetch = useFetch();
 
-  console.log(error);
-
   const updateSection = (doc, id, documents) => {
     const hasId = (value) => value._id === id;
     const index = documents.findIndex(hasId);
@@ -37,6 +35,12 @@ export default function NewProjectDiv(props) {
     setInput({ ...input, isPublished: !input.isPublished });
   const onCompletedChange = () =>
     setInput({ ...input, isCompleted: !input.isPublished });
+
+  useEffect(() => {
+    console.log(editInput);
+    if (editInput === null) return;
+    setInput(editInput);
+  }, []);
 
   const isFormValid = () => {
     if ((input.title || input.genre) === null) {
@@ -72,11 +76,6 @@ export default function NewProjectDiv(props) {
       })
       .catch((err) => setError("Something is broken"));
   };
-
-  useEffect(() => {
-    if (!editInput) return;
-    setInput(editInput);
-  }, []);
 
   return (
     <div

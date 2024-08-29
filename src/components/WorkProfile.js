@@ -107,7 +107,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
 
   const viewClickHandler = (e) => {
     e.stopPropagation();
-    const title = getSelectedDivTitle(e);
+    const title = getSelectedDivTitle(e).toLowerCase();
     const doc = getSelectedDoc(title, sectionData);
     setCurrentChapter(doc);
 
@@ -120,7 +120,8 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     e.stopPropagation();
 
     const title = getSelectedDivTitle(e);
-    const document = getSelectedDoc(title, sectionData);
+    const lowerCaseTitle = title.toLowerCase();
+    const document = getSelectedDoc(lowerCaseTitle, sectionData);
 
     switch (collection) {
       case "projects":
@@ -135,6 +136,13 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       default:
         return document;
     }
+
+    setEditInput({
+      title: title,
+      genre: document.genre,
+      isPublished: document.isPublished,
+      isComplete: document.isComplete,
+    });
 
     return document;
   };
@@ -151,7 +159,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   // changes docToDeleteTitle state to title of selected div
   const deleteClickHandler = (e) => {
     e.stopPropagation();
-    setDocToDeleteTitle(getSelectedDivTitle(e));
+    setDocToDeleteTitle(getSelectedDivTitle(e).toLowerCase());
   };
 
   // Called when delete is confirmed from ConfirmDelete component

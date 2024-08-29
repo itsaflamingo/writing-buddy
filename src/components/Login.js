@@ -32,7 +32,6 @@ export default function Login() {
       username: input.username,
       password: input.password,
     }).toString();
-
     axios
       .post(`${api_url}/login`, formData, {
         headers: {
@@ -40,12 +39,16 @@ export default function Login() {
         },
       })
       .then((res) => {
-        console.log("LOGIN INFO", res);
+        console.log(res);
         process.env.REACT_APP_TOKEN = res.data.token;
         setUserData({ user: res.data, setUserData });
         goToDashboard();
       })
-      .catch((err) => setError(err));
+      .catch((err) => {
+        console.log(err);
+        setError(err);
+        return;
+      });
   };
 
   const divStyle = {

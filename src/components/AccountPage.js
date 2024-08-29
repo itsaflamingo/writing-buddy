@@ -1,13 +1,23 @@
 import useFetch, { updateData } from "../customHooks/useFetch";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "@/contexts/Contexts";
 
 export default function AccountPage() {
   const { userData } = useContext(UserContext);
-  // const { user } = userData;
-  // const { token } = user;
+  const { user } = userData;
+  const { token } = user;
 
   const fetch = useFetch();
+
+  const [input, setInput] = useState({
+    ...user,
+    profileInfo: {
+      ...user.profileInfo,
+      bio: null,
+      profilePicture: null,
+    },
+  });
+  const [error, setError] = useState(null);
 
   console.log(userData);
 
@@ -22,9 +32,13 @@ export default function AccountPage() {
 
   const submitForm = (e) => {
     e.preventDefault();
-    // if (isFormValid() === false) return;
-    console.log("USER DATA:", userData);
-    // fetch.updateData(`/user/`);
+    if (isFormValid() === false) return;
+    console.log(token);
+    fetch
+      .updateData(`/user/${user.user._id}/update`, input, token)
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   return (
@@ -32,11 +46,11 @@ export default function AccountPage() {
       <form onSubmit={(e) => submitForm(e)}>
         <div>
           <div>
-            <label>Update bio</label>
+            <label>Update bio: </label>
             <textarea className="border" />
           </div>
           <div>
-            <label>Update profile picture</label>
+            <label>Update profile picture: </label>
             <input className="border" />
           </div>
         </div>
