@@ -58,9 +58,9 @@ export default function NewActDiv({
 
     if (editInput) {
       fetch
-        .updateData(`/act/${editInput.id}/update/`, input, token)
+        .updateData(`/act/${editInput._id}/update/`, input, token)
         .then((res) => {
-          updateSection(res.data, editInput.id, acts);
+          updateSection(res.data, editInput._id, acts);
           refreshSection(currentProject[0], collection);
           setShowCreateAct(false);
         })

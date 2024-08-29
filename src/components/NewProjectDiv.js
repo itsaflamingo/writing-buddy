@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import useFetch from "@/customHooks/useFetch";
 import { ProjectContext, UserContext } from "@/contexts/Contexts";
+import capitalizeStr from "@/functions/capitalizeStr";
 
 export default function NewProjectDiv(props) {
   const { editInput, refreshSection, collection, setShowCreateProject } = props;
@@ -37,7 +38,6 @@ export default function NewProjectDiv(props) {
     setInput({ ...input, isCompleted: !input.isPublished });
 
   useEffect(() => {
-    console.log(editInput);
     if (editInput === null) return;
     setInput(editInput);
   }, []);
@@ -54,7 +54,8 @@ export default function NewProjectDiv(props) {
     e.preventDefault();
 
     if (isFormValid() === false) return;
-
+    // Convert title back to lower case before storing
+    input.title = input.title.toLowerCase();
     if (editInput) {
       fetch
         .updateData(`/project/${editInput.id}/update/`, input, token)

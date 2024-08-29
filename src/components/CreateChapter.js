@@ -83,7 +83,7 @@ export default function CreateChapter() {
     // If data was passed from router.query, data is to be updated
     if (parsedData) {
       fetch
-        .updateData(`/chapter/${parsedData.id}/update/`, input, token)
+        .updateData(`/chapter/${parsedData._id}/update/`, input, token)
         .then((res) => {
           setCurrentChapter(res.data);
           router.push("/chapter/view");

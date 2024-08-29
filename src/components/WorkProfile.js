@@ -142,6 +142,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       genre: document.genre,
       isPublished: document.isPublished,
       isComplete: document.isComplete,
+      id: document.id,
     });
 
     return document;
