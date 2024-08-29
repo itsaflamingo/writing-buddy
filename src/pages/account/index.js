@@ -7,9 +7,6 @@ import AccountPage from "@/components/AccountPage";
 import Settings from "./settings";
 
 export default function Account() {
-  const { userData } = useContext(UserContext);
-  const { user } = userData;
-
   const [switchPage, setSwitchPage] = useState(true);
 
   return (

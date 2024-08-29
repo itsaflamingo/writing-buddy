@@ -9,7 +9,7 @@ import {
   ProjectContext,
 } from "@/contexts/Contexts";
 
-export default function useFetchData({ id, token, collection, data }) {
+export default function useSwitchCollection({ id, token, collection, data }) {
   const fetch = useFetch();
   const { projects, setProjects } = useContext(ProjectContext);
   const { acts, setActs } = useContext(ActContext);

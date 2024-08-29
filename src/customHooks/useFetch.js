@@ -15,15 +15,8 @@ export default function useFetch() {
 
     return axios
       .post(`${api_url}${route}`, formData, { headers })
-      .then((res) => {
-        console.log(`${api_url}${route}`, formData, { headers });
-        console.log("RESPONSE: ", res);
-        return res;
-      })
-      .catch((err) => {
-        console.log(`${api_url}${route}`, formData, { headers });
-        setError(err);
-      });
+      .then((res) => res)
+      .catch((err) => setError(err));
   });
 
   const getData = useCallback((route, token) => {

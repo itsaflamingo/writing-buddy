@@ -55,7 +55,6 @@ export default function NewProjectDiv(props) {
       fetch
         .updateData(`/project/${editInput.id}/update/`, input, token)
         .then((res) => {
-          console.log(res);
           updateSection(res.data, editInput.id, projects);
           refreshSection(user.user, collection);
           setShowCreateProject(false);

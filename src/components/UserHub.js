@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/contexts/Contexts";
 import WorkProfile from "./WorkProfile";
-import useFetchData from "@/customHooks/useFetchData";
+import useSwitchCollection from "@/customHooks/useSwitchCollection";
 import UserInfo from "./UserInfo";
 import { useRouter } from "next/router";
 import capitalizeStr from "@/functions/capitalizeStr";
@@ -37,7 +37,7 @@ export default function UserHub() {
     data
   );
 
-  const { requestedData, loading, error } = useFetchData(params);
+  const { requestedData, loading, error } = useSwitchCollection(params);
 
   useEffect(() => {
     // When data is successfully retrieved from backend, add to data state
