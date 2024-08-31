@@ -11,6 +11,8 @@ export default function NewProjectDiv(props) {
   const { token } = user;
   const { projects, setProjects } = useContext(ProjectContext);
 
+  console.log(projects);
+
   const [input, setInput] = useState({
     title: null,
     genre: null,
@@ -18,7 +20,7 @@ export default function NewProjectDiv(props) {
     isComplete: false,
   });
   const [error, setError] = useState(null);
-  const fetch = useFetch();
+  const fetch = useFetch(token);
 
   const updateSection = (doc, id, documents) => {
     const hasId = (value) => value._id === id;
@@ -58,7 +60,7 @@ export default function NewProjectDiv(props) {
     input.title = input.title.toLowerCase();
     if (editInput) {
       fetch
-        .updateData(`/project/${editInput.id}/update/`, input, token)
+        .updateData(editInput.url, input)
         .then((res) => {
           updateSection(res.data, editInput.id, projects);
           refreshSection(user.user, collection);
@@ -69,7 +71,7 @@ export default function NewProjectDiv(props) {
     }
 
     fetch
-      .createData(`/user/${userId}/project/create`, input, token)
+      .createData(user.url, input)
       .then((res) => {
         setProjects([res.data, ...projects]);
         refreshSection(user.user, collection);

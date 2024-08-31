@@ -44,7 +44,6 @@ const calcSection = (section) => {
 
 export default function WorkProfile({ data, setData, section, changeSection }) {
   const router = useRouter();
-  const fetch = useFetch();
 
   const { userData } = useContext(UserContext);
   const { user } = userData;
@@ -59,6 +58,8 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const { setCurrentChapter } = useContext(CurrentChapterContext);
 
   const { collection } = section;
+
+  const fetch = useFetch(token);
 
   // Cache previous section.func value to prevent unnecessary re-renders
   const newSection = useMemo(() => calcSection(collection), [collection]);
@@ -143,6 +144,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       isPublished: document.isPublished,
       isComplete: document.isComplete,
       id: document.id,
+      url: document.url,
     });
 
     return document;
@@ -180,13 +182,10 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       parentDocument = document;
     }
 
-    // Remove 's' from collection, 'projects' becomes 'project'
-    const abbreviatedCollection = collection.slice(0, collection.length - 1);
-
     changeSectionHandler(parentDocument, parentCollection);
 
     fetch
-      .deleteData(`/${abbreviatedCollection}/${document.id}/delete`, token)
+      .deleteData(document.url)
       .then(() => {
         deleteProject(collection, document);
         changeSectionHandler(user.user._id, "projects");

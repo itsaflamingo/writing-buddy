@@ -12,13 +12,14 @@ export default function NewActDiv({
   collection,
   setShowCreateAct,
 }) {
-  const fetch = useFetch();
   const { acts, setActs } = useContext(ActContext);
   const { currentProject } = useContext(CurrentProjectContext);
-  const projectId = currentProject[0].id;
+  const project = currentProject[0];
   const { userData } = useContext(UserContext);
   const { user } = userData;
   const { token } = user;
+
+  const fetch = useFetch(token);
 
   const [input, setInput] = useState({
     title: null,
@@ -58,10 +59,10 @@ export default function NewActDiv({
 
     if (editInput) {
       fetch
-        .updateData(`/act/${editInput._id}/update/`, input, token)
+        .updateData(project.url, input)
         .then((res) => {
           updateSection(res.data, editInput._id, acts);
-          refreshSection(currentProject[0], collection);
+          refreshSection(project, collection);
           setShowCreateAct(false);
         })
         .catch((err) => setError(err));
@@ -69,10 +70,10 @@ export default function NewActDiv({
     }
 
     fetch
-      .createData(`/project/${projectId}/act/create`, input, token)
+      .createData(project.url, input)
       .then((res) => {
         setActs([res.data, ...acts]);
-        refreshSection(currentProject[0], collection);
+        refreshSection(project, collection);
         setShowCreateAct(false);
       })
       .catch((err) => setError(err));

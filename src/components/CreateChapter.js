@@ -27,7 +27,7 @@ export default function CreateChapter() {
 
   // Creates reference to tinyMCE editor instance
   const editorRef = useRef(null);
-  const fetch = useFetch();
+  const fetch = useFetch(token);
 
   const [input, setInput] = useState({
     title: null,
@@ -83,7 +83,7 @@ export default function CreateChapter() {
     // If data was passed from router.query, data is to be updated
     if (parsedData) {
       fetch
-        .updateData(`/chapter/${parsedData._id}/update/`, input, token)
+        .updateData(`/${parsedData._id}`, input)
         .then((res) => {
           setCurrentChapter(res.data);
           router.push("/chapter/view");
@@ -93,7 +93,7 @@ export default function CreateChapter() {
     }
     // Else, data is to be created
     fetch
-      .createData(`/act/${actId}/chapter/create`, input, token)
+      .createData(`/${actId}/`, input)
       .then((res) => {
         setCurrentChapter(res.data);
         router.push("/chapter/view");

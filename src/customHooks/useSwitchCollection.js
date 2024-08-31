@@ -7,20 +7,25 @@ import {
   CurrentActContext,
   CurrentProjectContext,
   ProjectContext,
+  UserContext,
 } from "@/contexts/Contexts";
 
 export default function useSwitchCollection({ id, token, collection, data }) {
-  const fetch = useFetch();
+  const { userData } = useContext(UserContext);
   const { projects, setProjects } = useContext(ProjectContext);
   const { acts, setActs } = useContext(ActContext);
-  const { chapters, setChapters } = useContext(ChapterContext);
+  const { setChapters } = useContext(ChapterContext);
 
   const { setCurrentProject } = useContext(CurrentProjectContext);
   const { setCurrentAct } = useContext(CurrentActContext);
 
+  const { user } = { userData };
+
   const [requestedData, setRequestedData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const fetch = useFetch(token);
 
   useEffect(() => {
     if (data) return;
@@ -58,7 +63,7 @@ export default function useSwitchCollection({ id, token, collection, data }) {
 
   const fetchData = (pathOne, pathTwo) => {
     fetch
-      .getData(`/${pathOne}/${id}/${pathTwo}`, token)
+      .getData(`/${pathOne}/${id}/${pathTwo}`)
       .then((res) => {
         // Set state to returned data
         setRequestedData(res.data);

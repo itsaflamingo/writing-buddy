@@ -3,15 +3,16 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import { api_url } from "@/api/url";
 
-export default function useFetch() {
+export default function useFetch(token) {
   const [error, setError] = useState(null);
 
-  const createData = useCallback((route, data, token) => {
+  const headers = {
+    "Content-Type": "application/x-www-form-urlencoded",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const createData = useCallback((route, data) => {
     const formData = new URLSearchParams(data).toString();
-    const headers = {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${token}`,
-    };
 
     return axios
       .post(`${api_url}${route}`, formData, { headers })
@@ -19,7 +20,7 @@ export default function useFetch() {
       .catch((err) => setError(err));
   });
 
-  const getData = useCallback((route, token) => {
+  const getData = useCallback((route) => {
     const headers = { Authorization: `Bearer ${token}` };
 
     return axios
@@ -28,12 +29,8 @@ export default function useFetch() {
       .catch((err) => setError(err));
   });
 
-  const updateData = useCallback((route, data, token) => {
+  const updateData = useCallback((route, data) => {
     const formData = new URLSearchParams(data).toString();
-    const headers = {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${token}`,
-    };
 
     return axios
       .patch(`${api_url}${route}`, formData, { headers })
@@ -41,12 +38,7 @@ export default function useFetch() {
       .catch((err) => setError(err));
   });
 
-  const deleteData = useCallback((route, token) => {
-    const headers = {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Bearer ${token}`,
-    };
-
+  const deleteData = useCallback((route) => {
     return axios
       .delete(`${api_url}${route}`, { headers })
       .then((res) => console.log(res))

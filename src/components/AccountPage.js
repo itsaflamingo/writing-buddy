@@ -7,7 +7,7 @@ export default function AccountPage() {
   const { user } = userData;
   const { token } = user;
 
-  const fetch = useFetch();
+  const fetch = useFetch(token);
 
   const [input, setInput] = useState({
     ...user,
@@ -33,11 +33,9 @@ export default function AccountPage() {
   const submitForm = (e) => {
     e.preventDefault();
     if (isFormValid() === false) return;
-    fetch
-      .updateData(`/user/${user.user._id}/update`, input, token)
-      .then((res) => {
-        console.log(res);
-      });
+    fetch.updateData(user.url, input).then((res) => {
+      console.log(res);
+    });
   };
 
   return (

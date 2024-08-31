@@ -13,11 +13,11 @@ export default function NewProjectDiv({
 }) {
   const { userData } = useContext(UserContext);
   const { user } = userData;
-
   const { token } = user;
+
   const { acts, setActs } = useContext(ActContext);
   const { currentAct } = useContext(CurrentActContext);
-  const actId = currentAct[0]._id;
+  const act = currentAct[0];
 
   const [input, setInput] = useState({
     title: null,
@@ -27,7 +27,7 @@ export default function NewProjectDiv({
     isComplete: false,
   });
   const [error, setError] = useState(null);
-  const fetch = useFetch();
+  const fetch = useFetch(token);
 
   const onTitleChange = (e) => setInput({ ...input, title: e.target.value });
   const onNumberChange = (e) => setInput({ ...input, number: e.target.value });
@@ -59,10 +59,10 @@ export default function NewProjectDiv({
     if (isFormValid() === false) return;
 
     fetch
-      .createData(`/act/${actId}/chapter/create`, input, token)
+      .createData(act.url, input)
       .then((res) => {
         setActs([res.data, ...acts]);
-        refreshSection(currentAct[0], collection);
+        refreshSection(act, collection);
         setShowCreateChapter(false);
       })
       .catch((err) => setError(err));
