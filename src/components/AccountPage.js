@@ -33,7 +33,6 @@ export default function AccountPage() {
   const submitForm = (e) => {
     e.preventDefault();
     if (isFormValid() === false) return;
-    console.log(token);
     fetch
       .updateData(`/user/${user.user._id}/update`, input, token)
       .then((res) => {
