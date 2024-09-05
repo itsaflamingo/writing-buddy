@@ -20,7 +20,7 @@ export default function CreateChapter() {
   const { token } = user;
 
   const { currentAct } = useContext(CurrentActContext);
-  const actId = currentAct[0]._id;
+  const actUrl = currentAct[0].url;
   const { currentChapter, setCurrentChapter } = useContext(
     CurrentChapterContext
   );
@@ -80,10 +80,12 @@ export default function CreateChapter() {
 
     if (isFormValid() === false) return;
 
+    console.log(parsedData);
+
     // If data was passed from router.query, data is to be updated
     if (parsedData) {
       fetch
-        .updateData(`/${parsedData._id}`, input)
+        .updateData(parsedData.url, input)
         .then((res) => {
           setCurrentChapter(res.data);
           router.push("/chapter/view");
@@ -93,7 +95,7 @@ export default function CreateChapter() {
     }
     // Else, data is to be created
     fetch
-      .createData(`/${actId}/`, input)
+      .createData(actUrl, input)
       .then((res) => {
         setCurrentChapter(res.data);
         router.push("/chapter/view");
@@ -103,7 +105,7 @@ export default function CreateChapter() {
 
   return (
     <div className="flex justify-center w-100 p-4">
-      {error && <div>{error}</div>}
+      {error && <div>Error</div>}
       <form
         className="flex flex-col w-8/12 items-center"
         onSubmit={(e) => onSubmit(e)}

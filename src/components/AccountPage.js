@@ -19,8 +19,6 @@ export default function AccountPage() {
   });
   const [error, setError] = useState(null);
 
-  console.log(userData);
-
   // Check form validity
   const isFormValid = () => {
     if ((input.title || input.genre) === null) {

@@ -39,7 +39,7 @@ export default function Login() {
         },
       })
       .then((res) => {
-        console.log(res);
+        console.log("USER:", res);
         process.env.REACT_APP_TOKEN = res.data.token;
         setUserData({ user: res.data, setUserData });
         goToDashboard();

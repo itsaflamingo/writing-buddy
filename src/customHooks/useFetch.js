@@ -31,7 +31,6 @@ export default function useFetch(token) {
 
   const updateData = useCallback((route, data) => {
     const formData = new URLSearchParams(data).toString();
-
     return axios
       .patch(`${api_url}${route}`, formData, { headers })
       .then((res) => res)

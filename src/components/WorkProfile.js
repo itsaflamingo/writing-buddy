@@ -138,6 +138,8 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         return document;
     }
 
+    console.log(document);
+
     setEditInput({
       title: title,
       genre: document.genre,
@@ -266,9 +268,11 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       <div className="max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
         {data &&
           data.map((doc) => (
-            <div className="relative flex flex-col justify-center w-auto h-[200px]">
+            <div
+              className="relative flex flex-col justify-center w-auto h-[200px]"
+              key={uniqid()}
+            >
               <button
-                key={uniqid()}
                 type="button"
                 className="absolute flex flex-col justify-center w-full h-[200px] border border-gray-300"
                 style={{ zIndex: 1 }}

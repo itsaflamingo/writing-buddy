@@ -9,7 +9,9 @@ export default function Home() {
   const result = useQuery("user", () =>
     axios
       .get(`${api_url}/`)
-      .then((res) => res)
+      .then((res) => {
+        return res;
+      })
       .catch((err) => err)
   );
 

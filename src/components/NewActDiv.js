@@ -17,6 +17,7 @@ export default function NewActDiv({
   const project = currentProject[0];
   const { userData } = useContext(UserContext);
   const { user } = userData;
+
   const { token } = user;
 
   const fetch = useFetch(token);

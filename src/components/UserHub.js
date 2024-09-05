@@ -6,9 +6,9 @@ import UserInfo from "./UserInfo";
 import { useRouter } from "next/router";
 import capitalizeStr from "@/functions/capitalizeStr";
 
-const sendToFetchData = (token, section, data) => {
+const sendToFetchData = (token, section, data, user) => {
   const { id, collection } = section;
-  return { id, token, collection, data };
+  return { id, token, collection, data, user };
 };
 
 export default function UserHub() {
@@ -34,7 +34,8 @@ export default function UserHub() {
   const params = sendToFetchData(
     token,
     { id: section.id, collection: section.collection },
-    data
+    data,
+    user.user
   );
 
   const { requestedData, loading, error } = useSwitchCollection(params);
@@ -67,7 +68,6 @@ export default function UserHub() {
           <div className="flex justify-center text-3xl">
             {capitalizeStr(section.collection)}
           </div>
-          {error}
           {data && (
             <WorkProfile
               data={data}

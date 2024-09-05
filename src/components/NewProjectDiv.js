@@ -6,20 +6,18 @@ import capitalizeStr from "@/functions/capitalizeStr";
 export default function NewProjectDiv(props) {
   const { editInput, refreshSection, collection, setShowCreateProject } = props;
   const { userData } = useContext(UserContext);
-  const { user } = userData;
-  const userId = user.user._id;
-  const { token } = user;
+  const { userObj } = userData;
+  const { user } = userObj;
+  const { token } = userObj;
   const { projects, setProjects } = useContext(ProjectContext);
 
-  console.log(projects);
-
   const [input, setInput] = useState({
-    title: null,
-    genre: null,
+    title: "",
+    genre: "",
     isPublished: false,
     isComplete: false,
   });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const fetch = useFetch(token);
 
   const updateSection = (doc, id, documents) => {
@@ -63,18 +61,17 @@ export default function NewProjectDiv(props) {
         .updateData(editInput.url, input)
         .then((res) => {
           updateSection(res.data, editInput.id, projects);
-          refreshSection(user.user, collection);
+          refreshSection(user, collection);
           setShowCreateProject(false);
         })
         .catch((err) => setError(err.message));
       return;
     }
-
     fetch
       .createData(user.url, input)
       .then((res) => {
         setProjects([res.data, ...projects]);
-        refreshSection(user.user, collection);
+        refreshSection(user, collection);
         setShowCreateProject(false);
       })
       .catch((err) => setError("Something is broken"));

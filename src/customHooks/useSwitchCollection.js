@@ -7,19 +7,21 @@ import {
   CurrentActContext,
   CurrentProjectContext,
   ProjectContext,
-  UserContext,
 } from "@/contexts/Contexts";
 
-export default function useSwitchCollection({ id, token, collection, data }) {
-  const { userData } = useContext(UserContext);
+export default function useSwitchCollection({
+  id,
+  token,
+  collection,
+  data,
+  user,
+}) {
   const { projects, setProjects } = useContext(ProjectContext);
   const { acts, setActs } = useContext(ActContext);
   const { setChapters } = useContext(ChapterContext);
 
   const { setCurrentProject } = useContext(CurrentProjectContext);
   const { setCurrentAct } = useContext(CurrentActContext);
-
-  const { user } = { userData };
 
   const [requestedData, setRequestedData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -35,23 +37,27 @@ export default function useSwitchCollection({ id, token, collection, data }) {
       // If projects context not empty, simply rerturn projects context data
       if (projects === null) {
         // Get data, set state to returned data
-        fetchData("user", "projects");
+        fetchData(user.list_projects);
         setProjects(requestedData);
       }
       setRequestedData(projects);
       setLoading(false);
     }
     if (collection === "acts") {
+      // Get current project
+      const project = projects.filter((project) => project.id === id);
       // Get data, set state to returned data
-      fetchData("project", "acts");
+      fetchData(project[0].list_acts);
       // Set acts context to returned data
       setActs(requestedData);
       // Set current project context to project connected to acts
-      setCurrentProject(() => projects.filter((project) => project._id === id));
+      setCurrentProject(project);
     }
     if (collection === "chapters") {
+      // Get current act
+      const act = acts.filter((act) => act._id === id);
       // Get data, set state to returned data
-      fetchData("act", "chapters");
+      fetchData(act[0].list_chapters);
       // Set chapters context to returned data
       setChapters(requestedData);
       // Set current act context to act connected to chapters
@@ -61,10 +67,11 @@ export default function useSwitchCollection({ id, token, collection, data }) {
     return () => setRequestedData(null);
   }, [requestedData, data, collection]);
 
-  const fetchData = (pathOne, pathTwo) => {
+  const fetchData = (url) => {
     fetch
-      .getData(`/${pathOne}/${id}/${pathTwo}`)
+      .getData(url)
       .then((res) => {
+        console.log("GET RESPONSE IN USESWITCHCOLLECTION", res);
         // Set state to returned data
         setRequestedData(res.data);
         setLoading(false);
