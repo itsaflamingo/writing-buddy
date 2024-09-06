@@ -71,7 +71,6 @@ export default function useSwitchCollection({
     fetch
       .getData(url)
       .then((res) => {
-        console.log("GET RESPONSE IN USESWITCHCOLLECTION", res);
         // Set state to returned data
         setRequestedData(res.data);
         setLoading(false);

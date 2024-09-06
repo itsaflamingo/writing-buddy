@@ -6,9 +6,8 @@ import capitalizeStr from "@/functions/capitalizeStr";
 export default function NewProjectDiv(props) {
   const { editInput, refreshSection, collection, setShowCreateProject } = props;
   const { userData } = useContext(UserContext);
-  const { userObj } = userData;
-  const { user } = userObj;
-  const { token } = userObj;
+  const { user } = userData;
+  const { token } = user;
   const { projects, setProjects } = useContext(ProjectContext);
 
   const [input, setInput] = useState({
@@ -61,17 +60,17 @@ export default function NewProjectDiv(props) {
         .updateData(editInput.url, input)
         .then((res) => {
           updateSection(res.data, editInput.id, projects);
-          refreshSection(user, collection);
+          refreshSection(user.user, collection);
           setShowCreateProject(false);
         })
         .catch((err) => setError(err.message));
       return;
     }
     fetch
-      .createData(user.url, input)
+      .createData(user.user.url, input)
       .then((res) => {
         setProjects([res.data, ...projects]);
-        refreshSection(user, collection);
+        refreshSection(user.user, collection);
         setShowCreateProject(false);
       })
       .catch((err) => setError("Something is broken"));
