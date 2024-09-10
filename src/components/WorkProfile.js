@@ -138,8 +138,6 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         return document;
     }
 
-    console.log(document);
-
     setEditInput({
       title: title,
       genre: document.genre,
@@ -147,6 +145,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
       isComplete: document.isComplete,
       id: document.id,
       url: document.url,
+      list_acts: document.list_acts,
     });
 
     return document;

@@ -80,8 +80,6 @@ export default function CreateChapter() {
 
     if (isFormValid() === false) return;
 
-    console.log(parsedData);
-
     // If data was passed from router.query, data is to be updated
     if (parsedData) {
       fetch
