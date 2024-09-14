@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "@/contexts/Contexts";
 
 export default function AccountPage() {
-  const { userData } = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
   const { user } = userData;
   const { token } = user;
 
@@ -51,6 +51,7 @@ export default function AccountPage() {
 
     fetch.updateData(user.user.url, updatedUser).then((res) => {
       console.log(res);
+      setUserData({ user: res.data, setUserData });
     });
   };
 

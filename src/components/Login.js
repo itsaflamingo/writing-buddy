@@ -28,14 +28,14 @@ export default function Login() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const formData = new URLSearchParams({
+    const formData = {
       username: input.username,
       password: input.password,
-    }).toString();
+    };
     axios
       .post(`${api_url}/login`, formData, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {
