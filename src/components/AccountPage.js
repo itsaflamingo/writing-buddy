@@ -10,14 +10,22 @@ export default function AccountPage() {
   const fetch = useFetch(token);
 
   const [input, setInput] = useState({
-    ...user,
-    profileInfo: {
-      ...user.profileInfo,
-      bio: null,
-      profilePicture: null,
-    },
+    bio: "",
+    profilePicture: "",
   });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
+
+  const onBioChange = (e) =>
+    setInput({
+      ...input,
+      bio: e.target.value,
+    });
+
+  const onProfilePictureChange = (e) =>
+    setInput({
+      ...input,
+      profilePicture: e.target.value,
+    });
 
   // Check form validity
   const isFormValid = () => {
@@ -31,8 +39,17 @@ export default function AccountPage() {
   const submitForm = (e) => {
     e.preventDefault();
     if (isFormValid() === false) return;
-    console.log(input.user);
-    fetch.updateData(user.user.url, input.user).then((res) => {
+
+    const updatedUser = {
+      ...user.user,
+      profileInfo: {
+        ...user.user.profileInfo, // Spread existing profileInfo
+        bio: input.bio, // Update bio
+        profilePicture: input.profilePicture, // Update profile picture
+      },
+    };
+
+    fetch.updateData(user.user.url, updatedUser).then((res) => {
       console.log(res);
     });
   };
@@ -43,11 +60,19 @@ export default function AccountPage() {
         <div>
           <div>
             <label>Update bio: </label>
-            <textarea className="border" />
+            <textarea
+              className="border"
+              onChange={(e) => onBioChange(e)}
+              value={input.bio}
+            />
           </div>
           <div>
             <label>Update profile picture: </label>
-            <input className="border" />
+            <input
+              className="border"
+              onChange={(e) => onProfilePictureChange(e)}
+              type="text"
+            />
           </div>
         </div>
         <button type="submit">Submit</button>

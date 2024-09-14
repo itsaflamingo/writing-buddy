@@ -12,6 +12,7 @@ export default function Settings() {
   const deleteAcct = () => {
     fetch.deleteData(user.user.url).then((res) => {
       console.log(res);
+      // Log out, print that user and all docs have been deleted.
     });
   };
 

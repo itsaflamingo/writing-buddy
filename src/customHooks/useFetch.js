@@ -7,15 +7,13 @@ export default function useFetch(token) {
   const [error, setError] = useState(null);
 
   const headers = {
-    "Content-Type": "application/x-www-form-urlencoded",
+    "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
 
   const createData = useCallback((route, data) => {
-    const formData = new URLSearchParams(data).toString();
-
     return axios
-      .post(`${api_url}${route}`, formData, { headers })
+      .post(`${api_url}${route}`, data, { headers })
       .then((res) => res)
       .catch((err) => setError(err));
   });
@@ -30,9 +28,8 @@ export default function useFetch(token) {
   });
 
   const updateData = useCallback((route, data) => {
-    const formData = new URLSearchParams(data).toString();
     return axios
-      .patch(`${api_url}${route}`, formData, { headers })
+      .patch(`${api_url}${route}`, data, { headers })
       .then((res) => res)
       .catch((err) => setError(err));
   });
