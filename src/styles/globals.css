@@ -9,3 +9,15 @@
   height: 100vh;
   position: relative;
 }
+
+@layer components {
+  .label {
+    @apply block text-base font-medium text-gray-700;
+  }
+  .input {
+    @apply block w-full px-4 py-2 border border-gray-300 rounded-md;
+  }
+  .button2 {
+    @apply bg-[#F5F8FA] h-8 flex justify-center items-center hover:bg-slate-100 text-gray-800 font-medium py-2 px-4 rounded-md border border-slate-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2;
+  }
+}

@@ -10,8 +10,10 @@ export default function AccountPage() {
   const fetch = useFetch(token);
 
   const [input, setInput] = useState({
-    bio: "",
-    profilePicture: "",
+    username: user.user.username,
+    password: "",
+    bio: user.user.profileInfo.bio,
+    profilePicture: user.user.profileInfo.profilePicture,
   });
   const [error, setError] = useState("");
 
@@ -27,9 +29,15 @@ export default function AccountPage() {
       profilePicture: e.target.value,
     });
 
+  const onUsernameChange = (e) =>
+    setInput({ ...input, username: e.target.value });
+
+  const onPasswordChange = (e) =>
+    setInput({ ...input, password: e.target.value });
+
   // Check form validity
   const isFormValid = () => {
-    if ((input.title || input.genre) === null) {
+    if ((input.title || input.genre) === "") {
       setError("One of the fields must be filled");
       return false;
     }
@@ -42,42 +50,75 @@ export default function AccountPage() {
 
     const updatedUser = {
       ...user.user,
+      username: input.username,
+      password: input.password,
       profileInfo: {
-        ...user.user.profileInfo, // Spread existing profileInfo
-        bio: input.bio, // Update bio
-        profilePicture: input.profilePicture, // Update profile picture
+        ...user.user.profileInfo,
+        bio: input.bio,
+        profilePicture: input.profilePicture,
       },
     };
 
     fetch.updateData(user.user.url, updatedUser).then((res) => {
-      console.log(res);
       setUserData({ user: res.data, setUserData });
     });
   };
 
+  const deleteAccount = () => {
+    fetch.deleteData(user.user.url).then((res) => {
+      console.log(res);
+      // Log out, print that user and all docs have been deleted.
+    });
+  };
+
   return (
-    <div className="h-screen w-3/4 flex content-start">
-      <form onSubmit={(e) => submitForm(e)}>
-        <div>
+    <div className="h-screen w-full flex content-start">
+      <div className="m-7 w-2/4">
+        <form onSubmit={(e) => submitForm(e)}>
           <div>
-            <label>Update bio: </label>
-            <textarea
-              className="border"
-              onChange={(e) => onBioChange(e)}
-              value={input.bio}
-            />
+            <div>
+              <label className="label">Username</label>
+              <input
+                className="input"
+                onChange={(e) => onUsernameChange(e)}
+                type="text"
+                value={input.username}
+              />
+            </div>
+            <div>
+              <label className="label">Password</label>
+              <input
+                className="input"
+                onChange={(e) => onPasswordChange(e)}
+                type="password"
+              />
+            </div>
+            <div>
+              <label className="label">Update bio: </label>
+              <textarea
+                className="input"
+                onChange={(e) => onBioChange(e)}
+                value={input.bio}
+              />
+            </div>
           </div>
-          <div>
-            <label>Update profile picture: </label>
-            <input
-              className="border"
-              onChange={(e) => onProfilePictureChange(e)}
-              type="text"
-            />
-          </div>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+          <button className="button2 my-4" type="submit">
+            Update Preferences
+          </button>
+        </form>
+        <button
+          type="button"
+          className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 text-black-ish"
+          onClick={() => deleteAccount()}
+        >
+          Delete Account
+        </button>
+      </div>
+      <div className="relative">
+        <label className="label mt-7">Profile Picture</label>
+        <div className="bg-[url('../images/defaultProfilePicture.png')] bg-cover bg-center m-[10px] h-60 w-60 border-solid border-gray-300 border rounded-full"></div>
+        <button className="button2 my-4 absolute top-60 left-10">Edit</button>
+      </div>
     </div>
   );
 }

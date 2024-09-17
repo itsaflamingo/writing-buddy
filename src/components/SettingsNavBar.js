@@ -4,9 +4,6 @@ export default function SettingsNavBar({ setPage }) {
       <button className="border-2" onClick={() => setPage(true)} type="button">
         Account
       </button>
-      <button className="border-2" onClick={() => setPage(false)} type="button">
-        Settings
-      </button>
     </div>
   );
 }

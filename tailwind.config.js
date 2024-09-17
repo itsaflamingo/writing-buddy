@@ -16,6 +16,9 @@ module.exports = {
       fontFamily: {
         comfort: ["Comfortaa", "sans-serif"],
       },
+      colors: {
+        "black-ish": "#F5F8FA",
+      },
     },
   },
   plugins: [],
