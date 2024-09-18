@@ -20,13 +20,13 @@ export default function NewProjectDiv({
   const act = currentAct[0];
 
   const [input, setInput] = useState({
-    title: null,
-    number: null,
-    body: null,
+    title: "",
+    number: "",
+    body: "",
     isPublished: false,
     isComplete: false,
   });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const fetch = useFetch(token);
 
   const onTitleChange = (e) => setInput({ ...input, title: e.target.value });
@@ -38,15 +38,15 @@ export default function NewProjectDiv({
     setInput({ ...input, isCompleted: !input.isPublished });
 
   const isFormValid = () => {
-    if (input.title === null) {
+    if (input.title.length === 0) {
       setError("Title field must be filled");
       return false;
     }
-    if (input.number === null) {
+    if (input.number.length === 0) {
       setError("Number field must be filled");
       return false;
     }
-    if (input.body === null) {
+    if (input.body.length === 0) {
       setError("Body field must have some content");
       return false;
     }

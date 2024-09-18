@@ -23,11 +23,11 @@ export default function NewActDiv({
   const fetch = useFetch(token);
 
   const [input, setInput] = useState({
-    title: null,
+    title: "",
     isComplete: false,
     isPublished: false,
   });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
   const titleOnChange = (e) => setInput({ ...input, title: e.target.value });
   const toggleIsCompleted = () =>
@@ -36,7 +36,7 @@ export default function NewActDiv({
     setInput({ ...input, isPublished: !input.isPublished });
 
   const isFormValid = () => {
-    if (input.title === null) {
+    if (input.title.length === 0) {
       setError("Title field must be filled");
       return false;
     }

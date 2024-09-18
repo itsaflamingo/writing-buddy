@@ -30,14 +30,14 @@ export default function CreateChapter() {
   const fetch = useFetch(token);
 
   const [input, setInput] = useState({
-    title: null,
+    title: "",
     number: "",
-    body: null,
+    body: "",
     isPublished: false,
     isComplete: false,
   });
 
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
   const numberOnChange = (e) => {
     setInput((v) =>
@@ -60,7 +60,7 @@ export default function CreateChapter() {
   }, []);
 
   const isFormValid = () => {
-    if (input.title === null) {
+    if (input.title.length === 0) {
       setError("Title field must be filled");
       return false;
     }
@@ -68,7 +68,7 @@ export default function CreateChapter() {
       setError("Number field must be filled");
       return false;
     }
-    if (input.body === null) {
+    if (input.body.length === 0) {
       setError("Body field must have some content");
       return false;
     }
