@@ -37,7 +37,7 @@ export default function useFetch(token) {
   const deleteData = useCallback((route) => {
     return axios
       .delete(`${api_url}${route}`, { headers })
-      .then((res) => console.log(res))
+      .then((res) => res)
       .catch((err) => setError(err));
   });
 

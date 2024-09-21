@@ -46,6 +46,7 @@ export default function useSwitchCollection({
     if (collection === "acts") {
       // Get current project
       const project = projects.filter((project) => project.id === id);
+
       // Get data, set state to returned data
       fetchData(project[0].list_acts);
       // Set acts context to returned data

@@ -69,7 +69,7 @@ export default function NewProjectDiv({
   };
 
   return (
-    <div className="new-project absolute opacity-100 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300">
+    <div className="new-project absolute opacity-100 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 space-y-5 border border-gray-300 z-10">
       <div>
         {error && <div>{error}</div>}
         <form onSubmit={(e) => onFormSubmit(e)}>
