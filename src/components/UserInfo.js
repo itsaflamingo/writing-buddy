@@ -8,10 +8,10 @@ export default function UserInfo({ visitAccountPage, user }) {
       <button type="button" onClick={() => visitAccountPage()}>
         Edit Profile
       </button>
-      <div className="flex">
+      {/* <div className="flex">
         <div>Followers: {user.profileInfo.followers.length}</div>
         <div>Following: {user.profileInfo.following.length}</div>
-      </div>
+      </div> */}
     </div>
   );
 }
