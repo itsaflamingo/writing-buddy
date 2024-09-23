@@ -8,14 +8,14 @@ export default function ConfirmDelete({
       <div>Are you sure you want to delete {title}?</div>
       <button
         type="button"
-        className="flex justify-center items-center border border-gray-300 border border-gray-400 p-2 rounded-md"
+        className="flex justify-center items-center border border-gray-300 border border-gray-400 p-2 rounded-lg"
         onClick={() => deleteDocument(title)}
       >
         Delete
       </button>
       <button
         type="button"
-        className="flex justify-center items-center border border-gray-300 border border-gray-400 p-2 rounded-md"
+        className="flex justify-center items-center border border-gray-300 border border-gray-400 p-2 rounded-lg"
         onClick={() => setDocToDeleteTitle(null)}
       >
         Cancel

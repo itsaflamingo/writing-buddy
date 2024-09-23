@@ -21,7 +21,7 @@ export default function ContributionGraph() {
   ];
 
   return (
-    <div className="flex flex-col gap-1 items-start border border-gray-300 p-4">
+    <div className="flex flex-col gap-1 items-start border border-gray-300 p-4 rounded-lg">
       {/* Month Labels at the top */}
       <div className="grid grid-cols-12 w-full text-sm font-semibold mb-2">
         {months.map((month, i) => (

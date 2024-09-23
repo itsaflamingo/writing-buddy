@@ -246,7 +246,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         <button
           type="button"
           onClick={() => showNewDocumentDiv(collection)}
-          className="flex justify-center items-center border border-solid w-40 font-medium m-[10px]"
+          className="flex justify-center items-center border border-solid w-40 font-medium m-[10px] rounded-lg"
         >
           New {returnSingularCollection(collection)}
         </button>
