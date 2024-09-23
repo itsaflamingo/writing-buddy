@@ -26,6 +26,7 @@ import edit from "../images/edit-black.png";
 import del from "../images/delete-black.png";
 import getParentDocumentAndCollection from "@/functions/getParentDocumentAndCollection";
 import capitalizeStr from "@/functions/capitalizeStr";
+import ContributionGraph from "./ContributionGraph";
 
 const calcSection = (section) => {
   let newSect;
@@ -264,7 +265,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
           </h2>
         )}
       </div>
-      <div className="max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 p-[10px] m-[10px]">
+      <div className="max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 rounded-lg p-[10px] m-[10px]">
         {data &&
           data.map((doc) => (
             <div
@@ -273,7 +274,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
             >
               <button
                 type="button"
-                className="absolute flex flex-col justify-center w-full h-[200px] border border-gray-300"
+                className="absolute flex flex-col justify-center w-full h-[200px] border border-gray-300 rounded-lg"
                 style={{ zIndex: 1 }}
                 onClick={() => changeSectionHandler(doc)}
                 disabled={collection === "chapters"}
@@ -333,6 +334,8 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
           setShowCreateAct={setShowCreateAct}
         />
       )}
+
+      <ContributionGraph />
     </div>
   );
 }

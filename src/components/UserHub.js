@@ -63,7 +63,11 @@ export default function UserHub() {
     <div className="font-comfort flex w-full h-full justify-center bg-[#FFFDFD] text-gray-800">
       {error && <div>Error</div>}
       <div className="flex flex-row w-full h-full justify-center">
-        <UserInfo visitAccountPage={visitAccountPage} user={user.user} />
+        <UserInfo
+          visitAccountPage={visitAccountPage}
+          user={user.user}
+          token={token}
+        />
         <div className="flex flex-col justify-center">
           <div className="flex justify-center text-3xl">
             {capitalizeStr(section.collection)}

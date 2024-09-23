@@ -4,7 +4,7 @@ export default function ConfirmDelete({
   setDocToDeleteTitle,
 }) {
   return (
-    <div className="absolute flex items-center gap-6 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 border border-gray-300 bg-white z-10">
+    <div className="absolute flex items-center gap-6 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mx-auto max-w-md px-10 py-5 border border-gray-300 rounded-lg bg-white z-10">
       <div>Are you sure you want to delete {title}?</div>
       <button
         type="button"
