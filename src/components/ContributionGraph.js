@@ -1,24 +1,44 @@
+import useFetch from "@/customHooks/useFetch";
+import { useEffect } from "react";
+
 const daysInMonth = (month) => {
   if (["Nov", "Jun", "Apr", "Sept"].includes(month)) return 30;
   else if (month === "Feb") return 28;
   else return 31;
 };
 
-export default function ContributionGraph() {
+export default function ContributionGraph(user, token) {
+  const fetch = useFetch(token);
+  // Make get request to all user's contributions
+  const getContributions = () => {
+    fetch
+      .getData(`/contributions/${user.user._id}`)
+      .then((res) => console.log(res));
+  };
+
+  useEffect(() => {
+    getContributions();
+  }, []);
+
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sept",
-    "Oct",
-    "Nov",
-    "Dec",
+    { month: "Jan", days: daysInMonth("Jan") },
+    { month: "Feb", days: daysInMonth("Feb") },
+    { month: "Mar", days: daysInMonth("Mar") },
+    { month: "Apr", days: daysInMonth("Apr") },
+    { month: "May", days: daysInMonth("May") },
+    { month: "Jun", days: daysInMonth("Jun") },
+    { month: "Jul", days: daysInMonth("Jul") },
+    { month: "Aug", days: daysInMonth("Aug") },
+    { month: "Sept", days: daysInMonth("Sept") },
+    { month: "Oct", days: daysInMonth("Oct") },
+    { month: "Nov", days: daysInMonth("Nov") },
+    { month: "Dec", days: daysInMonth("Dec") },
   ];
+
+  // Flatten the months into one array of 365 days, each day containing its respective month and day
+  const daysInYear = months.flatMap((month) =>
+    [...Array(month.days)].map((_, i) => ({ month: month.month, day: i + 1 }))
+  );
 
   return (
     <div className="flex flex-col gap-1 items-start border border-gray-300 p-4 rounded-lg">
@@ -26,7 +46,7 @@ export default function ContributionGraph() {
       <div className="grid grid-cols-12 w-full text-sm font-semibold mb-2">
         {months.map((month, i) => (
           <div key={i} className="col-span-1 text-center">
-            {month}
+            {month.month}
           </div>
         ))}
       </div>
@@ -37,10 +57,11 @@ export default function ContributionGraph() {
         style={{ gridTemplateColumns: "repeat(52, 10px)" }}
       >
         {/* Create array with 365 elements, which are mapped over to create divs */}
-        {[...Array(365)].map((_, i) => {
+        {daysInYear.map((dayObj, i) => {
           return (
             <div
               key={i}
+              id={dayObj.month + "/" + dayObj.day}
               className="w-[10px] h-[10px] bg-gray-200 rounded-sm transition-colors duration-300"
             ></div>
           );
