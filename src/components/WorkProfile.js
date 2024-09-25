@@ -335,7 +335,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
         />
       )}
 
-      <ContributionGraph user={user.user} token={token} />
+      <ContributionGraph />
     </div>
   );
 }

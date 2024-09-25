@@ -1,5 +1,6 @@
+import { UserContext } from "@/contexts/Contexts";
 import useFetch from "@/customHooks/useFetch";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const daysInMonth = (month) => {
   if (["Nov", "Jun", "Apr", "Sept"].includes(month)) return 30;
@@ -7,13 +8,18 @@ const daysInMonth = (month) => {
   else return 31;
 };
 
-export default function ContributionGraph(user, token) {
+export default function ContributionGraph() {
+  const { userData } = useContext(UserContext);
+  const { user } = userData;
+  const { token } = user;
   const fetch = useFetch(token);
+
+  const [contributions, setContributions] = useState([]);
   // Make get request to all user's contributions
   const getContributions = () => {
     fetch
-      .getData(`/contributions/${user.user._id}`)
-      .then((res) => console.log(res));
+      .getData(`/contributions/${user.user._id}`, token)
+      .then((res) => setContributions(res.data));
   };
 
   useEffect(() => {
