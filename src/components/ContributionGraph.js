@@ -3,7 +3,7 @@ import useFetch from "@/customHooks/useFetch";
 import { useContext, useEffect, useState } from "react";
 
 const daysInMonth = (month) => {
-  if (["Nov", "Jun", "Apr", "Sept"].includes(month)) return 30;
+  if (["Nov", "Jun", "Apr", "Sep"].includes(month)) return 30;
   else if (month === "Feb") return 28;
   else return 31;
 };
@@ -35,7 +35,7 @@ export default function ContributionGraph() {
     { month: "Jun", days: daysInMonth("Jun") },
     { month: "Jul", days: daysInMonth("Jul") },
     { month: "Aug", days: daysInMonth("Aug") },
-    { month: "Sept", days: daysInMonth("Sept") },
+    { month: "Sep", days: daysInMonth("Sep") },
     { month: "Oct", days: daysInMonth("Oct") },
     { month: "Nov", days: daysInMonth("Nov") },
     { month: "Dec", days: daysInMonth("Dec") },
@@ -43,8 +43,23 @@ export default function ContributionGraph() {
 
   // Flatten the months into one array of 365 days, each day containing its respective month and day
   const daysInYear = months.flatMap((month) =>
-    [...Array(month.days)].map((_, i) => ({ month: month.month, day: i + 1 }))
+    // Maps over each day in month, adding to it an object containing month and day
+    [...Array(month.days)].map((_, i) => ({
+      month: month.month,
+      day: i + 1,
+      color: "",
+    }))
   );
+
+  contributions.map((date) => {
+    daysInYear.find((element) => {
+      const day = date.date_formatted.slice(3, 6);
+      console.log(day);
+      if (date.date_formatted.includes(element.month) && day == element.day) {
+        element.color = "bg-lime-600";
+      }
+    });
+  });
 
   return (
     <div className="flex flex-col gap-1 items-start border border-gray-300 p-4 rounded-lg">
@@ -68,7 +83,7 @@ export default function ContributionGraph() {
             <div
               key={i}
               id={dayObj.month + "/" + dayObj.day}
-              className="w-[10px] h-[10px] bg-gray-200 rounded-sm transition-colors duration-300"
+              className={`w-[10px] h-[10px] bg-gray-200 rounded-sm transition-colors duration-300 ${dayObj.color}`}
             ></div>
           );
         })}
