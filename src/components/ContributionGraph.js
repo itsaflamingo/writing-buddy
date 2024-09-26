@@ -54,7 +54,6 @@ export default function ContributionGraph() {
   contributions.map((date) => {
     daysInYear.find((element) => {
       const day = date.date_formatted.slice(3, 6);
-      console.log(day);
       if (date.date_formatted.includes(element.month) && day == element.day) {
         element.color = "bg-lime-600";
       }
@@ -75,7 +74,11 @@ export default function ContributionGraph() {
       {/* Days Grid */}
       <div
         className="grid gap-0.5 grid-rows-7"
-        style={{ gridTemplateColumns: "repeat(52, 10px)" }}
+        style={{
+          gridTemplateRows: "repeat(7, 12px)",
+          gridTemplateColumns: "repeat(52, 12px)",
+          gridAutoFlow: "column",
+        }}
       >
         {/* Create array with 365 elements, which are mapped over to create divs */}
         {daysInYear.map((dayObj, i) => {
@@ -83,7 +86,7 @@ export default function ContributionGraph() {
             <div
               key={i}
               id={dayObj.month + "/" + dayObj.day}
-              className={`w-[10px] h-[10px] bg-gray-200 rounded-sm transition-colors duration-300 ${dayObj.color}`}
+              className={`w-[12px] h-[12px] bg-gray-200 rounded-sm transition-colors duration-300 ${dayObj.color}`}
             ></div>
           );
         })}
