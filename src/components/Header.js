@@ -12,11 +12,11 @@ export default function Header({ isHome }) {
     });
   };
 
-  const visitFeed = () => {
-    router.push({
-      pathname: "/feed",
-    });
-  };
+  // const visitFeed = () => {
+  //   router.push({
+  //     pathname: "/feed",
+  //   });
+  // };
 
   return (
     <header className="flex justify-between items-center h-[70px] px-[50px] py-[10px] shadow-sm">
@@ -29,9 +29,6 @@ export default function Header({ isHome }) {
             <img src={home.src} alt="home button" className="max-h-8" />
           </button>
         )}
-        <button type="button" onClick={() => visitFeed()}>
-          Feed
-        </button>
         <AuthButtons />
       </div>
     </header>

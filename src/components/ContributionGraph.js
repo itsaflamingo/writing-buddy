@@ -2,7 +2,7 @@ import { UserContext } from "@/contexts/Contexts";
 import useFetch from "@/customHooks/useFetch";
 import { useContext, useEffect, useState } from "react";
 
-const daysInMonth = (month) => {
+const calcDaysInMonth = (month) => {
   if (["Nov", "Jun", "Apr", "Sep"].includes(month)) return 30;
   else if (month === "Feb") return 28;
   else return 31;
@@ -27,18 +27,18 @@ export default function ContributionGraph() {
   }, []);
 
   const months = [
-    { month: "Jan", days: daysInMonth("Jan") },
-    { month: "Feb", days: daysInMonth("Feb") },
-    { month: "Mar", days: daysInMonth("Mar") },
-    { month: "Apr", days: daysInMonth("Apr") },
-    { month: "May", days: daysInMonth("May") },
-    { month: "Jun", days: daysInMonth("Jun") },
-    { month: "Jul", days: daysInMonth("Jul") },
-    { month: "Aug", days: daysInMonth("Aug") },
-    { month: "Sep", days: daysInMonth("Sep") },
-    { month: "Oct", days: daysInMonth("Oct") },
-    { month: "Nov", days: daysInMonth("Nov") },
-    { month: "Dec", days: daysInMonth("Dec") },
+    { month: "Jan", days: calcDaysInMonth("Jan") },
+    { month: "Feb", days: calcDaysInMonth("Feb") },
+    { month: "Mar", days: calcDaysInMonth("Mar") },
+    { month: "Apr", days: calcDaysInMonth("Apr") },
+    { month: "May", days: calcDaysInMonth("May") },
+    { month: "Jun", days: calcDaysInMonth("Jun") },
+    { month: "Jul", days: calcDaysInMonth("Jul") },
+    { month: "Aug", days: calcDaysInMonth("Aug") },
+    { month: "Sep", days: calcDaysInMonth("Sep") },
+    { month: "Oct", days: calcDaysInMonth("Oct") },
+    { month: "Nov", days: calcDaysInMonth("Nov") },
+    { month: "Dec", days: calcDaysInMonth("Dec") },
   ];
 
   // Flatten the months into one array of 365 days, each day containing its respective month and day
@@ -50,15 +50,6 @@ export default function ContributionGraph() {
       color: "",
     }))
   );
-
-  contributions.map((date) => {
-    daysInYear.find((element) => {
-      const day = date.date_formatted.slice(3, 6);
-      if (date.date_formatted.includes(element.month) && day == element.day) {
-        element.color = "bg-lime-600";
-      }
-    });
-  });
 
   return (
     <div className="flex flex-col gap-1 items-start border border-gray-300 p-4 rounded-lg">
@@ -82,6 +73,18 @@ export default function ContributionGraph() {
       >
         {/* Create array with 365 elements, which are mapped over to create divs */}
         {daysInYear.map((dayObj, i) => {
+          {
+            // Map over each contribution, if day & month match with day in year, change color to green
+            contributions.map((date) => {
+              const day = date.date_formatted.slice(3, 6);
+              if (
+                date.date_formatted.includes(dayObj.month) &&
+                day == dayObj.day
+              ) {
+                dayObj.color = "bg-lime-600";
+              }
+            });
+          }
           return (
             <div
               key={i}
