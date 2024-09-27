@@ -27,6 +27,7 @@ import del from "../images/delete-black.png";
 import getParentDocumentAndCollection from "@/functions/getParentDocumentAndCollection";
 import capitalizeStr from "@/functions/capitalizeStr";
 import ContributionGraph from "./ContributionGraph";
+import FileOptions from "./FileOptions";
 
 const calcSection = (section) => {
   let newSect;
@@ -70,6 +71,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   const [editInput, setEditInput] = useState(null);
   const [docToDeleteTitle, setDocToDeleteTitle] = useState(null);
   const [sectionData, setSectionData] = useState(null);
+  const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
     switch (collection) {
@@ -208,9 +210,25 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     }
   };
 
+  const findTargetTitle = (e) => {
+    // Traverse to the parent element that contains the sibling div
+    const parentDiv = e.target.closest("div"); // Assuming the parent div with class 'flex'
+
+    // Now, find the `.doc-title` within the sibling div
+    const titleElement = parentDiv.querySelector(".proj-info");
+
+    // Log or use the title as needed
+    if (titleElement) {
+      console.log("Found title:", titleElement.textContent); // or titleElement.innerText
+    } else {
+      console.log("Title not found");
+    }
+  };
+
   return (
     <div className="work-profile">
       <div className="flex mt-[10px]">
+        {/* NAV BUTTONS */}
         {"user" in user && (
           <NavigationButton
             document={user.user}
@@ -242,6 +260,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
           </>
         )}
       </div>
+      {/* NEW DOCUMENT DIVS */}
       {(collection === "projects" || collection === "acts") && (
         <button
           type="button"
@@ -265,49 +284,44 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
           </h2>
         )}
       </div>
-      <div className="max-w-[800px] w-[600px] grid grid-cols-3 gap-[10px] border border-gray-300 rounded-lg p-[10px] m-[10px]">
+      <div className="max-w-[900px] grid grid-cols-3 gap-[10px] border border-gray-300 rounded-lg p-[10px] m-[10px]">
         {data &&
           data.map((doc) => (
             <div
-              className="relative flex flex-col justify-center w-auto h-[200px]"
+              className="relative flex justify-center w-auto h-[100px]"
               key={uniqid()}
+              id={doc.id}
             >
               <button
                 type="button"
-                className="absolute flex flex-col justify-center w-full h-[200px] border border-gray-300 rounded-lg"
+                className="absolute flex flex-col justify-center w-full h-[100px] border border-gray-300 rounded-lg"
                 style={{ zIndex: 1 }}
                 onClick={() => changeSectionHandler(doc)}
                 disabled={collection === "chapters"}
               />
-              <div className="proj-info flex flex-col items-center w-full">
-                <div className="text-lg doc-title">
-                  {capitalizeStr(doc.title)}
+              <div className="flex w-full p-5">
+                <div className="proj-info flex flex-col items-start w-full">
+                  <div className="text-lg doc-title">
+                    {capitalizeStr(doc.title)}
+                  </div>
+                  <div className="flex text-xs">on {doc.date_formatted}</div>
                 </div>
-                <div className="flex text-xs">on {doc.date_formatted}</div>
-              </div>
-              <div className="proj-buttons flex justify-center w-full gap-2 mt-24">
                 <button
                   type="button"
-                  onClick={(e) => viewClickHandler(e)}
-                  style={{ zIndex: 2 }}
+                  className="flex flex-col z-10"
+                  onClick={(e) => findTargetTitle(e)}
                 >
-                  <img src={view.src} alt="view" className="max-h-[25px]" />
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => editClickHandler(e)}
-                  style={{ zIndex: 2 }}
-                >
-                  <img src={edit.src} alt="edit" className="max-h-[25px]" />
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => deleteClickHandler(e)}
-                  style={{ zIndex: 2 }}
-                >
-                  <img src={del.src} alt="delete" className="max-h-[25px]" />
+                  ...
                 </button>
               </div>
+              {showOptions && (
+                <FileOptions
+                  view={viewClickHandler}
+                  edit={editClickHandler}
+                  del={deleteClickHandler}
+                  id={doc.id}
+                />
+              )}
             </div>
           ))}
       </div>
