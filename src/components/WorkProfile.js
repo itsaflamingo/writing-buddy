@@ -210,19 +210,12 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
     }
   };
 
-  const findTargetTitle = (e) => {
-    // Traverse to the parent element that contains the sibling div
-    const parentDiv = e.target.closest("div"); // Assuming the parent div with class 'flex'
-
-    // Now, find the `.doc-title` within the sibling div
-    const titleElement = parentDiv.querySelector(".proj-info");
-
-    // Log or use the title as needed
-    if (titleElement) {
-      console.log("Found title:", titleElement.textContent); // or titleElement.innerText
-    } else {
-      console.log("Title not found");
+  const targetCorrectButton = (doc) => {
+    if (showOptions !== false) {
+      return setShowOptions(false);
     }
+
+    setShowOptions(doc.id);
   };
 
   return (
@@ -309,12 +302,12 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
                 <button
                   type="button"
                   className="flex flex-col z-10"
-                  onClick={(e) => findTargetTitle(e)}
+                  onClick={() => targetCorrectButton(doc)}
                 >
                   ...
                 </button>
               </div>
-              {showOptions && (
+              {showOptions === doc.id && (
                 <FileOptions
                   view={viewClickHandler}
                   edit={editClickHandler}
