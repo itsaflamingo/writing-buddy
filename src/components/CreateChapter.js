@@ -36,8 +36,24 @@ export default function CreateChapter() {
     isPublished: false,
     isComplete: false,
   });
+  const [selectedText, setSelectedText] = useState("");
 
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    // Add an event listener to capture text selection within TinyMCE
+    const editor = tinymce.activeEditor;
+    if (editor) {
+      editor.on("mouseup", handleSelection); // Trigger on mouse up (or any other event)
+    }
+
+    // Cleanup listener when component unmounts
+    return () => {
+      if (editor) {
+        editor.off("mouseup", handleSelection);
+      }
+    };
+  }, []);
 
   const numberOnChange = (e) => {
     setInput((v) =>
@@ -101,6 +117,14 @@ export default function CreateChapter() {
       .catch((err) => setError(err));
   };
 
+  const handleSelection = () => {
+    const editor = tinymce.activeEditor; // Get the currently active TinyMCE editor instance
+    if (editor) {
+      const selectedText = editor.selection.getContent({ format: "text" });
+      console.log("Selected text in TinyMCE:", selectedText);
+    }
+  };
+
   return (
     <div className="flex justify-center w-100 p-4">
       {error && <div>Error</div>}
@@ -149,6 +173,7 @@ export default function CreateChapter() {
         </label>
         <Editor
           apiKey={process.env.REACT_APP_TINYMCE_KEY}
+          id="tinyMCEEditor"
           // Assigns current editor instance to editorRef so contents can be accessed and manipulated programmatically
           // Without this, the program wouldn't be able to access editor content
           onInit={(evt, editor) => (editorRef.current = editor)}
