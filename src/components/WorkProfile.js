@@ -211,10 +211,7 @@ export default function WorkProfile({ data, setData, section, changeSection }) {
   };
 
   const targetCorrectButton = (doc) => {
-    if (showOptions !== false) {
-      return setShowOptions(false);
-    }
-
+    if (showOptions !== false) return setShowOptions(false);
     setShowOptions(doc.id);
   };
 

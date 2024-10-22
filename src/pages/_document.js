@@ -13,7 +13,7 @@ export default function Document() {
           referrerPolicy="origin"
         />
       </Head>
-      <body>
+      <body className="bg-[#FFFDFD]">
         <Main />
         <NextScript />
       </body>

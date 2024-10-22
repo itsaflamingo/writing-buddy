@@ -60,7 +60,7 @@ export default function UserHub() {
   };
 
   return (
-    <div className="font-comfort flex w-full h-full justify-center bg-[#FFFDFD] text-gray-800">
+    <div className="font-comfort flex w-full h-full justify-center text-gray-800 mt-2">
       {error && <div>Error</div>}
       <div className="flex flex-row w-full h-full justify-center">
         <UserInfo
@@ -72,6 +72,10 @@ export default function UserHub() {
           <div className="flex justify-center text-3xl">
             {capitalizeStr(section.collection)}
           </div>
+          {loading && <div>Loading...</div>}
+          {data && data.length === 0 && (
+            <h1>You don&apos;t have any {section.collection}</h1>
+          )}
           {data && (
             <WorkProfile
               data={data}
@@ -79,10 +83,6 @@ export default function UserHub() {
               changeSection={setSection}
               section={section}
             />
-          )}
-          {loading && <div>Loading...</div>}
-          {data && data.length === 0 && (
-            <h1>You don&apos;t have any {section.collection}</h1>
           )}
         </div>
       </div>

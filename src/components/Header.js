@@ -19,7 +19,7 @@ export default function Header({ isHome }) {
   // };
 
   return (
-    <header className="flex justify-between items-center h-[70px] px-[50px] py-[10px] shadow-sm">
+    <header className="flex justify-between items-center h-[70px] px-[50px] py-[10px] shadow-sm text-gray-800">
       <div className="bg-cyan-700 rounded-full h-12 w-12 flex justify-center items-center">
         <img src={owl.src} alt="owl icon" className="h-[70%]" />
       </div>
