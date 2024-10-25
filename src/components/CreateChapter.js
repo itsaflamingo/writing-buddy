@@ -9,6 +9,7 @@ import {
   CurrentChapterContext,
   UserContext,
 } from "@/contexts/Contexts";
+import axios from "axios";
 
 export default function CreateChapter() {
   const router = useRouter();
@@ -117,11 +118,33 @@ export default function CreateChapter() {
       .catch((err) => setError(err));
   };
 
+  const sendThesaurusAPIRequest = (word) => {
+    const apiKey2 = process.env.NEXT_PUBLIC_THESAURUS_KEY;
+    axios
+      .get(`https://api.api-ninjas.com/v1/thesaurus?word=${word}`, {
+        headers: {
+          "X-Api-Key": apiKey2,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log(response.data); // Success
+      })
+      .catch((error) => {
+        console.error(
+          "Error:",
+          error.response ? error.response.data : error.message
+        ); // Handle errors
+      });
+  };
+
   const handleSelection = () => {
     const editor = tinymce.activeEditor; // Get the currently active TinyMCE editor instance
     if (editor) {
       const selectedText = editor.selection.getContent({ format: "text" });
       console.log("Selected text in TinyMCE:", selectedText);
+
+      sendThesaurusAPIRequest(selectedText);
     }
   };
 
@@ -172,7 +195,7 @@ export default function CreateChapter() {
           Body
         </label>
         <Editor
-          apiKey={process.env.REACT_APP_TINYMCE_KEY}
+          apiKey={process.env.NEXT_PUBLIC_TINYMCE_KEY}
           id="tinyMCEEditor"
           // Assigns current editor instance to editorRef so contents can be accessed and manipulated programmatically
           // Without this, the program wouldn't be able to access editor content
