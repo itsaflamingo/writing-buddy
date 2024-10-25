@@ -119,6 +119,7 @@ export default function CreateChapter() {
   };
 
   const sendThesaurusAPIRequest = (word) => {
+    if (word.length === 0) return;
     const apiKey2 = process.env.NEXT_PUBLIC_THESAURUS_KEY;
     axios
       .get(`https://api.api-ninjas.com/v1/thesaurus?word=${word}`, {
@@ -142,8 +143,6 @@ export default function CreateChapter() {
     const editor = tinymce.activeEditor; // Get the currently active TinyMCE editor instance
     if (editor) {
       const selectedText = editor.selection.getContent({ format: "text" });
-      console.log("Selected text in TinyMCE:", selectedText);
-
       sendThesaurusAPIRequest(selectedText);
     }
   };
@@ -204,8 +203,9 @@ export default function CreateChapter() {
           value={input.body}
           onEditorChange={bodyOnChange}
           init={{
+            max_width: 800,
             height: 500,
-            menubar: false,
+            menubar: true,
             plugins: [
               "advlist",
               "autolink",
