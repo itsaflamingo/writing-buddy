@@ -10,6 +10,7 @@ import {
   UserContext,
 } from "@/contexts/Contexts";
 import axios from "axios";
+import DisplaySynonyms from "./DisplaySynonyms";
 
 export default function CreateChapter() {
   const router = useRouter();
@@ -37,7 +38,8 @@ export default function CreateChapter() {
     isPublished: false,
     isComplete: false,
   });
-  const [selectedText, setSelectedText] = useState("");
+  const [showSynonyms, setShowSynonyms] = useState(false);
+  const [thesaurusResponse, setThesaurusResponse] = useState("");
 
   const [error, setError] = useState("");
 
@@ -130,6 +132,8 @@ export default function CreateChapter() {
       })
       .then((response) => {
         console.log(response.data); // Success
+        setThesaurusResponse(response.data);
+        setShowSynonyms(true);
       })
       .catch((error) => {
         console.error(
@@ -204,6 +208,8 @@ export default function CreateChapter() {
           onEditorChange={bodyOnChange}
           init={{
             max_width: 800,
+            width: 800,
+            min_width: 500,
             height: 500,
             menubar: true,
             plugins: [
@@ -267,6 +273,12 @@ export default function CreateChapter() {
           Submit
         </button>
       </form>
+      {showSynonyms && (
+        <DisplaySynonyms
+          synonyms={thesaurusResponse.synonyms}
+          antonyms={thesaurusResponse.antonyms}
+        />
+      )}
     </div>
   );
 }
