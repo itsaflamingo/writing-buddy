@@ -9,7 +9,7 @@ export default function Login() {
   const { setUserData } = useContext(UserContext);
   const router = useRouter();
   // These two change at the same time, so they are grouped together
-  const [input, setInput] = useState({
+  const [loginInfo, setLoginInfo] = useState({
     username: null,
     password: null,
   });
@@ -21,27 +21,30 @@ export default function Login() {
       pathname: "/dashboard/",
     });
   };
-
+//On input, update state
   const onChangeHandler = (e, label) =>
-    setInput({ ...input, [label]: e.target.value });
+    setLoginInfo({ ...loginInfo, [label]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
-
+    //Take username and password from state
     const formData = {
-      username: input.username,
-      password: input.password,
+      username: loginInfo.username,
+      password: loginInfo.password,
     };
+    //Make backend request using formData
     axios
       .post(`${api_url}/login`, formData, {
         headers: {
           "Content-Type": "application/json",
         },
-      })
+      }) 
       .then((res) => {
-        console.log("USER:", res);
+        //set environment variable to JSONWebToken
         process.env.REACT_APP_TOKEN = res.data.token;
+        //Update context
         setUserData({ user: res.data, setUserData });
+        //Redirect to dashboard 
         goToDashboard();
       })
       .catch((err) => {
